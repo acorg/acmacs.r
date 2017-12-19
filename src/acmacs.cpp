@@ -52,7 +52,7 @@ RCPP_EXPOSED_CLASS(Chart);
 class Chart : public wrapper<acmacs::chart::Chart>
 {
  public:
-    inline Chart(std::string aFilename) : wrapper(acmacs::chart::import_factory(aFilename, acmacs::chart::Verify::None)) {}
+    inline Chart(std::string aFilename) : wrapper(acmacs::chart::import_factory(aFilename, acmacs::chart::Verify::None, report_time::No)) {}
     inline std::string name() const { return obj_->make_name(); }
 
 }; // class Chart
