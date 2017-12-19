@@ -34,9 +34,10 @@ compile-attributes:
 	Rscript -e "library(Rcpp); compileAttributes(verbose=TRUE);"
 
 test:
+	R_LIBS=$(LIB_DIR) Rscript --vanilla --default-packages=methods,utils,devtools,stats -e 'devtools::test()'
 
 clean:
-	rm -rf $(OUT_DIR) $(ROOT_DIR)/$(PKG_NAME)_*.tgz $(PKG_DIR)/$(PKG_NAME)_*.tar.gz $(LIB_DIR)/$(PKG_NAME)
+	rm -rf $(OUT_DIR) $(ROOT_DIR)/$(PKG_NAME)_*.tgz $(PKG_DIR)/$(PKG_NAME)_*.tar.gz $(LIB_DIR)/$(PKG_NAME) src/*.o src/*.so
 
 $(OUT_DIR):
 	mkdir -p $(OUT_DIR)

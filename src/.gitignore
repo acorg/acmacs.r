@@ -1,1 +1,4 @@
 RcppExports.cpp
+*.o
+*.so
+*.dylib

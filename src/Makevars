@@ -28,5 +28,8 @@ override SHLIB_LIBADD =
 
 # ----------------------------------------------------------------------
 
+ifeq ($(findstring /devtools_install_,$(R_PACKAGE_DIR)),)
+# not using testthat
 all: $(SHLIB)
 	../install-shared-libs.$$(uname) "$(R_PACKAGE_DIR)" $(SHLIB)
+endif
