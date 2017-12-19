@@ -34,7 +34,7 @@ macOS 10.12 and 10.13
 Installation size: ~5Mb
 
 ```R
-install.packages("", lib="/tmp/R/library")
+install.packages("https://github.com/acorg/acmacs.r/releases/download/v0.1-alpha/acmacs.r-0.1.macOS-10.12.tgz", lib="/tmp/R/library")
 ```
 
 Linux
