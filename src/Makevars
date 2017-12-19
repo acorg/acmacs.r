@@ -1,0 +1,32 @@
+# -*- Makefile -*-
+# ----------------------------------------------------------------------
+
+ACMACS_LIBS = \
+    $(ACMACSD_ROOT)/lib/libacmacschart.2.dylib
+
+# ----------------------------------------------------------------------
+
+ifeq ($(ACMACSD_ROOT),)
+  $(error ACMACSD_ROOT not set)
+endif
+
+ifeq ($(shell uname),Darwin)
+  CXX_ROOT = /usr/local/opt/llvm
+  override CXX17 = $(CXX_ROOT)/bin/clang++
+  PKG_CXXFLAGS += -O3
+  # -Wno-weak-vtables -Weverything -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-padded
+else
+  $(error Unsupported platform $(shell uname))
+endif
+
+CXX_STD = CXX17
+PKG_CXXFLAGS += -I$(ACMACSD_ROOT)/include
+PKG_LIBS = -lz $(ACMACS_LIBS) -L$(CXX_ROOT)/lib -lc++experimental -lc++
+
+# bug in R or Rcpp?
+override SHLIB_LIBADD =
+
+# ----------------------------------------------------------------------
+
+all: $(SHLIB)
+	../install-shared-libs.$$(uname) "$(R_PACKAGE_DIR)" $(SHLIB)
