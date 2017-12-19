@@ -33,6 +33,9 @@ macOS 10.12 and 10.13
 
 Installation size: ~5Mb
 
+Please replace /tmp/R/library with your local directory for packages
+or remove lib="/tmp/R/library" argument.
+
 ```R
 install.packages("https://github.com/acorg/acmacs.r/releases/download/v0.1-alpha/acmacs.r_0.1.macOS-10.12.tgz", repos=NULL, lib="/tmp/R/library")
 ```
