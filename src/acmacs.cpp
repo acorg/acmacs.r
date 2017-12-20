@@ -81,7 +81,33 @@ class Projection : public wrapper<acmacs::chart::Projection>
 {
  public:
     inline Projection(acmacs::chart::ProjectionP projection) : wrapper(projection) {}
-    // static inline Rcpp::StringVector as_character(Projection* aProjection) { return {aProjection->obj_->full_name()}; }
+      // static inline Rcpp::StringVector as_character(Projection* aProjection) { return {aProjection->obj_->full_name()}; }
+
+    inline Rcpp::NumericMatrix transformation() const
+        {
+            const auto a_tr = obj_->transformation();
+            Rcpp::NumericMatrix transformation(2, 2);
+            transformation(0, 0) = a_tr.a;
+            transformation(0, 1) = a_tr.b;
+            transformation(1, 0) = a_tr.c;
+            transformation(1, 1) = a_tr.d;
+            return transformation;
+        }
+
+    inline Rcpp::NumericVector forced_column_bases() const
+        {
+            auto fcb = obj_->forced_column_bases();
+            if (fcb && fcb->exists()) {
+                Rcpp::NumericVector result(fcb->size());
+                for (size_t sr_no = 0; sr_no < fcb->size(); ++sr_no)
+                    result[sr_no] = fcb->column_basis(sr_no);
+                return result;
+            }
+            else {
+                return Rcpp::NumericVector::create(NA_REAL);
+            }
+        }
+
 };
 RCPP_EXPOSED_CLASS_NODECL(Projection);
 
@@ -146,10 +172,10 @@ RCPP_MODULE(acmacs)
             .property<double>("stress", &Projection::get<&acmacs::chart::Projection::stress>)
             .property<std::string>("comment", &Projection::get<&acmacs::chart::Projection::comment>)
             .property<std::string>("minimum_column_basis", &Projection::getT<std::string, &acmacs::chart::Projection::minimum_column_basis>)
+            .property("forced_column_bases", &Projection::forced_column_bases)
+            .property("transformation", &Projection::transformation)
         // virtual std::shared_ptr<Layout> layout() const = 0;
         // virtual inline std::shared_ptr<Layout> transformed_layout() const { return std::shared_ptr<Layout>(layout()->transform(transformation())); }
-        // virtual std::shared_ptr<ColumnBases> forced_column_bases() const = 0;
-        // virtual acmacs::Transformation transformation() const = 0;
               // rotate
               // flip
               // move points

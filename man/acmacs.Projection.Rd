@@ -21,6 +21,14 @@ projection$stress
 
   \item{minimum_column_basis}{(string), "none", "1280"}
 
+  \item{forced_column_bases}{vector of doubles, if column bases were forced in projection
+  (by user or after merge of tables having more-than titers), otherwise
+  NA.}
+
+  \item{transformation}{transformation matrix of the projection (matrix
+    2x2)}
+
+
 }
 \examples{
   # load chart from file
