@@ -1,7 +1,7 @@
 #include <typeinfo>
 #include <Rcpp.h>
 
-#include "acmacs-chart-2/chart.hh"
+#include "acmacs-chart-2/chart-modify.hh"
 #include "acmacs-chart-2/factory-import.hh"
 
 // ----------------------------------------------------------------------
@@ -48,11 +48,17 @@ template <typename T> class wrapper
 
 // ----------------------------------------------------------------------
 
-class Chart : public wrapper<acmacs::chart::Chart>
+class Chart : public wrapper<acmacs::chart::ChartModify>
 {
  public:
-    inline Chart(std::string aFilename) : wrapper(acmacs::chart::import_factory(aFilename, acmacs::chart::Verify::None, report_time::No)) {}
+    inline Chart(std::string aFilename) : wrapper(std::make_shared<acmacs::chart::ChartModify>(acmacs::chart::import_factory(aFilename, acmacs::chart::Verify::None, report_time::No))) {}
     inline std::string name() const { return obj_->make_name(); }
+    inline std::string info() const { return obj_->make_info(); }
+    inline std::string lineage() const { return obj_->lineage(); }
+    inline size_t number_of_antigens() const { return obj_->number_of_antigens(); }
+    inline size_t number_of_sera() const { return obj_->number_of_sera(); }
+    inline size_t number_of_points() const { return obj_->number_of_points(); }
+    inline size_t number_of_projections() const { return obj_->number_of_projections(); }
     static inline Rcpp::StringVector as_character(Chart* aChart) { return {aChart->name()}; }
 
 }; // class Chart
@@ -140,16 +146,16 @@ RCPP_MODULE(acmacs)
 
     class_<Chart>("acmacs.Chart")
             .constructor<std::string>("read chart data from a file")
-            .property<size_t>("number_of_antigens", &Chart::get<&acmacs::chart::Chart::number_of_antigens>, "number_of_antigens")
-            .property<size_t>("number_of_sera", &Chart::get<&acmacs::chart::Chart::number_of_sera>, "number_of_sera")
-            .property<size_t>("number_of_points", &Chart::get<&acmacs::chart::Chart::number_of_points>)
-            .property<size_t>("number_of_projections", &Chart::get<&acmacs::chart::Chart::number_of_projections>)
-            .property<std::string>("lineage", &Chart::get<&acmacs::chart::Chart::lineage>)
-            .property<std::string>("info", &Chart::get<&acmacs::chart::Chart::make_info>, "multi-line string brifly describing data stored in the chart")
+            .property<size_t>("number_of_antigens", &Chart::number_of_antigens)
+            .property<size_t>("number_of_sera", &Chart::number_of_sera)
+            .property<size_t>("number_of_points", &Chart::number_of_points)
+            .property<size_t>("number_of_projections", &Chart::number_of_projections)
+            .property<std::string>("lineage", &Chart::lineage)
+            .property<std::string>("info", &Chart::info, "multi-line string brifly describing data stored in the chart")
             .property<std::string>("name", &Chart::name)
-            .property<Rcpp::List>("antigens", &Chart::getList<Antigen, &acmacs::chart::Chart::antigens>)
-            .property<Rcpp::List>("sera", &Chart::getList<Serum, &acmacs::chart::Chart::sera>)
-            .property<Rcpp::List>("projections", &Chart::getList<Projection, &acmacs::chart::Chart::projections>)
+            .property<Rcpp::List>("antigens", &Chart::getList<Antigen, &acmacs::chart::ChartModify::antigens>, "")
+            .property<Rcpp::List>("sera", &Chart::getList<Serum, &acmacs::chart::ChartModify::sera>)
+            .property<Rcpp::List>("projections", &Chart::getList<Projection, &acmacs::chart::ChartModify::projections>)
             ;
     function("as.character.Rcpp_acmacs.Chart", &Chart::as_character);
 
