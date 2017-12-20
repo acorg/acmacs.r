@@ -5,6 +5,7 @@ test_chart <- function(filename, expected_num_projections, expected_stress) {
 
     test_that("number of projections", { expect_equal(chart$number_of_projections, expected_num_projections) })
     test_that("stress", { expect_equal(chart$projections[[1]]$stress, expected_stress) })
+    test_that("minimum_column_basis", { expect_equal(chart$projections[[1]]$minimum_column_basis, "none") })
 
 }
 

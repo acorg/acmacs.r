@@ -17,6 +17,10 @@ projection$stress
   \item{stress}{stress (double). may be absent in lispmds case or for
   modified projections.}
 
+  \item{comment}{projection comment field}
+
+  \item{minimum_column_basis}{(string), "none", "1280"}
+
 }
 \examples{
   # load chart from file

@@ -144,20 +144,15 @@ RCPP_MODULE(acmacs)
     class_<Projection>("acmacs.Projection")
             .property<std::string>("info", &Projection::get<&acmacs::chart::Projection::make_info>)
             .property<double>("stress", &Projection::get<&acmacs::chart::Projection::stress>)
-        // virtual std::string make_info() const;
-        // virtual double stress() const = 0;
-        // virtual std::string comment() const = 0;
+            .property<std::string>("comment", &Projection::get<&acmacs::chart::Projection::comment>)
+            .property<std::string>("minimum_column_basis", &Projection::getT<std::string, &acmacs::chart::Projection::minimum_column_basis>)
         // virtual std::shared_ptr<Layout> layout() const = 0;
         // virtual inline std::shared_ptr<Layout> transformed_layout() const { return std::shared_ptr<Layout>(layout()->transform(transformation())); }
-        // virtual MinimumColumnBasis minimum_column_basis() const = 0;
         // virtual std::shared_ptr<ColumnBases> forced_column_bases() const = 0;
         // virtual acmacs::Transformation transformation() const = 0;
-        // virtual bool dodgy_titer_is_regular() const = 0;
-        // virtual double stress_diff_to_stop() const = 0;
-        // virtual PointIndexList unmovable() const = 0;
-        // virtual PointIndexList disconnected() const = 0;
-        // virtual PointIndexList unmovable_in_the_last_dimension() const = 0;
-        // virtual AvidityAdjusts avidity_adjusts() const = 0; // antigens_sera_titers_multipliers, double for each point
+              // rotate
+              // flip
+              // move points
             ;
 }
 
