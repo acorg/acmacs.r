@@ -28,6 +28,10 @@ projection$stress
   \item{transformation}{transformation matrix of the projection (matrix
     2x2)}
 
+  \item{layout}{matrix with point coordinates.}
+
+  \item{transformed_layout}{matrix with point coordinates,
+  transformation applied.}
 
 }
 \examples{

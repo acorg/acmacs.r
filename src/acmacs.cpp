@@ -94,7 +94,7 @@ class Projection : public wrapper<acmacs::chart::Projection>
             return transformation;
         }
 
-    inline Rcpp::NumericVector forced_column_bases() const
+    Rcpp::NumericVector forced_column_bases() const
         {
             auto fcb = obj_->forced_column_bases();
             if (fcb && fcb->exists()) {
@@ -106,6 +106,27 @@ class Projection : public wrapper<acmacs::chart::Projection>
             else {
                 return Rcpp::NumericVector::create(NA_REAL);
             }
+        }
+
+    inline Rcpp::NumericMatrix layout() const { return layout_convert(obj_->layout()); }
+    inline Rcpp::NumericMatrix transformed_layout() const { return layout_convert(obj_->transformed_layout()); }
+
+ private:
+    Rcpp::NumericMatrix layout_convert(std::shared_ptr<acmacs::chart::Layout> layout) const
+        {
+            Rcpp::NumericMatrix result(layout->number_of_points(), layout->number_of_dimensions());
+            for (size_t p_no = 0; p_no < layout->number_of_points(); ++p_no) {
+                const auto coord = layout->get(p_no);
+                if (coord.not_nan()) {
+                    for (size_t dim = 0; dim < layout->number_of_dimensions(); ++dim)
+                        result(p_no, dim) = coord[dim];
+                }
+                else {
+                    for (size_t dim = 0; dim < layout->number_of_dimensions(); ++dim)
+                        result(p_no, dim) = Rcpp::NumericMatrix::get_na();
+                }
+            }
+            return result;
         }
 
 };
@@ -174,8 +195,8 @@ RCPP_MODULE(acmacs)
             .property<std::string>("minimum_column_basis", &Projection::getT<std::string, &acmacs::chart::Projection::minimum_column_basis>)
             .property("forced_column_bases", &Projection::forced_column_bases)
             .property("transformation", &Projection::transformation)
-        // virtual std::shared_ptr<Layout> layout() const = 0;
-        // virtual inline std::shared_ptr<Layout> transformed_layout() const { return std::shared_ptr<Layout>(layout()->transform(transformation())); }
+            .property("layout", &Projection::layout)
+            .property("transformed_layout", &Projection::transformed_layout)
               // rotate
               // flip
               // move points
