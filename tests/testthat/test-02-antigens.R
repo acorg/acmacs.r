@@ -15,7 +15,7 @@ test_chart <- function(filename, expected_num_antigens, test_passages) {
     test_that("antigen list", { expect_equal(ad_antigen_list, r_antigen_list) })
 
     if (test_passages) {
-        r_passage_list <- sapply(1:chart$number_of_antigens, function(no) { paste("AG", format(no - 1, justify="right", width=2), ags[[no]]$passage, collapse=" ") })
+        r_passage_list <- sapply(1:chart$number_of_antigens, function(no) { paste("AG", format(no - 1, justify="right", width=2), ags[[no]]$passage, ags[[no]]$passage$type(), ags[[no]]$passage$without_date(), collapse=" ") })
         write("\n", stderr())
         write(r_passage_list, stderr())
     }
