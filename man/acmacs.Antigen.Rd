@@ -14,6 +14,8 @@ antigen$passage
 
   \item{name}{name of the antigen.}
 
+  \item{full_name}{name of the antigen including annotations, reassortant, passage.}
+
   Properties below are not available for lispmds saves and always return
   default (empty or falsy values).
 

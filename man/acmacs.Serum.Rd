@@ -14,6 +14,9 @@ serum$passage
 
   \item{name}{name of the serum.}
 
+  \item{full_name}{name of the serum including annotations, reassortant,
+    serum_id.}
+
   Properties below are not available for lispmds saves and always return
   default (empty or falsy values).
 
