@@ -35,6 +35,16 @@ template <typename T> class wrapper
             return result;
         }
 
+    template <typename Wrapper, auto (T::*property)()> Rcpp::List getListViaAt()
+        {
+            auto elements = ((*obj_).*property)();
+            const auto num_elements = elements->size();
+            auto result = Rcpp::List::create();
+            for (size_t no = 0; no < num_elements; ++no)
+                result.push_back(Wrapper(elements->at(no)));
+            return result;
+        }
+
     template <auto (T::*property)() const> Rcpp::StringVector getSV() const
         {
             auto elements = ((*obj_).*property)();
@@ -83,11 +93,14 @@ RCPP_EXPOSED_CLASS_NODECL(Serum);
 RCPP_EXPOSED_CLASS_NODECL(acmacs::chart::Passage);
 inline Rcpp::StringVector passage_as_character(acmacs::chart::Passage* aPassage) { return {aPassage->data()}; }
 
-class Projection : public wrapper<acmacs::chart::Projection>
+class Projection : public wrapper<acmacs::chart::ProjectionModify>
 {
  public:
-    inline Projection(acmacs::chart::ProjectionP projection) : wrapper(projection) {}
+    inline Projection(acmacs::chart::ProjectionModifyP projection) : wrapper(projection) {}
       // static inline Rcpp::StringVector as_character(Projection* aProjection) { return {aProjection->obj_->full_name()}; }
+
+    inline std::string make_info() const { return obj_->make_info(); }
+    inline std::string comment() const { return obj_->comment(); }
 
     inline Rcpp::NumericMatrix transformation() const
         {
@@ -155,7 +168,7 @@ RCPP_MODULE(acmacs)
             .property<std::string>("name", &Chart::name)
             .property<Rcpp::List>("antigens", &Chart::getList<Antigen, &acmacs::chart::ChartModify::antigens>, "")
             .property<Rcpp::List>("sera", &Chart::getList<Serum, &acmacs::chart::ChartModify::sera>)
-            .property<Rcpp::List>("projections", &Chart::getList<Projection, &acmacs::chart::ChartModify::projections>)
+            .property<Rcpp::List>("projections", &Chart::getListViaAt<Projection, &acmacs::chart::ChartModify::projections_modify>, "")
             ;
     function("as.character.Rcpp_acmacs.Chart", &Chart::as_character);
 
@@ -195,10 +208,10 @@ RCPP_MODULE(acmacs)
     function("as.character.Rcpp_acmacs.Passage", &passage_as_character);
 
     class_<Projection>("acmacs.Projection")
-            .property<std::string>("info", &Projection::get<&acmacs::chart::Projection::make_info>)
-            .property<double>("stress", &Projection::get<&acmacs::chart::Projection::stress>)
-            .property<std::string>("comment", &Projection::get<&acmacs::chart::Projection::comment>)
-            .property<std::string>("minimum_column_basis", &Projection::getT<std::string, &acmacs::chart::Projection::minimum_column_basis>)
+            .property<std::string>("info", &Projection::make_info)
+            .property<double>("stress", &Projection::get<&acmacs::chart::ProjectionModify::stress>)
+            .property<std::string>("comment", &Projection::comment)
+            .property<std::string>("minimum_column_basis", &Projection::getT<std::string, &acmacs::chart::ProjectionModify::minimum_column_basis>)
             .property("forced_column_bases", &Projection::forced_column_bases)
             .property("transformation", &Projection::transformation)
             .property("layout", &Projection::layout)
