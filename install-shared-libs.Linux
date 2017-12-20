@@ -1,0 +1,33 @@
+#! /usr/bin/python
+
+import sys, os, subprocess, shutil
+
+# ----------------------------------------------------------------------
+
+def main(target_package_dir, *libraries):
+    to_process = set(libraries)
+    processed = set()
+    # while to_process:
+    #     library = to_process.pop()
+    #     processed.add(library)
+    #     for linked_to in subprocess.check_output(["/usr/bin/otool", "-L", library]).strip().split("\n")[1:]:
+    #         name = linked_to.split("(")[0].strip()
+    #         if os.path.basename(library) != os.path.basename(name) and name[:9] != "/usr/lib/" and name[:27] != "/System/Library/Frameworks/" and name[:32] != "/Library/Frameworks/R.framework/":
+    #             subprocess.check_call(["/usr/bin/install_name_tool", "-change", name, "@loader_path/" + os.path.basename(name), library])
+    #             target_lib = os.path.join(target_package_dir, "libs", os.path.basename(name))
+    #             if target_lib not in processed and target_lib not in to_process:
+    #                 shutil.copy(name, target_lib)
+    #                 to_process.add(target_lib)
+
+# ----------------------------------------------------------------------
+
+try:
+    if sys.platform != 'linux2':
+        raise RuntimeError("this script cannot be run on " + sys.platform)
+    if len(sys.argv) < 3:
+        raise RuntimeError("Usage: %s <target_package_dir> <library> ..." % sys.argv[0])
+    main(*sys.argv[1:])
+except Exception, err:
+    print >>sys.stderr, "ERROR:", err
+
+# ----------------------------------------------------------------------
