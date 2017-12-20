@@ -125,6 +125,10 @@ RCPP_MODULE(acmacs)
     function("as.character.Rcpp_acmacs.Serum", &Serum::as_character);
 
     class_<acmacs::chart::Passage>("acmacs.Passage")
+            .method("is_egg", &acmacs::chart::Passage::is_egg)
+            .method("is_cell", &acmacs::chart::Passage::is_cell)
+            .method("without_date", &acmacs::chart::Passage::without_date)
+            .method("type", &acmacs::chart::Passage::passage_type)
             ;
     function("as.character.Rcpp_acmacs.Passage", &passage_as_character);
 }

@@ -10,6 +10,7 @@ antigen <- chart$antigens[[antigen_number]]
 antigen$name
 antigen$date
 antigen$passage
+antigen$passage$type()
 }
 \value{An object of class \code{"acmacs.Antigen"} to access and modify
   antigen data. It has the following properties:
@@ -47,6 +48,15 @@ antigen$passage
 }
 \section{Passage}{
   antigen$passage is an object with the following properties:
+
+  \code{is_egg()} returns if passage is egg (logical).
+
+  \code{is_cell()} returns if passage is cell (logical).
+
+  \code{without_date()} returns passage without date (string), makes sense
+  for CDC passages.
+
+  \code{type()} returns passage type (string), "egg" or "cell"
 
   \code{paste(antigen$passage)} converts passage to string.
 }
