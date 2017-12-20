@@ -15,6 +15,8 @@
 
   \item{name}{name of the chart.}
 
+  \item{paste(chart), toString(chart)}{equivalent to chart$name.}
+
   \item{info}{brief multiline description of the chart.}
 
   \item{number_of_antigens}{number of antigens in the chart.}
@@ -40,6 +42,8 @@
   ags <- chart$antigens
   format_antigen <- function(a) \{ paste(c(a$name, a$passage, a$reassortant, a$reference, a$annotations, paste("[", a$date, "]", sep="", collapse=""), a$lab_ids), collapse=" ", sep="") \}
   cat("antigens:", length(ags), "\n ", paste(sapply(ags, format_antigen), collapse="\n  "), "\n")
+  # print full names of all antigens (full name includes annotations, reassortant, passage)
+  cat(paste(sapply(chart$antigens, toString), collapse="\n"))
 }
 \seealso{
  \code{\link{acmacs.Antigen}} \code{\link{acmacs.Serum}}

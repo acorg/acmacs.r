@@ -2,6 +2,8 @@
 \title{Class to access antigen related data.}
 \alias{acmacs.Antigen-class}
 \alias{acmacs.Antigen}
+\alias{acmacs.Passage}
+\alias{acmacs.Passage-class}
 \docType{package}
 \usage{
 antigen <- chart$antigens[[antigen_number]]
@@ -16,6 +18,8 @@ antigen$passage
 
   \item{full_name}{name of the antigen including annotations, reassortant, passage.}
 
+  \item{paste(antigen), toString(antigen)}{return full name.}
+
   Properties below are not available for lispmds saves and always return
   default (empty or falsy values).
 
@@ -24,7 +28,7 @@ antigen$passage
 
   \item{date}{isolation date of antigen in format YYYY-MM-DD.}
 
-  \item{passage}{passage history.}
+  \item{passage}{passage history object (see below).}
 
   \item{lineage}{Influenza B lineage, \code{"VICTORIA"} or \code{"YAMAGATA"}.}
 
@@ -41,6 +45,11 @@ antigen$passage
   never merged when tables are merged.}
 
 }
+\section{Passage}{
+  antigen$passage is an object with the following properties:
+
+  \code{paste(antigen$passage)} converts passage to string.
+}
 \examples{
   # load chart from file
   chart <- new(acmacs.Chart, "/tmp/table.save")
@@ -50,6 +59,8 @@ antigen$passage
     paste(c(a$name, a$passage, a$reassortant, a$reference, a$annotations, paste("[", a$date, "]", sep="", collapse=""), a$lab_ids), collapse=" ", sep="")
   \}
   cat("antigens:", length(ags), "\n ", paste(sapply(ags, format_antigen), collapse="\n  "), "\n")
+  # print full names of all antigens
+  cat(paste(sapply(ags, toString), collapse="\n"))
 }
 \seealso{
  \code{\link{acmacs.Serum}}

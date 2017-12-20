@@ -17,6 +17,8 @@ serum$passage
   \item{full_name}{name of the serum including annotations, reassortant,
     serum_id.}
 
+  \item{paste(antigen), toString(antigen)}{return full name.}
+
   Properties below are not available for lispmds saves and always return
   default (empty or falsy values).
 
@@ -45,6 +47,8 @@ serum$passage
   srs <- chart$sera
   format_serum <- function(a) \{ paste(c(a$name, a$annotations, a$serum_id, a$serum_species), collapse=" ", sep="") \}
   cat("sera:", length(srs), "\n ", paste(sapply(srs[1:min(80, length(srs))], format_serum), collapse="\n  "), "\n")
+  # print full names of all sera
+  cat(paste(sapply(srs, toString), collapse="\n"))
 }
 \seealso{
  \code{\link{acmacs.Antigen}}

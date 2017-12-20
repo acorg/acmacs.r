@@ -48,28 +48,34 @@ template <typename T> class wrapper
 
 // ----------------------------------------------------------------------
 
-RCPP_EXPOSED_CLASS(Chart);
 class Chart : public wrapper<acmacs::chart::Chart>
 {
  public:
     inline Chart(std::string aFilename) : wrapper(acmacs::chart::import_factory(aFilename, acmacs::chart::Verify::None, report_time::No)) {}
     inline std::string name() const { return obj_->make_name(); }
+    static inline Rcpp::StringVector as_character(Chart* aChart) { return {aChart->name()}; }
 
 }; // class Chart
+RCPP_EXPOSED_CLASS_NODECL(Chart);
 
-RCPP_EXPOSED_CLASS(Antigen);
 class Antigen : public wrapper<acmacs::chart::Antigen>
 {
  public:
     inline Antigen(acmacs::chart::AntigenP antigen) : wrapper(antigen) {}
+    static inline Rcpp::StringVector as_character(Antigen* aAntigen) { return {aAntigen->obj_->full_name()}; }
 };
+RCPP_EXPOSED_CLASS_NODECL(Antigen);
 
-RCPP_EXPOSED_CLASS(Serum);
 class Serum : public wrapper<acmacs::chart::Serum>
 {
  public:
     inline Serum(acmacs::chart::SerumP serum) : wrapper(serum) {}
+    static inline Rcpp::StringVector as_character(Serum* aSerum) { return {aSerum->obj_->full_name()}; }
 };
+RCPP_EXPOSED_CLASS_NODECL(Serum);
+
+RCPP_EXPOSED_CLASS_NODECL(acmacs::chart::Passage);
+inline Rcpp::StringVector passage_as_character(acmacs::chart::Passage* aPassage) { return {aPassage->data()}; }
 
 // ----------------------------------------------------------------------
 
@@ -89,19 +95,21 @@ RCPP_MODULE(acmacs)
             .property<Rcpp::List>("antigens", &Chart::getList<Antigen, &acmacs::chart::Chart::antigens>)
             .property<Rcpp::List>("sera", &Chart::getList<Serum, &acmacs::chart::Chart::sera>)
             ;
+    function("as.character.Rcpp_acmacs.Chart", &Chart::as_character);
 
     class_<Antigen>("acmacs.Antigen")
             .property<std::string>("name", &Antigen::getT<std::string, &acmacs::chart::Antigen::name>)
             .property<std::string>("full_name", &Antigen::getT<std::string, &acmacs::chart::Antigen::full_name>)
             .property<std::string>("abbreviated_name", &Antigen::getT<std::string, &acmacs::chart::Antigen::abbreviated_name>)
             .property<std::string>("date", &Antigen::getT<std::string, &acmacs::chart::Antigen::date>)
-            .property<std::string>("passage", &Antigen::getT<std::string, &acmacs::chart::Antigen::passage>)
+            .property<acmacs::chart::Passage>("passage", &Antigen::getT<acmacs::chart::Passage, &acmacs::chart::Antigen::passage>)
             .property<std::string>("lineage", &Antigen::getT<std::string, &acmacs::chart::Antigen::lineage>)
             .property<std::string>("reassortant", &Antigen::getT<std::string, &acmacs::chart::Antigen::reassortant>)
             .property<bool>("reference", &Antigen::get<&acmacs::chart::Antigen::reference>)
             .property<Rcpp::StringVector>("lab_ids", &Antigen::getSV<&acmacs::chart::Antigen::lab_ids>)
             .property<Rcpp::StringVector>("annotations", &Antigen::getSV<&acmacs::chart::Antigen::annotations>)
             ;
+    function("as.character.Rcpp_acmacs.Antigen", &Antigen::as_character);
 
     class_<Serum>("acmacs.Serum")
             .property<std::string>("name", &Serum::getT<std::string, &acmacs::chart::Serum::name>)
@@ -114,6 +122,11 @@ RCPP_MODULE(acmacs)
             .property<std::string>("serum_id", &Serum::getT<std::string, &acmacs::chart::Serum::serum_id>)
             .property<std::string>("serum_species", &Serum::getT<std::string, &acmacs::chart::Serum::serum_species>)
             ;
+    function("as.character.Rcpp_acmacs.Serum", &Serum::as_character);
+
+    class_<acmacs::chart::Passage>("acmacs.Passage")
+            ;
+    function("as.character.Rcpp_acmacs.Passage", &passage_as_character);
 }
 
 // ----------------------------------------------------------------------
