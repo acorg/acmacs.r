@@ -33,6 +33,9 @@
   \item{antigens}{List of \code{\link{acmacs.Antigen}} objects}
 
   \item{sera}{List of \code{\link{acmacs.Serum}} objects.}
+
+  \item{projections}{List of \code{\link{acmacs.Projection}} objects.}
+
 }
 \keyword{ package }
 \examples{
@@ -46,6 +49,6 @@
   cat(paste(sapply(chart$antigens, toString), collapse="\n"))
 }
 \seealso{
- \code{\link{acmacs.Antigen}} \code{\link{acmacs.Serum}}
+ \code{\link{acmacs.Antigen}} \code{\link{acmacs.Serum}} \code{\link{acmacs.Projection}}
 }
 \author{Eugene Skepner, eu@antigenic-cartography.org.}

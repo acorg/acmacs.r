@@ -77,6 +77,14 @@ RCPP_EXPOSED_CLASS_NODECL(Serum);
 RCPP_EXPOSED_CLASS_NODECL(acmacs::chart::Passage);
 inline Rcpp::StringVector passage_as_character(acmacs::chart::Passage* aPassage) { return {aPassage->data()}; }
 
+class Projection : public wrapper<acmacs::chart::Projection>
+{
+ public:
+    inline Projection(acmacs::chart::ProjectionP projection) : wrapper(projection) {}
+    // static inline Rcpp::StringVector as_character(Projection* aProjection) { return {aProjection->obj_->full_name()}; }
+};
+RCPP_EXPOSED_CLASS_NODECL(Projection);
+
 // ----------------------------------------------------------------------
 
 RCPP_MODULE(acmacs)
@@ -94,6 +102,7 @@ RCPP_MODULE(acmacs)
             .property<std::string>("name", &Chart::name)
             .property<Rcpp::List>("antigens", &Chart::getList<Antigen, &acmacs::chart::Chart::antigens>)
             .property<Rcpp::List>("sera", &Chart::getList<Serum, &acmacs::chart::Chart::sera>)
+            .property<Rcpp::List>("projections", &Chart::getList<Projection, &acmacs::chart::Chart::projections>)
             ;
     function("as.character.Rcpp_acmacs.Chart", &Chart::as_character);
 
@@ -131,6 +140,25 @@ RCPP_MODULE(acmacs)
             .method("type", &acmacs::chart::Passage::passage_type)
             ;
     function("as.character.Rcpp_acmacs.Passage", &passage_as_character);
+
+    class_<Projection>("acmacs.Projection")
+            .property<std::string>("info", &Projection::get<&acmacs::chart::Projection::make_info>)
+            .property<double>("stress", &Projection::get<&acmacs::chart::Projection::stress>)
+        // virtual std::string make_info() const;
+        // virtual double stress() const = 0;
+        // virtual std::string comment() const = 0;
+        // virtual std::shared_ptr<Layout> layout() const = 0;
+        // virtual inline std::shared_ptr<Layout> transformed_layout() const { return std::shared_ptr<Layout>(layout()->transform(transformation())); }
+        // virtual MinimumColumnBasis minimum_column_basis() const = 0;
+        // virtual std::shared_ptr<ColumnBases> forced_column_bases() const = 0;
+        // virtual acmacs::Transformation transformation() const = 0;
+        // virtual bool dodgy_titer_is_regular() const = 0;
+        // virtual double stress_diff_to_stop() const = 0;
+        // virtual PointIndexList unmovable() const = 0;
+        // virtual PointIndexList disconnected() const = 0;
+        // virtual PointIndexList unmovable_in_the_last_dimension() const = 0;
+        // virtual AvidityAdjusts avidity_adjusts() const = 0; // antigens_sera_titers_multipliers, double for each point
+            ;
 }
 
 // ----------------------------------------------------------------------
