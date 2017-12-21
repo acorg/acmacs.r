@@ -33,6 +33,16 @@ projection$stress
   \item{transformed_layout}{matrix with point coordinates,
   transformation applied.}
 
+  \item{rotate_degrees(degrees)}{modifies projection transformation
+    matrix so transformed_layout would be rotated passed number of
+    degrees (double) counter-clockwise. To rotate clockwise pass
+    negative value.}
+
+  \item{rotate_radians(radians)}{modifies projection transformation
+    matrix so transformed_layout would be rotated passed number of
+    radians (double) counter-clockwise. To rotate clockwise pass
+    negative value.}
+
 }
 \examples{
   # load chart from file

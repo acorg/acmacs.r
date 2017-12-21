@@ -21,6 +21,11 @@ template <typename T> class wrapper
             return ((*obj_).*property)();
         }
 
+    // template <typename R, typename ... Args, R (T::*func)(Args ...) const> R method(Args ... args) const
+    //     {
+    //         return ((*obj_).*func)(args ...);
+    //     }
+
     template <typename R, auto (T::*property)() const> R getT() const
         {
             return ((*obj_).*property)();
@@ -130,6 +135,9 @@ class Projection : public wrapper<acmacs::chart::ProjectionModify>
     inline Rcpp::NumericMatrix layout() const { return layout_convert(obj_->layout()); }
     inline Rcpp::NumericMatrix transformed_layout() const { return layout_convert(obj_->transformed_layout()); }
 
+    inline void rotate_degrees(double aDegrees) { obj_->rotate_degrees(aDegrees); }
+    inline void rotate_radians(double aRadians) { obj_->rotate_radians(aRadians); }
+
  private:
     Rcpp::NumericMatrix layout_convert(std::shared_ptr<acmacs::chart::Layout> layout) const
         {
@@ -169,6 +177,7 @@ RCPP_MODULE(acmacs)
             .property<Rcpp::List>("antigens", &Chart::getList<Antigen, &acmacs::chart::ChartModify::antigens>, "")
             .property<Rcpp::List>("sera", &Chart::getList<Serum, &acmacs::chart::ChartModify::sera>)
             .property<Rcpp::List>("projections", &Chart::getListViaAt<Projection, &acmacs::chart::ChartModify::projections_modify>, "")
+              // .method("save")
             ;
     function("as.character.Rcpp_acmacs.Chart", &Chart::as_character);
 
@@ -216,7 +225,8 @@ RCPP_MODULE(acmacs)
             .property("transformation", &Projection::transformation)
             .property("layout", &Projection::layout)
             .property("transformed_layout", &Projection::transformed_layout)
-              // rotate
+            .method("rotate_degrees", &Projection::rotate_degrees)
+            .method("rotate_radians", &Projection::rotate_radians)
               // flip
               // move points
             ;
