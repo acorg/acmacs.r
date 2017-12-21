@@ -21,6 +21,12 @@ test_chart <- function(filename, expected_num_projections, expected_stress) {
     chart$projections[[1]]$rotate_radians(-30 * pi /180)
     tr4 <- chart$projections[[1]]$transformation
     test_that("after rotation back (radians)", { expect_equal(tr1, tr4) })
+
+    chart$projections[[1]]$flip_north_south()
+    chart$projections[[1]]$flip_east_west()
+    chart$projections[[1]]$rotate_degrees(180)
+    tr5 <- chart$projections[[1]]$transformation
+    test_that("after flip_ns, flip_ew, rot180", { expect_equal(tr1, tr5) })
 }
 
 test_chart("2004-3.ace", 1, 71.790977)

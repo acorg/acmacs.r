@@ -43,6 +43,12 @@ projection$stress
     radians (double) counter-clockwise. To rotate clockwise pass
     negative value.}
 
+  \item{flip_east_west()}{modifies projection transformation
+    matrix so transformed_layout would be flipped across vertical line.}
+
+  \item{flip_north_south()}{modifies projection transformation
+    matrix so transformed_layout would be flipped across horizontal line.}
+
 }
 \examples{
   # load chart from file

@@ -26,6 +26,11 @@ template <typename T> class wrapper
     //         return ((*obj_).*func)(args ...);
     //     }
 
+    // template <void (T::*func)() const> void method_void_no_args() const
+    //     {
+    //         ((*obj_).*func)();
+    //     }
+
     template <typename R, auto (T::*property)() const> R getT() const
         {
             return ((*obj_).*property)();
@@ -137,6 +142,9 @@ class Projection : public wrapper<acmacs::chart::ProjectionModify>
 
     inline void rotate_degrees(double aDegrees) { obj_->rotate_degrees(aDegrees); }
     inline void rotate_radians(double aRadians) { obj_->rotate_radians(aRadians); }
+    inline void flip_east_west() { obj_->flip_east_west(); }
+    inline void flip_north_south() { obj_->flip_north_south(); }
+      //inline void () { obj_->(); }
 
  private:
     Rcpp::NumericMatrix layout_convert(std::shared_ptr<acmacs::chart::Layout> layout) const
@@ -227,7 +235,8 @@ RCPP_MODULE(acmacs)
             .property("transformed_layout", &Projection::transformed_layout)
             .method("rotate_degrees", &Projection::rotate_degrees)
             .method("rotate_radians", &Projection::rotate_radians)
-              // flip
+            .method("flip_east_west", &Projection::flip_east_west)
+            .method("flip_north_south", &Projection::flip_north_south)
               // move points
             ;
 }
