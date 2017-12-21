@@ -49,6 +49,10 @@ projection$stress
   \item{flip_north_south()}{modifies projection transformation
     matrix so transformed_layout would be flipped across horizontal line.}
 
+  \item{move_point(point_no, coodinates)}{modifies projection
+    non-transformed layout by changing point_no (positive integer)
+    coordinates (numeric vector). The number of the first point is 1.}
+
 }
 \examples{
   # load chart from file

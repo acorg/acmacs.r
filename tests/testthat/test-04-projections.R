@@ -27,6 +27,11 @@ test_chart <- function(filename, expected_num_projections, expected_stress) {
     chart$projections[[1]]$rotate_degrees(180)
     tr5 <- chart$projections[[1]]$transformation
     test_that("after flip_ns, flip_ew, rot180", { expect_equal(tr1, tr5) })
+
+    point_no <- chart$number_of_points
+    move_to <- c(1967.0, -2017.0)
+    chart$projections[[1]]$move_point(point_no, move_to)
+    test_that("last point moved", { expect_equal(chart$projections[[1]]$layout[point_no,], move_to) })
 }
 
 test_chart("2004-3.ace", 1, 71.790977)

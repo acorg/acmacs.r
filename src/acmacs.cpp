@@ -146,6 +146,16 @@ class Projection : public wrapper<acmacs::chart::ProjectionModify>
     inline void flip_north_south() { obj_->flip_north_south(); }
       //inline void () { obj_->(); }
 
+      // aPointNo is counted from 1 (as R vector elements)
+    inline void move_point(size_t aPointNo, const Rcpp::NumericVector& aCoordinates)
+        {
+            if (aPointNo < 1 || aPointNo > obj_->number_of_points())
+                throw std::invalid_argument("invalid point number");
+            if (aCoordinates.size() != obj_->number_of_dimensions())
+                throw std::invalid_argument("invalid vector size (number of point coordinates)");
+            obj_->move_point(aPointNo - 1, {aCoordinates.begin(), aCoordinates.end()});
+        }
+
  private:
     Rcpp::NumericMatrix layout_convert(std::shared_ptr<acmacs::chart::Layout> layout) const
         {
@@ -237,6 +247,7 @@ RCPP_MODULE(acmacs)
             .method("rotate_radians", &Projection::rotate_radians)
             .method("flip_east_west", &Projection::flip_east_west)
             .method("flip_north_south", &Projection::flip_north_south)
+            .method("move_point", &Projection::move_point)
               // move points
             ;
 }
