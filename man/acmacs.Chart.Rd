@@ -5,10 +5,15 @@
 \docType{package}
 \usage{
 \code{new(acmacs.Chart, filename)}
+
+\code{raw_data <- readBin(file(url, open="rb"), "raw", n=999999)}
+\code{chart <- new(acmacs.Chart, raw_data)}
 }
 \arguments{
   \item{filename}{A character object specifying a file pathname with
     chart data to load}
+  \item{raw_data}{A raw vector specifying raw data (e.g. read from a
+    remote file) to load}
 }
 \value{An object of class \code{"acmacs.Chart"} to access and modify
   chart data. It has the following properties:
