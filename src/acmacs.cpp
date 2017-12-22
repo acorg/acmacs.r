@@ -3,6 +3,7 @@
 
 #include "acmacs-chart-2/chart-modify.hh"
 #include "acmacs-chart-2/factory-import.hh"
+#include "acmacs-chart-2/factory-export.hh"
 
 // ----------------------------------------------------------------------
 
@@ -81,6 +82,11 @@ class Chart : public wrapper<acmacs::chart::ChartModify>
     inline size_t number_of_projections() const { return obj_->number_of_projections(); }
     static inline Rcpp::StringVector as_character(Chart* aChart) { return {aChart->name()}; }
 
+    inline void save(std::string aFilename)
+        {
+            acmacs::chart::export_factory(*obj_, aFilename, "acmacs.r");
+        }
+
 }; // class Chart
 RCPP_EXPOSED_CLASS_NODECL(Chart);
 
@@ -146,7 +152,7 @@ class Projection : public wrapper<acmacs::chart::ProjectionModify>
     inline void flip_north_south() { obj_->flip_north_south(); }
       //inline void () { obj_->(); }
 
-      // aPointNo is counted from 1 (as R vector elements)
+      // aPointNo is counted from 1 (as in R vector)
     inline void move_point(size_t aPointNo, const Rcpp::NumericVector& aCoordinates)
         {
             if (aPointNo < 1 || aPointNo > obj_->number_of_points())
@@ -195,7 +201,7 @@ RCPP_MODULE(acmacs)
             .property<Rcpp::List>("antigens", &Chart::getList<Antigen, &acmacs::chart::ChartModify::antigens>, "")
             .property<Rcpp::List>("sera", &Chart::getList<Serum, &acmacs::chart::ChartModify::sera>)
             .property<Rcpp::List>("projections", &Chart::getListViaAt<Projection, &acmacs::chart::ChartModify::projections_modify>, "")
-              // .method("save")
+            .method("save", &Chart::save)
             ;
     function("as.character.Rcpp_acmacs.Chart", &Chart::as_character);
 
@@ -248,7 +254,6 @@ RCPP_MODULE(acmacs)
             .method("flip_east_west", &Projection::flip_east_west)
             .method("flip_north_south", &Projection::flip_north_south)
             .method("move_point", &Projection::move_point)
-              // move points
             ;
 }
 

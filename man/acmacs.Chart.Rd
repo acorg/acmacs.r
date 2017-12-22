@@ -36,6 +36,9 @@
 
   \item{projections}{List of \code{\link{acmacs.Projection}} objects.}
 
+  \item{save(filename)}{Save (modified) chart into a file, output
+  format is determined by filename suffix: .ace, .save, .save.xz.}
+
 }
 \keyword{ package }
 \examples{
