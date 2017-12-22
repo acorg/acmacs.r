@@ -76,8 +76,6 @@ class Chart : public wrapper<acmacs::chart::ChartModify>
         : wrapper(std::make_shared<acmacs::chart::ChartModify>(acmacs::chart::import_factory(aFilename, acmacs::chart::Verify::None, report_time::No))) {}
     inline Chart(Rcpp::RawVector aData)
         { std::cerr << "Chart from raw data " << aData.size() << '\n'; }
-    inline Chart(double v)
-        { std::cerr << "Chart from double " << v << '\n'; }
     inline std::string name() const { return obj_->make_name(); }
     inline std::string info() const { return obj_->make_info(); }
     inline std::string lineage() const { return obj_->lineage(); }
@@ -92,8 +90,8 @@ class Chart : public wrapper<acmacs::chart::ChartModify>
             acmacs::chart::export_factory(*obj_, aFilename, "acmacs.r");
         }
 
-    static inline bool validate_string(SEXP* args, int nargs) { return TYPEOF(args[0]) == STRSXP; }
-    static inline bool validate_raw(SEXP* args, int nargs) { return TYPEOF(args[0]) == RAWSXP; }
+      // https://stackoverflow.com/questions/42579207/rcpp-modules-validator-function-for-exposed-constructors-with-same-number-of-pa
+    template <typename T> static inline bool validate_constructor(SEXP* args, int nargs) { return nargs == 1 && Rcpp::is<T>(args[0]); }
 
 }; // class Chart
 RCPP_EXPOSED_CLASS_NODECL(Chart);
@@ -198,8 +196,8 @@ RCPP_MODULE(acmacs)
     using namespace Rcpp;
 
     class_<Chart>("acmacs.Chart")
-            .constructor<std::string>("read chart data from a file", &Chart::validate_string)
-            .constructor<Rcpp::RawVector>("read chart from raw inline data", &Chart::validate_raw)
+            .constructor<std::string>("read chart data from a file", &Chart::validate_constructor<std::string>)
+            .constructor<Rcpp::RawVector>("read chart from raw inline data", &Chart::validate_constructor<Rcpp::RawVector>)
             .property<size_t>("number_of_antigens", &Chart::number_of_antigens)
             .property<size_t>("number_of_sera", &Chart::number_of_sera)
             .property<size_t>("number_of_points", &Chart::number_of_points)
