@@ -85,10 +85,7 @@ class Chart : public wrapper<acmacs::chart::ChartModify>
     inline size_t number_of_projections() const { return obj_->number_of_projections(); }
     static inline Rcpp::StringVector as_character(Chart* aChart) { return {aChart->name()}; }
 
-    inline void save(std::string aFilename)
-        {
-            acmacs::chart::export_factory(*obj_, aFilename, "acmacs.r");
-        }
+    inline void save(std::string aFilename) { acmacs::chart::export_factory(*obj_, aFilename, "acmacs.r", report_time::No); }
 
       // https://stackoverflow.com/questions/42579207/rcpp-modules-validator-function-for-exposed-constructors-with-same-number-of-pa
     template <typename T> static inline bool validate_constructor(SEXP* args, int nargs) { return nargs == 1 && Rcpp::is<T>(args[0]); }
