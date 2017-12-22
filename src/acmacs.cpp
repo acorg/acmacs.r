@@ -73,9 +73,9 @@ class Chart : public wrapper<acmacs::chart::ChartModify>
 {
  public:
     inline Chart(std::string aFilename)
-        : wrapper(std::make_shared<acmacs::chart::ChartModify>(acmacs::chart::import_factory(aFilename, acmacs::chart::Verify::None, report_time::No))) {}
+        : wrapper(std::make_shared<acmacs::chart::ChartModify>(acmacs::chart::import_from_file(aFilename, acmacs::chart::Verify::None, report_time::No))) {}
     inline Chart(Rcpp::RawVector aData)
-        { std::cerr << "Chart from raw data " << aData.size() << '\n'; }
+        : wrapper(std::make_shared<acmacs::chart::ChartModify>(acmacs::chart::import_from_data(std::string_view(reinterpret_cast<const char*>(aData.cbegin()), aData.size()), acmacs::chart::Verify::None, report_time::No))) {}
     inline std::string name() const { return obj_->make_name(); }
     inline std::string info() const { return obj_->make_info(); }
     inline std::string lineage() const { return obj_->lineage(); }
