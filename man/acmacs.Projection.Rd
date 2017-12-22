@@ -62,6 +62,7 @@ projection$stress
 }
 \seealso{
  \code{\link{acmacs.Chart}}
+ \code{\link{acmacs.Example}}
 }
 \keyword{ package }
 \author{Eugene Skepner, eu@projectionic-cartography.org.}

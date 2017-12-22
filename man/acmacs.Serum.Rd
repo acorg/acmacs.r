@@ -52,6 +52,7 @@ serum$passage
 }
 \seealso{
  \code{\link{acmacs.Antigen}}
+ \code{\link{acmacs.Example}}
 }
 \keyword{ package }
 \author{Eugene Skepner, eu@antigenic-cartography.org.}

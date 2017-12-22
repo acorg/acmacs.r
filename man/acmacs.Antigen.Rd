@@ -74,6 +74,7 @@ antigen$passage$type()
 }
 \seealso{
  \code{\link{acmacs.Serum}}
+ \code{\link{acmacs.Example}}
 }
 \keyword{ package }
 \author{Eugene Skepner, eu@antigenic-cartography.org.}

@@ -57,6 +57,9 @@
   cat(paste(sapply(chart$antigens, toString), collapse="\n"))
 }
 \seealso{
- \code{\link{acmacs.Antigen}} \code{\link{acmacs.Serum}} \code{\link{acmacs.Projection}}
+  \code{\link{acmacs.Antigen}}
+  \code{\link{acmacs.Serum}}
+  \code{\link{acmacs.Projection}}
+  \code{\link{acmacs.Example}}
 }
 \author{Eugene Skepner, eu@antigenic-cartography.org.}

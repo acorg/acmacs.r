@@ -37,5 +37,6 @@
 \keyword{ package }
 \seealso{
  \code{\link{acmacs.Chart}}
+ \code{\link{acmacs.Example}}
 }
 \author{Eugene Skepner, \email{eu@antigenic-cartography.org}}
