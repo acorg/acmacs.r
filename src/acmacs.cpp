@@ -194,19 +194,33 @@ class PlotSpec : public wrapper<acmacs::chart::PlotSpecModify>
  public:
     inline PlotSpec(acmacs::chart::PlotSpecModifyP plot_spec) : wrapper(plot_spec) {}
 
-    inline Rcpp::List styles() const
-        {
-            const auto styles = obj_->all_styles(); return Rcpp::List(styles.begin(), styles.end());
-        }
+    Rcpp::List styles() const;
 };
 RCPP_EXPOSED_CLASS_NODECL(PlotSpec);
 
 inline PlotSpec Chart::plot_spec() { return obj_->plot_spec_modify(); }
 
-RCPP_EXPOSED_CLASS_NODECL(acmacs::PointStyle);
-inline std::string style_fill(acmacs::PointStyle* style) { return *style->fill; }
-inline std::string style_outline(acmacs::PointStyle* style) { return *style->outline; }
-inline double style_size(acmacs::PointStyle* style) { return style->size->value(); }
+class Style : public wrapper<acmacs::PointStyle>
+{
+ public:
+    inline Style(std::shared_ptr<acmacs::PointStyle> style) : wrapper(style) {}
+    inline std::string fill() const { return *obj_->fill; }
+};
+RCPP_EXPOSED_CLASS_NODECL(Style);
+
+inline Rcpp::List PlotSpec::styles() const
+{
+    const auto styles = obj_->all_styles();
+    auto result = Rcpp::List::create();
+    for (size_t no = 0; no < styles.size(); ++no)
+        result.push_back(Style(std::make_shared<acmacs::PointStyle>(styles[no])));
+    return result;
+}
+// RCPP_EXPOSED_CLASS_NODECL(acmacs::PointStyle);
+// RCPP_EXPOSED_CLASS_NODECL(wrapper<acmacs::PointStyle>);
+// inline std::string style_fill(acmacs::PointStyle* style) { std::cerr << "style_fill " << style << '\n';return *style->fill; }
+// inline std::string style_outline(acmacs::PointStyle* style) { return *style->outline; }
+// inline double style_size(acmacs::PointStyle* style) { return style->size->value(); }
 
 // ----------------------------------------------------------------------
 
@@ -295,10 +309,10 @@ RCPP_MODULE(acmacs)
               // set_outline
             ;
 
-    class_<acmacs::PointStyle>("acmacs.Style")
-            .property<std::string>("fill", &style_fill, "")
-            .property<std::string>("outline", &style_outline, "")
-            .method("size", &style_size)
+    class_<Style>("acmacs.Style")
+            .property<std::string>("fill", &Style::fill, "")
+            // .property<std::string>("outline", &style_outline, "")
+            // .method("size", &style_size)
             ;
 }
 
