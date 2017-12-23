@@ -26,13 +26,14 @@
   cat(paste("number of points (sum of antigens and sera):", chart$number_of_points, "\n"))\cr
   cat(paste("lineage (influenza B only):", chart$lineage, "\n"))\cr
 }\cr
+
 \bold{# Antigens}\cr
 \code{cat(paste("number of antigens:", chart$number_of_antigens, "\n"))}\cr
 \cr
 \code{# full names of all antigens (full name includes annotations, reassortant, passage)}\cr
 \code{cat(paste(sapply(chart$antigens, toString), collapse="\n"))}\cr
 \preformatted{
-# enumerate antigens and extract all info about them into list
+# enumerate antigens and extract all info about them into a list
 #   passage is an object, use paste(passage) to convert it to a string
 get_ag <- function(ag_no) \{
   ag <- chart$antigens[[ag_no]]
@@ -40,14 +41,14 @@ get_ag <- function(ag_no) \{
                "date"=ag$date, "passage"=paste(ag$passage), "lineage"=ag$lineage,
                "reassortant"=ag$reassortant, "reference"=ag$reference, "lab_ids"=ag$lab_ids,
                "annotations"=ag$annotations)
-\}}\cr
-\code{lapply(1:chart$number_of_antigens, get_ag)}
-\code{}\cr
-\cr
+\}
+lapply(1:chart$number_of_antigens, get_ag)
+}\cr
+
 \bold{# Sera}\cr
 \code{cat(paste("number of sera:", chart$number_of_sera, "\n"))}\cr
 \preformatted{
-# enumerate sera and extract all info about them into list
+# enumerate sera and extract all info about them into a list
 get_sr <- function(sr_no) \{
   sr <- chart$sera[[sr_no]]
   data <- list("name"=sr$name, "full_name"=sr$full_name, "abbreviated_name"=sr$abbreviated_name,
@@ -57,6 +58,7 @@ get_sr <- function(sr_no) \{
 lapply(1:chart$number_of_sera, get_sr)
 }
 \cr
+
 \bold{# Projections (maps)}\cr
 \code{cat(paste("number of projections (maps):", chart$number_of_projections, "\n"))}\cr
 \cr
