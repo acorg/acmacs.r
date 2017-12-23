@@ -9,10 +9,8 @@
 \code{\var{chart} <- new(acmacs.Chart, "table.ace")} # .save, .ace, .acd1 files are supported\cr
 \cr
 \bold{# load chart from remote file}\cr
-# URL below is real, you may try it\cr
 \code{
-  \var{url} <- "https://github.com/acorg/acmacs.r/blob/master/tests/testthat/2004-3.ace?raw=true"\cr
-  \var{url} <- "https://github.com/acorg/acmacs.r/blob/master/tests/testthat/cdc-h1pdm-2009.acd1.bz2?raw=true"\cr
+  \var{url} <- "https://github.com/acorg/acmacs.r/blob/master/tests/testthat/cdc-h1pdm-20090612.ace?raw=true"\cr
   \var{connection} <- file(\var{url}, open="rb")\cr
   \var{raw_data} <- readBin(\var{connection}, "raw", n=999999)\cr
   close(connection) # to avoid warning during garbage collection
