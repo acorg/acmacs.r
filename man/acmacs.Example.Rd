@@ -106,6 +106,8 @@ identical(chart$projections[[1]]$transformed_layout, chart$projections[[1]]$layo
 }\cr
 \bold{# ===== Modifying projection =====}\cr
 \preformatted{
+# transformation, layout, transformed_layout create copies on accessing
+# modifying them does not affect corresponding objects inside a chart
 save_transformation <- chart$projections[[1]]$transformation
 save_layout <- chart$projections[[1]]$layout
 save_transformed_layout <- chart$projections[[1]]$transformed_layout
