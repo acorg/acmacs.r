@@ -4,7 +4,7 @@
 \alias{acmacs.example}
 % library(acmacs.r, lib.loc="/r/R/library"); ?acmacs.example
 \section{Example}{
-\code{library(acmacs.r)}\cr\cr
+\code{# library(acmacs.r)}\cr\cr
 \bold{# load chart from file}\cr
 \code{\var{chart} <- new(acmacs.Chart, "table.ace")} # .save, .ace, .acd1 files are supported\cr
 \cr
@@ -103,7 +103,30 @@ chart$projections[[1]]$transformed_layout
 # invariant
 identical(chart$projections[[1]]$transformed_layout, chart$projections[[1]]$layout \%*\% chart$projections[[1]]$transformation)
 
-# rotate
+}\cr
+\bold{# ===== Modifying projection =====}\cr
+\preformatted{
+save_transformation <- chart$projections[[1]]$transformation
+save_layout <- chart$projections[[1]]$layout
+save_transformed_layout <- chart$projections[[1]]$transformed_layout
+
+# rotate the first projection 30 degrees counter-clockwise
+chart$projections[[1]]$rotate_degrees(30)
+# transformed_layout changed
+identical(chart$projections[[1]]$transformed_layout, save_transformed_layout)
+# transformation matrix changed
+identical(chart$projections[[1]]$transformation, save_transformation)
+# stored layout is untouched
+identical(chart$projections[[1]]$layout, save_layout)
+
+# rotate 30 degrees converted to radians clockwise
+chart$projections[[1]]$rotate_radians(-30 * pi /180)
+# now transformed layout and transformation are the same as saved
+identical(chart$projections[[1]]$transformed_layout, save_transformed_layout)
+identical(chart$projections[[1]]$transformation, save_transformation)
+# and stored layout is still untouched
+identical(chart$projections[[1]]$layout, save_layout)
+
 # flip
 # move_point
 }\cr
