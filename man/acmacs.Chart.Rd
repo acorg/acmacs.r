@@ -41,6 +41,8 @@
 
   \item{projections}{List of \code{\link{acmacs.Projection}} objects.}
 
+  \item{plot_spec}{\code{\link{acmacs.PlotSpec}} object.}
+
   \item{save(filename)}{Save (modified) chart into a file, output
   format is determined by filename suffix: .ace, .save, .save.xz.}
 
@@ -57,9 +59,10 @@
   cat(paste(sapply(chart$antigens, toString), collapse="\n"))
 }
 \seealso{
-  \code{\link{acmacs.Antigen}}
-  \code{\link{acmacs.Serum}}
-  \code{\link{acmacs.Projection}}
+  \code{\link{acmacs.Antigen}}\cr
+  \code{\link{acmacs.Serum}}\cr
+  \code{\link{acmacs.Projection}}\cr
+  \code{\link{acmacs.PlotSpec}}\cr
   \code{\link{acmacs.Example}}
 }
 \author{Eugene Skepner, eu@antigenic-cartography.org.}

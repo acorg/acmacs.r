@@ -69,6 +69,8 @@ template <typename T> class wrapper
 
 // ----------------------------------------------------------------------
 
+class PlotSpec;
+
 class Chart : public wrapper<acmacs::chart::ChartModify>
 {
  public:
@@ -83,6 +85,7 @@ class Chart : public wrapper<acmacs::chart::ChartModify>
     inline size_t number_of_sera() const { return obj_->number_of_sera(); }
     inline size_t number_of_points() const { return obj_->number_of_points(); }
     inline size_t number_of_projections() const { return obj_->number_of_projections(); }
+    PlotSpec plot_spec();
     static inline Rcpp::StringVector as_character(Chart* aChart) { return {aChart->name()}; }
 
     inline void save(std::string aFilename) { acmacs::chart::export_factory(*obj_, aFilename, "acmacs.r", report_time::No); }
@@ -186,6 +189,25 @@ class Projection : public wrapper<acmacs::chart::ProjectionModify>
 };
 RCPP_EXPOSED_CLASS_NODECL(Projection);
 
+class PlotSpec : public wrapper<acmacs::chart::PlotSpecModify>
+{
+ public:
+    inline PlotSpec(acmacs::chart::PlotSpecModifyP plot_spec) : wrapper(plot_spec) {}
+
+    inline Rcpp::List styles() const
+        {
+            const auto styles = obj_->all_styles(); return Rcpp::List(styles.begin(), styles.end());
+        }
+};
+RCPP_EXPOSED_CLASS_NODECL(PlotSpec);
+
+inline PlotSpec Chart::plot_spec() { return obj_->plot_spec_modify(); }
+
+RCPP_EXPOSED_CLASS_NODECL(acmacs::PointStyle);
+inline std::string style_fill(acmacs::PointStyle* style) { return *style->fill; }
+inline std::string style_outline(acmacs::PointStyle* style) { return *style->outline; }
+inline double style_size(acmacs::PointStyle* style) { return style->size->value(); }
+
 // ----------------------------------------------------------------------
 
 RCPP_MODULE(acmacs)
@@ -205,6 +227,7 @@ RCPP_MODULE(acmacs)
             .property<Rcpp::List>("antigens", &Chart::getList<Antigen, &acmacs::chart::ChartModify::antigens>, "")
             .property<Rcpp::List>("sera", &Chart::getList<Serum, &acmacs::chart::ChartModify::sera>)
             .property<Rcpp::List>("projections", &Chart::getListViaAt<Projection, &acmacs::chart::ChartModify::projections_modify>, "")
+            .property<PlotSpec>("plot_spec", &Chart::plot_spec, "")
             .method("save", &Chart::save)
             ;
     function("as.character.Rcpp_acmacs.Chart", &Chart::as_character);
@@ -258,6 +281,24 @@ RCPP_MODULE(acmacs)
             .method("flip_east_west", &Projection::flip_east_west)
             .method("flip_north_south", &Projection::flip_north_south)
             .method("move_point", &Projection::move_point)
+            ;
+
+    class_<PlotSpec>("acmacs.PlotSpec")
+            .property<Rcpp::List>("styles", &PlotSpec::styles)
+              // drawing_order
+              // raise
+              // lower
+              // raise_serum
+              // lower_serum
+              // set_size
+              // set_fill
+              // set_outline
+            ;
+
+    class_<acmacs::PointStyle>("acmacs.Style")
+            .property<std::string>("fill", &style_fill, "")
+            .property<std::string>("outline", &style_outline, "")
+            .method("size", &style_size)
             ;
 }
 

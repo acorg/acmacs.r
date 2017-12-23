@@ -73,7 +73,7 @@ antigen$passage$type()
   cat(paste(sapply(ags, toString), collapse="\n"))
 }
 \seealso{
- \code{\link{acmacs.Serum}}
+ \code{\link{acmacs.Serum}}\cr
  \code{\link{acmacs.Example}}
 }
 \keyword{ package }

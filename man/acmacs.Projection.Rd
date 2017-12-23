@@ -61,7 +61,7 @@ projection$stress
   prj <- chart$projections[[0]]
 }
 \seealso{
- \code{\link{acmacs.Chart}}
+ \code{\link{acmacs.Chart}}\cr
  \code{\link{acmacs.Example}}
 }
 \keyword{ package }

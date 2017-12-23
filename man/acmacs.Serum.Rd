@@ -51,7 +51,7 @@ serum$passage
   cat(paste(sapply(srs, toString), collapse="\n"))
 }
 \seealso{
- \code{\link{acmacs.Antigen}}
+ \code{\link{acmacs.Antigen}}\cr
  \code{\link{acmacs.Example}}
 }
 \keyword{ package }

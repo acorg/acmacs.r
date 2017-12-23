@@ -13,9 +13,9 @@
   with bzip2 and xz)
     \item Saving data to .ace and .save files, i.e. possible converting from
     acmacs to lispmds and vice versa.
-    \item Reading and modifying antigen and serum names, passages and
-    other related data
-    \item Reading projection layout, column bases, stress
+    \item Reading antigen and serum names, passages and other related data
+    \item Reading projection layout, column bases, stress, rotating and
+  flipping the map, moving points.
     \item Reading and modifying plot spec
     }
   \bold{Planned features:}
@@ -23,6 +23,8 @@
     \item Optimization from scratch
     \item Optimization from existing layout
     \item Creating antigenic tables from scratch
+    \item Modifying antigens and sera
+    \item Modifying titers
     }
 }
 \details{
@@ -36,7 +38,7 @@
 }
 \keyword{ package }
 \seealso{
- \code{\link{acmacs.Chart}}
+ \code{\link{acmacs.Chart}}\cr
  \code{\link{acmacs.Example}}
 }
 \author{Eugene Skepner, \email{eu@antigenic-cartography.org}}

@@ -107,7 +107,7 @@ identical(chart$projections[[1]]$transformed_layout, chart$projections[[1]]$layo
 \bold{# ===== Modifying projection =====}\cr
 \preformatted{
 # transformation, layout, transformed_layout create copies on accessing
-# modifying them does not affect corresponding objects inside a chart
+# modifying them does not affect corresponding objects inside the chart
 save_transformation <- chart$projections[[1]]$transformation
 save_layout <- chart$projections[[1]]$layout
 save_transformed_layout <- chart$projections[[1]]$transformed_layout
@@ -157,7 +157,13 @@ chart$save("/tmp/chart.save")
 chart$save("/tmp/chart.save.xz")
 }\cr
 \bold{# ========= Plot spec =========}\cr
-\cr
+\preformatted{
+chart$plot_spec
+}\cr
+\bold{# ========= Titers =========}\cr
+\preformatted{
+chart$titers
+}\cr
 }
 \docType{package}
 \keyword{ package }
