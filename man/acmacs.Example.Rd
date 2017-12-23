@@ -127,14 +127,33 @@ identical(chart$projections[[1]]$transformation, save_transformation)
 # and stored layout is still untouched
 identical(chart$projections[[1]]$layout, save_layout)
 
-# flip
-# move_point
+# flip twice and rotate 180 degrees
+chart$projections[[1]]$flip_north_south()
+chart$projections[[1]]$flip_east_west()
+chart$projections[[1]]$rotate_degrees(180)
+# now transformed layout and transformation are (approximately) the same as saved
+all.equal(chart$projections[[1]]$transformed_layout, save_transformed_layout)
+all.equal(chart$projections[[1]]$transformation, save_transformation)
+
+# move the first antigen to some place far away
+chart$projections[[1]]$move_point(1, c(100, 100))
+chart$projections[[1]]$layout[1,]
+# move the first serum to some place far away
+chart$projections[[1]]$move_point(chart$number_of_antigens + 1, c(100, 100))
+# move the last serum to some place far away
+chart$projections[[1]]$move_point(chart$number_of_antigens + chart$number_of_sera, c(100, 100))
+# direct assignment to layout fails
+# does not work: chart$projections[[1]]$layout[1,] <- c(10, 10)
+
 }\cr
 \bold{# ========= Save chart =========}\cr
-\code{chart$save("/tmp/chart.ace")}\cr
-\code{chart$save("/tmp/chart.save")}\cr
-\code{chart$save("/tmp/chart.save.xz")}\cr
-\cr
+\preformatted{
+# output format depends on suffix used, only .ace and .save are supported
+chart$save("/tmp/chart.ace")
+chart$save("/tmp/chart.save")
+# save can be compressed
+chart$save("/tmp/chart.save.xz")
+}\cr
 \bold{# ========= Plot spec =========}\cr
 \cr
 }
