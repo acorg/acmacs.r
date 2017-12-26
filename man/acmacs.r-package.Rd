@@ -17,6 +17,7 @@
     \item Reading projection layout, column bases, stress, rotating and
   flipping the map, moving points.
     \item Reading and modifying plot spec
+    \item Reading titers
     }
   \bold{Planned features:}
   \enumerate{

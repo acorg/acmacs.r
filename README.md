@@ -37,7 +37,7 @@ Please replace /tmp/R/library with your local directory for packages
 or remove lib="/tmp/R/library" argument.
 
 ```R
-install.packages("https://github.com/acorg/acmacs.r/releases/download/v0.1-alpha/acmacs.r_0.1.macOS-10.12.tgz", repos=NULL, lib="/tmp/R/library")
+install.packages("https://github.com/acorg/acmacs.r/releases/download/v1.0/acmacs.r_1.0.macOS-10.12.tgz", repos=NULL, lib="/tmp/R/library")
 ```
 
 Linux
@@ -47,6 +47,8 @@ Not yet supported.
 
 Usage example
 =============
+
+Complete example with the most of available functions can be accessed within R using ?acmacs.Example
 
 ```R
 library(acmacs.r)
