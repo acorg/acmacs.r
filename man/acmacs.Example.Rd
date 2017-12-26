@@ -165,10 +165,12 @@ get_style <- function(no) \{
        "rotation"=s$rotation, "aspect"=s$aspect, "shape"=s$shape)
 \}
 sapply(1:chart$number_of_points, get_style)
+# modifying resulting list does not affect plot style stored in the chart
 
 # drawing order: point indexes in the order of drawing,
 # last indexes in the list are drawn on top of others
 chart$plot_spec$drawing_order
+# modifying resulting vector does not drawing order stored in the chart
 
 # raise reference antigens
 ref_indexes <- 1:chart$number_of_antigens
@@ -179,6 +181,15 @@ chart$plot_spec$drawing_order
 # lower all sera
 chart$plot_spec$lower_sera(1:chart$number_of_sera)
 chart$plot_spec$drawing_order
+
+# change size of test antigens
+test_indexes <- 1:chart$number_of_antigens
+test_indexes <- test_indexes[lapply(test_indexes, function(no) { chart$antigens[[no]]$reference})==FALSE]
+chart$plot_spec$set_size(test_indexes, 3)
+# change fill color of test antigens
+chart$plot_spec$set_fill(test_indexes, "pink")
+# change outline color of test antigens
+chart$plot_spec$set_fill(test_indexes, "#C0C0C0")
 }\cr
 \bold{# ========= Titers =========}\cr
 \preformatted{

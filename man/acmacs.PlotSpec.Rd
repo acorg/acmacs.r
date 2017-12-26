@@ -22,6 +22,12 @@ ps <- chart$plot_spec
 
   \item{lower_sera(serum_indexes)}{Lower sera by their indexes.}
 
+  \item{set_size(point_indexes, size)}{Resize points.}
+
+  \item{set_fill(point_indexes, fill)}{Change fill color for points.}
+
+  \item{set_outline(point_indexes, outline)}{Change outline color for points.}
+
 }
 \section{PointStyle}{
   chart$plot_spec$style is a list of acmacs.PointStyle objects. Those

@@ -229,6 +229,22 @@ class PlotSpec : public wrapper<acmacs::chart::PlotSpecModify>
             std::transform(aIndexes.begin(), aIndexes.end(), indexes.begin(), [](auto index) { return index - 1; });
             obj_->lower_serum(indexes);
         }
+
+    inline void set_style_size(const Rcpp::IntegerVector& aIndexes, double aSize)
+        {
+            for (auto index: aIndexes)
+                obj_->size(index - 1, Pixels{aSize});
+        }
+    inline void set_style_fill(const Rcpp::IntegerVector& aIndexes, std::string aFill)
+        {
+            for (auto index: aIndexes)
+                obj_->fill(index - 1, aFill);
+        }
+    inline void set_style_outline(const Rcpp::IntegerVector& aIndexes, std::string aOutline)
+        {
+            for (auto index: aIndexes)
+                obj_->outline(index - 1, aOutline);
+        }
 };
 RCPP_EXPOSED_CLASS_NODECL(PlotSpec);
 
@@ -243,9 +259,6 @@ inline auto style_outline_width(acmacs::PointStyle* style) { return style->outli
 inline auto style_rotation(acmacs::PointStyle* style) { return style->rotation->value(); }
 inline auto style_aspect(acmacs::PointStyle* style) { return style->aspect->value(); }
 inline std::string style_shape(acmacs::PointStyle* style) { return *style->shape; }
-        // field<PointShape> shape;
-        // LabelStyle label;
-        // field<std::string> label_text;
 
 // ----------------------------------------------------------------------
 
@@ -329,9 +342,9 @@ RCPP_MODULE(acmacs)
             .method("lower", &PlotSpec::drawing_order_lower)
             .method("raise_sera", &PlotSpec::drawing_order_raise_sera)
             .method("lower_sera", &PlotSpec::drawing_order_lower_sera)
-              // set_size
-              // set_fill
-              // set_outline
+            .method("set_size", &PlotSpec::set_style_size)
+            .method("set_fill", &PlotSpec::set_style_fill)
+            .method("set_outline", &PlotSpec::set_style_outline)
             ;
 
     class_<acmacs::PointStyle>("acmacs.PointStyle")
