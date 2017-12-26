@@ -208,8 +208,7 @@ inline std::string style_outline(acmacs::PointStyle* style) { return *style->out
 inline auto style_outline_width(acmacs::PointStyle* style) { return style->outline_width->value(); }
 inline auto style_rotation(acmacs::PointStyle* style) { return style->rotation->value(); }
 inline auto style_aspect(acmacs::PointStyle* style) { return style->aspect->value(); }
-        // field<Rotation> rotation{NoRotation};
-        // field<Aspect> aspect{AspectNormal};
+inline std::string style_shape(acmacs::PointStyle* style) { return *style->shape; }
         // field<PointShape> shape;
         // LabelStyle label;
         // field<std::string> label_text;
@@ -309,7 +308,7 @@ RCPP_MODULE(acmacs)
             .property("outline_width", &style_outline_width, nullptr)
             .property("rotation", &style_rotation, nullptr)
             .property("aspect", &style_aspect, nullptr)
-        // field<PointShape> shape;
+            .property("shape", &style_shape, nullptr)
         // LabelStyle label;
         // field<std::string> label_text;
             ;

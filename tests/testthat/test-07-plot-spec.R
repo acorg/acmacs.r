@@ -25,3 +25,7 @@ test_that("aspect", {
     expect_equal(plot_spec$styles[[15]]$aspect, 1);
     expect_equal(plot_spec$styles[[22]]$aspect, 1);
 })
+test_that("shape", {
+    expect_equal(plot_spec$styles[[1]]$shape, "CIRCLE");
+    expect_equal(plot_spec$styles[[55]]$shape, "BOX");
+})
