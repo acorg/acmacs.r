@@ -4,6 +4,7 @@ PKG_NAME = acmacs.r
 
 ifneq ($(R),)
   ROOT_DIR = $(R)/R
+  export TMPDIR = $(R)/T
 else ifeq ($(ROOT_DIR),)
   $(error Please provide ROOT_DIR, e.g. make ROOT_DIR=/my/local/r/installation)
 endif
@@ -12,14 +13,10 @@ PKG_DIR = $(ROOT_DIR)/pkg
 LIB_DIR = $(ROOT_DIR)/library
 OUT_DIR = $(ROOT_DIR)/$(PKG_NAME)
 
-ifneq ($(T),"")
-  export TMPDIR = $(T)
-endif
-
 all: bin
 
 install: build | $(LIB_DIR)
-	R CMD INSTALL --clean --debug -l $(LIB_DIR) $(PKG_DIR)/$(PKG_NAME)_*.tar.gz
+	R CMD INSTALL --clean --debug -l $(LIB_DIR) $(shell echo $(PKG_DIR)/$(PKG_NAME)_*.tar.gz)
 
 bin: build | $(LIB_DIR)
 	cd $(ROOT_DIR); R CMD INSTALL --build --clean --debug -l $(LIB_DIR) $(PKG_DIR)/$(PKG_NAME)_*.tar.gz
