@@ -63,6 +63,7 @@ chart$plot_spec$drawing_order
   \code{\link{acmacs.Antigen}}\cr
   \code{\link{acmacs.Serum}}\cr
   \code{\link{acmacs.Projection}}\cr
+  \code{\link{acmacs.Titers}}\cr
   \code{\link{acmacs.Example}}
 }
 \author{Eugene Skepner, eu@antigenic-cartography.org.}

@@ -267,6 +267,14 @@ class Titers : public wrapper<acmacs::chart::TitersModify>
  public:
     inline Titers(acmacs::chart::TitersModifyP titers) : wrapper(titers) {}
     inline std::string titer(size_t ag_no, size_t sr_no) const { return obj_->titer(ag_no - 1, sr_no - 1); }
+    inline Rcpp::StringMatrix all() const
+        {
+            Rcpp::StringMatrix result(obj_->number_of_antigens(), obj_->number_of_sera());
+            for (size_t ag_no = 0; ag_no < obj_->number_of_antigens(); ++ag_no)
+                for (size_t sr_no = 0; sr_no < obj_->number_of_sera(); ++sr_no)
+                    result(ag_no, sr_no) = static_cast<std::string>(obj_->titer(ag_no, sr_no));
+            return result;
+        }
 };
 RCPP_EXPOSED_CLASS_NODECL(Titers);
 
@@ -375,6 +383,7 @@ RCPP_MODULE(acmacs)
 
     class_<Titers>("acmacs.Titers")
             .method("titer", &Titers::titer)
+            .method("all", &Titers::all)
             ;
 }
 

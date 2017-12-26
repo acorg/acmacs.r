@@ -193,7 +193,14 @@ chart$plot_spec$set_fill(test_indexes, "#C0C0C0")
 }\cr
 \bold{# ========= Titers =========}\cr
 \preformatted{
-chart$titers
+# extract the first titer in the table
+chart$titers$titer(1, 1)
+# extract the last titer in the table
+chart$titers$titer(chart$number_of_antigens, chart$number_of_sera)
+# extract all titers into a matrix (it's a function, not property!)
+chart$titers$all()
+# invariant
+identical(sapply(1:chart$number_of_antigens, function(no) { chart$titers$titer(no, 1) }), chart$titers$all()[,1])
 }\cr
 }
 \docType{package}
@@ -204,5 +211,7 @@ chart$titers
   \code{\link{acmacs.Antigen}}
   \code{\link{acmacs.Serum}}
   \code{\link{acmacs.Projection}}
+  \code{\link{acmacs.PlotSpec}}\cr
+  \code{\link{acmacs.Titers}}\cr
 }
 \author{Eugene Skepner, eu@antigenic-cartography.org.}

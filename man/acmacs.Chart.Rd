@@ -43,6 +43,8 @@
 
   \item{plot_spec}{\code{\link{acmacs.PlotSpec}} object.}
 
+  \item{titers}{\code{\link{acmacs.Titers}} object.}
+
   \item{save(filename)}{Save (modified) chart into a file, output
   format is determined by filename suffix: .ace, .save, .save.xz.}
 
@@ -63,6 +65,7 @@
   \code{\link{acmacs.Serum}}\cr
   \code{\link{acmacs.Projection}}\cr
   \code{\link{acmacs.PlotSpec}}\cr
+  \code{\link{acmacs.Titers}}\cr
   \code{\link{acmacs.Example}}
 }
 \author{Eugene Skepner, eu@antigenic-cartography.org.}
