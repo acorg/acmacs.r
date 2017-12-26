@@ -29,3 +29,7 @@ test_that("shape", {
     expect_equal(plot_spec$styles[[1]]$shape, "CIRCLE");
     expect_equal(plot_spec$styles[[55]]$shape, "BOX");
 })
+
+cat(chart$plot_spec$drawing_order)
+chart$plot_spec$raise(1:5)
+cat(chart$plot_spec$drawing_order)

@@ -158,7 +158,27 @@ chart$save("/tmp/chart.save.xz")
 }\cr
 \bold{# ========= Plot spec =========}\cr
 \preformatted{
-chart$plot_spec
+# list with styles for each point
+get_style <- function(no) \{
+  s <- chart$plot_spec$styles[[no]]
+  list("shown"=s$shown, "size"=s$size, "fill"=s$fill, "outline"=s$outline, "outline_width"=s$outline_width,
+       "rotation"=s$rotation, "aspect"=s$aspect, "shape"=s$shape)
+\}
+sapply(1:chart$number_of_points, get_style)
+
+# drawing order: point indexes in the order of drawing,
+# last indexes in the list are drawn on top of others
+chart$plot_spec$drawing_order
+
+# raise reference antigens
+ref_indexes <- 1:chart$number_of_antigens
+ref_indexes <- ref_indexes[lapply(ref_indexes, function(no) { chart$antigens[[no]]$reference})==TRUE]
+chart$plot_spec$raise(ref_indexes)
+chart$plot_spec$drawing_order
+
+# lower all sera
+chart$plot_spec$lower_sera(1:chart$number_of_sera)
+chart$plot_spec$drawing_order
 }\cr
 \bold{# ========= Titers =========}\cr
 \preformatted{

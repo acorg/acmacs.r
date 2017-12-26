@@ -195,6 +195,40 @@ class PlotSpec : public wrapper<acmacs::chart::PlotSpecModify>
     inline PlotSpec(acmacs::chart::PlotSpecModifyP plot_spec) : wrapper(plot_spec) {}
 
     inline Rcpp::List styles() const { const auto styles = obj_->all_styles(); return {styles.begin(), styles.end()}; }
+
+    inline Rcpp::IntegerVector drawing_order() const
+        {
+            const auto drawing_order = obj_->drawing_order();
+            Rcpp::IntegerVector result(drawing_order.size());
+            std::transform(drawing_order.begin(), drawing_order.end(), result.begin(), [](auto index) { return index + 1; });
+            return result;
+            // return {drawing_order.begin(), drawing_order.end()};
+        }
+
+    inline void drawing_order_raise(const Rcpp::IntegerVector& aIndexes)
+        {
+            acmacs::chart::Indexes indexes(aIndexes.size());
+            std::transform(aIndexes.begin(), aIndexes.end(), indexes.begin(), [](auto index) { return index - 1; });
+            obj_->raise(indexes);
+        }
+    inline void drawing_order_lower(const Rcpp::IntegerVector& aIndexes)
+        {
+            acmacs::chart::Indexes indexes(aIndexes.size());
+            std::transform(aIndexes.begin(), aIndexes.end(), indexes.begin(), [](auto index) { return index - 1; });
+            obj_->lower(indexes);
+        }
+    inline void drawing_order_raise_sera(const Rcpp::IntegerVector& aIndexes)
+        {
+            acmacs::chart::Indexes indexes(aIndexes.size());
+            std::transform(aIndexes.begin(), aIndexes.end(), indexes.begin(), [](auto index) { return index - 1; });
+            obj_->raise_serum(indexes);
+        }
+    inline void drawing_order_lower_sera(const Rcpp::IntegerVector& aIndexes)
+        {
+            acmacs::chart::Indexes indexes(aIndexes.size());
+            std::transform(aIndexes.begin(), aIndexes.end(), indexes.begin(), [](auto index) { return index - 1; });
+            obj_->lower_serum(indexes);
+        }
 };
 RCPP_EXPOSED_CLASS_NODECL(PlotSpec);
 
@@ -289,12 +323,12 @@ RCPP_MODULE(acmacs)
             ;
 
     class_<PlotSpec>("acmacs.PlotSpec")
-            .property<Rcpp::List>("styles", &PlotSpec::styles)
-              // drawing_order
-              // raise
-              // lower
-              // raise_serum
-              // lower_serum
+            .property("styles", &PlotSpec::styles)
+            .property("drawing_order", &PlotSpec::drawing_order)
+            .method("raise", &PlotSpec::drawing_order_raise)
+            .method("lower", &PlotSpec::drawing_order_lower)
+            .method("raise_sera", &PlotSpec::drawing_order_raise_sera)
+            .method("lower_sera", &PlotSpec::drawing_order_lower_sera)
               // set_size
               // set_fill
               // set_outline
@@ -309,8 +343,8 @@ RCPP_MODULE(acmacs)
             .property("rotation", &style_rotation, nullptr)
             .property("aspect", &style_aspect, nullptr)
             .property("shape", &style_shape, nullptr)
-        // LabelStyle label;
-        // field<std::string> label_text;
+              // LabelStyle label;
+              // field<std::string> label_text;
             ;
 
     // class_<Titers>("acmacs.Titers")
