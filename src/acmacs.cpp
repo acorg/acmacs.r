@@ -201,10 +201,18 @@ RCPP_EXPOSED_CLASS_NODECL(PlotSpec);
 inline PlotSpec Chart::plot_spec() { return obj_->plot_spec_modify(); }
 
 RCPP_EXPOSED_CLASS_NODECL(acmacs::PointStyle);
+inline auto style_shown(acmacs::PointStyle* style) { return *style->shown; }
+inline auto style_size(acmacs::PointStyle* style) { return style->size->value(); }
 inline std::string style_fill(acmacs::PointStyle* style) { return *style->fill; }
 inline std::string style_outline(acmacs::PointStyle* style) { return *style->outline; }
 inline auto style_outline_width(acmacs::PointStyle* style) { return style->outline_width->value(); }
-inline double style_size(acmacs::PointStyle* style) { return style->size->value(); }
+inline auto style_rotation(acmacs::PointStyle* style) { return style->rotation->value(); }
+inline auto style_aspect(acmacs::PointStyle* style) { return style->aspect->value(); }
+        // field<Rotation> rotation{NoRotation};
+        // field<Aspect> aspect{AspectNormal};
+        // field<PointShape> shape;
+        // LabelStyle label;
+        // field<std::string> label_text;
 
 // ----------------------------------------------------------------------
 
@@ -294,13 +302,13 @@ RCPP_MODULE(acmacs)
             ;
 
     class_<acmacs::PointStyle>("acmacs.PointStyle")
-            .property("size", &style_size, "")
-            .property<std::string>("fill", &style_fill, "")
-            .property<std::string>("outline", &style_outline, "")
-            .property("outline_width", &style_outline_width, "")
-        // field<bool> shown{true};
-        // field<Rotation> rotation{NoRotation};
-        // field<Aspect> aspect{AspectNormal};
+            .property("shown", &style_shown, nullptr)
+            .property("size", &style_size, nullptr)
+            .property("fill", &style_fill, nullptr)
+            .property("outline", &style_outline, nullptr)
+            .property("outline_width", &style_outline_width, nullptr)
+            .property("rotation", &style_rotation, nullptr)
+            .property("aspect", &style_aspect, nullptr)
         // field<PointShape> shape;
         // LabelStyle label;
         // field<std::string> label_text;
