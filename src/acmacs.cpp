@@ -313,6 +313,9 @@ RCPP_MODULE(acmacs)
         // LabelStyle label;
         // field<std::string> label_text;
             ;
+
+    // class_<Titers>("acmacs.Titers")
+    //         ;
 }
 
 // ----------------------------------------------------------------------
