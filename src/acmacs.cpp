@@ -70,6 +70,7 @@ template <typename T> class wrapper
 // ----------------------------------------------------------------------
 
 class PlotSpec;
+class Titers;
 
 class Chart : public wrapper<acmacs::chart::ChartModify>
 {
@@ -86,6 +87,7 @@ class Chart : public wrapper<acmacs::chart::ChartModify>
     inline size_t number_of_points() const { return obj_->number_of_points(); }
     inline size_t number_of_projections() const { return obj_->number_of_projections(); }
     PlotSpec plot_spec();
+    Titers titers();
     static inline Rcpp::StringVector as_character(Chart* aChart) { return {aChart->name()}; }
 
     inline void save(std::string aFilename) { acmacs::chart::export_factory(*obj_, aFilename, "acmacs.r", report_time::No); }
@@ -260,6 +262,16 @@ inline auto style_rotation(acmacs::PointStyle* style) { return style->rotation->
 inline auto style_aspect(acmacs::PointStyle* style) { return style->aspect->value(); }
 inline std::string style_shape(acmacs::PointStyle* style) { return *style->shape; }
 
+class Titers : public wrapper<acmacs::chart::TitersModify>
+{
+ public:
+    inline Titers(acmacs::chart::TitersModifyP titers) : wrapper(titers) {}
+    inline std::string titer(size_t ag_no, size_t sr_no) const { return obj_->titer(ag_no - 1, sr_no - 1); }
+};
+RCPP_EXPOSED_CLASS_NODECL(Titers);
+
+inline Titers Chart::titers() { return obj_->titers_modify(); }
+
 // ----------------------------------------------------------------------
 
 RCPP_MODULE(acmacs)
@@ -276,10 +288,11 @@ RCPP_MODULE(acmacs)
             .property<std::string>("lineage", &Chart::lineage)
             .property<std::string>("info", &Chart::info, "multi-line string brifly describing data stored in the chart")
             .property<std::string>("name", &Chart::name)
-            .property<Rcpp::List>("antigens", &Chart::getList<Antigen, &acmacs::chart::ChartModify::antigens>, "")
+            .property<Rcpp::List>("antigens", &Chart::getList<Antigen, &acmacs::chart::ChartModify::antigens>)
             .property<Rcpp::List>("sera", &Chart::getList<Serum, &acmacs::chart::ChartModify::sera>)
-            .property<Rcpp::List>("projections", &Chart::getListViaAt<Projection, &acmacs::chart::ChartModify::projections_modify>, "")
-            .property<PlotSpec>("plot_spec", &Chart::plot_spec, "")
+            .property<Rcpp::List>("projections", &Chart::getListViaAt<Projection, &acmacs::chart::ChartModify::projections_modify>)
+            .property<PlotSpec>("plot_spec", &Chart::plot_spec)
+            .property<Titers>("titers", &Chart::titers)
             .method("save", &Chart::save)
             ;
     function("as.character.Rcpp_acmacs.Chart", &Chart::as_character);
@@ -360,8 +373,9 @@ RCPP_MODULE(acmacs)
               // field<std::string> label_text;
             ;
 
-    // class_<Titers>("acmacs.Titers")
-    //         ;
+    class_<Titers>("acmacs.Titers")
+            .method("titer", &Titers::titer)
+            ;
 }
 
 // ----------------------------------------------------------------------
