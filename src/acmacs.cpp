@@ -1,4 +1,4 @@
-#include <typeinfo>
+#include <limits>
 #include <Rcpp.h>
 
 #include "acmacs-chart-2/chart-modify.hh"
@@ -86,6 +86,10 @@ class Chart : public wrapper<acmacs::chart::ChartModify>
     inline size_t number_of_sera() const { return obj_->number_of_sera(); }
     inline size_t number_of_points() const { return obj_->number_of_points(); }
     inline size_t number_of_projections() const { return obj_->number_of_projections(); }
+    Rcpp::NumericVector column_bases_2(size_t aProjectionNo, std::string aMinimumColumnBasis) const;
+    inline Rcpp::NumericVector column_bases_1(size_t aProjectionNo) const { return column_bases_2(aProjectionNo, "none"); }
+    inline Rcpp::NumericVector column_bases_1s(std::string aMinimumColumnBasis) const { return column_bases_2(std::numeric_limits<size_t>::max(), aMinimumColumnBasis); }
+    inline Rcpp::NumericVector column_bases_0() const { return column_bases_2(0, "none"); }
     PlotSpec plot_spec();
     Titers titers();
     static inline Rcpp::StringVector as_character(Chart* aChart) { return {aChart->name()}; }
@@ -140,7 +144,7 @@ class Projection : public wrapper<acmacs::chart::ProjectionModify>
     Rcpp::NumericVector forced_column_bases() const
         {
             auto fcb = obj_->forced_column_bases();
-            if (fcb && fcb->exists()) {
+            if (fcb) {
                 Rcpp::NumericVector result(fcb->size());
                 for (size_t sr_no = 0; sr_no < fcb->size(); ++sr_no)
                     result[sr_no] = fcb->column_basis(sr_no);
@@ -190,6 +194,30 @@ class Projection : public wrapper<acmacs::chart::ProjectionModify>
 
 };
 RCPP_EXPOSED_CLASS_NODECL(Projection);
+
+Rcpp::NumericVector Chart::column_bases_2(size_t aProjectionNo, std::string aMinimumColumnBasis) const
+{
+    std::shared_ptr<acmacs::chart::ColumnBases> cb;
+    acmacs::chart::MinimumColumnBasis mcb(aMinimumColumnBasis);
+    auto projections = obj_->projections();
+    if (projections && aProjectionNo < projections->size()) {
+        if (auto p = (*projections)[aProjectionNo]; p) {
+            cb = p->forced_column_bases();
+            mcb = p->minimum_column_basis();
+        }
+    }
+    if (!cb)
+        cb = obj_->column_bases(mcb);
+    if (cb) {
+        Rcpp::NumericVector result(cb->size());
+        for (size_t sr_no = 0; sr_no < cb->size(); ++sr_no)
+            result[sr_no] = cb->column_basis(sr_no);
+        return result;
+    }
+    else
+        return Rcpp::NumericVector::create(NA_REAL);
+
+} // Chart::column_bases_2
 
 class PlotSpec : public wrapper<acmacs::chart::PlotSpecModify>
 {
@@ -301,6 +329,10 @@ RCPP_MODULE(acmacs)
             .property<Rcpp::List>("projections", &Chart::getListViaAt<Projection, &acmacs::chart::ChartModify::projections_modify>)
             .property<PlotSpec>("plot_spec", &Chart::plot_spec)
             .property<Titers>("titers", &Chart::titers)
+            .method("column_bases", &Chart::column_bases_2, "either forced or calculated column bases, i.e. the ones used for stress calculation and optimization")
+            .method("column_bases", &Chart::column_bases_1, "either forced or calculated column bases, i.e. the ones used for stress calculation and optimization")
+            // .method("column_bases", &Chart::column_bases_1s, "either forced or calculated column bases with the provided minimum_column_basis")
+            .method("column_bases", &Chart::column_bases_0, "either forced or calculated column bases, i.e. the ones used for stress calculation and optimization")
             .method("save", &Chart::save)
             ;
     function("as.character.Rcpp_acmacs.Chart", &Chart::as_character);
