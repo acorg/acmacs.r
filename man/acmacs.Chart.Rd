@@ -5,10 +5,10 @@
 \alias{acmacs.ColumnBases}
 \docType{package}
 \usage{
-\code{new(acmacs.Chart, filename)}
+chart <- new(acmacs.Chart, filename)
 
-\code{raw_data <- readBin(file(url, open="rb"), "raw", n=999999)}
-\code{chart <- new(acmacs.Chart, raw_data)}
+raw_data <- readBin(file(url, open="rb"), "raw", n=999999)
+chart <- new(acmacs.Chart, raw_data)
 }
 \arguments{
   \item{filename}{A character object specifying a file pathname with
