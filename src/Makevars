@@ -27,7 +27,7 @@ else ifeq ($(shell uname),Linux)
   override CXX = g++-7
   PKG_CXXFLAGS += -O3 -std=c++17
   CXX_STD = CXX17
-  PLATFORM_LIBS =
+  PLATFORM_LIBS = -Wl,-rpath='$$ORIGIN'
   SHLIB_SUFFIX_1 = .so
   SHLIB_SUFFIX_2 =
 else
