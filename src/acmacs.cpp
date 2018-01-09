@@ -174,6 +174,10 @@ class Projection : public wrapper<acmacs::chart::ProjectionModify>
             obj_->move_point(aPointNo - 1, {aCoordinates.begin(), aCoordinates.end()});
         }
 
+    inline double stress() const { return obj_->stress(); }
+
+    inline std::string minimum_column_basis() const { return obj_->minimum_column_basis(); }
+
  private:
     Rcpp::NumericMatrix layout_convert(std::shared_ptr<acmacs::chart::Layout> layout) const
         {
@@ -374,9 +378,9 @@ RCPP_MODULE(acmacs)
 
     class_<Projection>("acmacs.Projection")
             .property<std::string>("info", &Projection::make_info)
-            .property<double>("stress", &Projection::get<&acmacs::chart::ProjectionModify::stress>)
+            .property<double>("stress", &Projection::stress)
             .property<std::string>("comment", &Projection::comment)
-            .property<std::string>("minimum_column_basis", &Projection::getT<std::string, &acmacs::chart::ProjectionModify::minimum_column_basis>)
+            .property<std::string>("minimum_column_basis", &Projection::minimum_column_basis)
             .property("forced_column_bases", &Projection::forced_column_bases)
             .property("transformation", &Projection::transformation)
             .property("layout", &Projection::layout)
