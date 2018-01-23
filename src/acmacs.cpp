@@ -11,10 +11,10 @@ template <typename T> class wrapper
 {
  public:
     // using owning_t = T;
-    inline wrapper() = default;
-    inline wrapper(std::shared_ptr<T> obj) : obj_(obj) {}
-      //inline ~wrapper() { Rprintf("~wrapper %s\n", typeid(this).name()); }
-    // inline std::shared_ptr<T> operator*() { return obj_; }
+    wrapper() = default;
+    wrapper(std::shared_ptr<T> obj) : obj_(obj) {}
+      //~wrapper() { Rprintf("~wrapper %s\n", typeid(this).name()); }
+    // std::shared_ptr<T> operator*() { return obj_; }
     std::shared_ptr<T> obj_;
 
     template <auto (T::*property)() const> auto get() const
@@ -75,26 +75,26 @@ class Titers;
 class Chart : public wrapper<acmacs::chart::ChartModify>
 {
  public:
-    inline Chart(std::string aFilename)
+    Chart(std::string aFilename)
         : wrapper(std::make_shared<acmacs::chart::ChartModify>(acmacs::chart::import_from_file(aFilename, acmacs::chart::Verify::None, report_time::No))) {}
-    inline Chart(Rcpp::RawVector aData)
+    Chart(Rcpp::RawVector aData)
         : wrapper(std::make_shared<acmacs::chart::ChartModify>(acmacs::chart::import_from_data(std::string_view(reinterpret_cast<const char*>(aData.cbegin()), aData.size()), acmacs::chart::Verify::None, report_time::No))) {}
-    inline std::string name() const { return obj_->make_name(); }
-    inline std::string info() const { return obj_->make_info(); }
-    inline std::string lineage() const { return obj_->lineage(); }
-    inline size_t number_of_antigens() const { return obj_->number_of_antigens(); }
-    inline size_t number_of_sera() const { return obj_->number_of_sera(); }
-    inline size_t number_of_points() const { return obj_->number_of_points(); }
-    inline size_t number_of_projections() const { return obj_->number_of_projections(); }
+    std::string name() const { return obj_->make_name(); }
+    std::string info() const { return obj_->make_info(); }
+    std::string lineage() const { return obj_->lineage(); }
+    size_t number_of_antigens() const { return obj_->number_of_antigens(); }
+    size_t number_of_sera() const { return obj_->number_of_sera(); }
+    size_t number_of_points() const { return obj_->number_of_points(); }
+    size_t number_of_projections() const { return obj_->number_of_projections(); }
     Rcpp::NumericVector column_bases_2(size_t aProjectionNo, std::string aMinimumColumnBasis) const;
-    inline Rcpp::NumericVector column_bases_1(size_t aProjectionNo) const { return column_bases_2(aProjectionNo, "none"); }
-    inline Rcpp::NumericVector column_bases_1s(std::string aMinimumColumnBasis) const { return column_bases_2(std::numeric_limits<size_t>::max(), aMinimumColumnBasis); }
-    inline Rcpp::NumericVector column_bases_0() const { return column_bases_2(0, "none"); }
+    Rcpp::NumericVector column_bases_1(size_t aProjectionNo) const { return column_bases_2(aProjectionNo, "none"); }
+    Rcpp::NumericVector column_bases_1s(std::string aMinimumColumnBasis) const { return column_bases_2(std::numeric_limits<size_t>::max(), aMinimumColumnBasis); }
+    Rcpp::NumericVector column_bases_0() const { return column_bases_2(0, "none"); }
     PlotSpec plot_spec();
     Titers titers();
-    static inline Rcpp::StringVector as_character(Chart* aChart) { return {aChart->name()}; }
+    static Rcpp::StringVector as_character(Chart* aChart) { return {aChart->name()}; }
 
-    inline void save(std::string aFilename) { acmacs::chart::export_factory(*obj_, aFilename, "acmacs.r", report_time::No); }
+    void save(std::string aFilename) { acmacs::chart::export_factory(*obj_, aFilename, "acmacs.r", report_time::No); }
 
       // https://stackoverflow.com/questions/42579207/rcpp-modules-validator-function-for-exposed-constructors-with-same-number-of-pa
     template <typename T> static inline bool validate_constructor(SEXP* args, int nargs) { return nargs == 1 && Rcpp::is<T>(args[0]); }
@@ -105,7 +105,7 @@ RCPP_EXPOSED_CLASS_NODECL(Chart);
 class Antigen : public wrapper<acmacs::chart::Antigen>
 {
  public:
-    inline Antigen(acmacs::chart::AntigenP antigen) : wrapper(antigen) {}
+    Antigen(acmacs::chart::AntigenP antigen) : wrapper(antigen) {}
     static inline Rcpp::StringVector as_character(Antigen* aAntigen) { return {aAntigen->obj_->full_name()}; }
 };
 RCPP_EXPOSED_CLASS_NODECL(Antigen);
@@ -113,7 +113,7 @@ RCPP_EXPOSED_CLASS_NODECL(Antigen);
 class Serum : public wrapper<acmacs::chart::Serum>
 {
  public:
-    inline Serum(acmacs::chart::SerumP serum) : wrapper(serum) {}
+    Serum(acmacs::chart::SerumP serum) : wrapper(serum) {}
     static inline Rcpp::StringVector as_character(Serum* aSerum) { return {aSerum->obj_->full_name()}; }
 };
 RCPP_EXPOSED_CLASS_NODECL(Serum);
@@ -124,13 +124,13 @@ inline Rcpp::StringVector passage_as_character(acmacs::chart::Passage* aPassage)
 class Projection : public wrapper<acmacs::chart::ProjectionModify>
 {
  public:
-    inline Projection(acmacs::chart::ProjectionModifyP projection) : wrapper(projection) {}
-      // static inline Rcpp::StringVector as_character(Projection* aProjection) { return {aProjection->obj_->full_name()}; }
+    Projection(acmacs::chart::ProjectionModifyP projection) : wrapper(projection) {}
+      // static Rcpp::StringVector as_character(Projection* aProjection) { return {aProjection->obj_->full_name()}; }
 
-    inline std::string make_info() const { return obj_->make_info(); }
-    inline std::string comment() const { return obj_->comment(); }
+    std::string make_info() const { return obj_->make_info(); }
+    std::string comment() const { return obj_->comment(); }
 
-    inline Rcpp::NumericMatrix transformation() const
+    Rcpp::NumericMatrix transformation() const
         {
             const auto a_tr = obj_->transformation();
             Rcpp::NumericMatrix transformation(2, 2);
@@ -155,17 +155,17 @@ class Projection : public wrapper<acmacs::chart::ProjectionModify>
             }
         }
 
-    inline Rcpp::NumericMatrix layout() const { return layout_convert(obj_->layout()); }
-    inline Rcpp::NumericMatrix transformed_layout() const { return layout_convert(obj_->transformed_layout()); }
+    Rcpp::NumericMatrix layout() const { return layout_convert(obj_->layout()); }
+    Rcpp::NumericMatrix transformed_layout() const { return layout_convert(obj_->transformed_layout()); }
 
-    inline void rotate_degrees(double aDegrees) { obj_->rotate_degrees(aDegrees); }
-    inline void rotate_radians(double aRadians) { obj_->rotate_radians(aRadians); }
-    inline void flip_east_west() { obj_->flip_east_west(); }
-    inline void flip_north_south() { obj_->flip_north_south(); }
-      //inline void () { obj_->(); }
+    void rotate_degrees(double aDegrees) { obj_->rotate_degrees(aDegrees); }
+    void rotate_radians(double aRadians) { obj_->rotate_radians(aRadians); }
+    void flip_east_west() { obj_->flip_east_west(); }
+    void flip_north_south() { obj_->flip_north_south(); }
+      //void () { obj_->(); }
 
       // aPointNo is counted from 1 (as in R vector)
-    inline void move_point(size_t aPointNo, const Rcpp::NumericVector& aCoordinates)
+    void move_point(size_t aPointNo, const Rcpp::NumericVector& aCoordinates)
         {
             if (aPointNo < 1 || aPointNo > obj_->number_of_points())
                 throw std::invalid_argument("invalid point number");
@@ -174,9 +174,20 @@ class Projection : public wrapper<acmacs::chart::ProjectionModify>
             obj_->move_point(aPointNo - 1, {aCoordinates.begin(), aCoordinates.end()});
         }
 
-    inline double stress() const { return obj_->stress(); }
+    double stress() const { return obj_->stress(); }
 
-    inline std::string minimum_column_basis() const { return obj_->minimum_column_basis(); }
+    std::string minimum_column_basis() const { return obj_->minimum_column_basis(); }
+
+    void relax(std::string method, bool rough)
+        {
+            using namespace acmacs::chart;
+            optimization_method opt_method{optimization_method::alglib_cg_pca};
+            if (method == "lbfgs")
+                opt_method = optimization_method::alglib_lbfgs_pca;
+            else if (!method.empty() && method != "cg")
+                throw std::invalid_argument("invalid optimization method");
+            obj_->relax(optimization_options(opt_method, rough ? optimization_precision::rough : optimization_precision::fine));
+        }
 
  private:
     Rcpp::NumericMatrix layout_convert(std::shared_ptr<acmacs::chart::Layout> layout) const
@@ -226,11 +237,11 @@ Rcpp::NumericVector Chart::column_bases_2(size_t aProjectionNo, std::string aMin
 class PlotSpec : public wrapper<acmacs::chart::PlotSpecModify>
 {
  public:
-    inline PlotSpec(acmacs::chart::PlotSpecModifyP plot_spec) : wrapper(plot_spec) {}
+    PlotSpec(acmacs::chart::PlotSpecModifyP plot_spec) : wrapper(plot_spec) {}
 
-    inline Rcpp::List styles() const { const auto styles = obj_->all_styles(); return {styles.begin(), styles.end()}; }
+    Rcpp::List styles() const { const auto styles = obj_->all_styles(); return {styles.begin(), styles.end()}; }
 
-    inline Rcpp::IntegerVector drawing_order() const
+    Rcpp::IntegerVector drawing_order() const
         {
             const auto drawing_order = obj_->drawing_order();
             Rcpp::IntegerVector result(drawing_order.size());
@@ -239,42 +250,42 @@ class PlotSpec : public wrapper<acmacs::chart::PlotSpecModify>
             // return {drawing_order.begin(), drawing_order.end()};
         }
 
-    inline void drawing_order_raise(const Rcpp::IntegerVector& aIndexes)
+    void drawing_order_raise(const Rcpp::IntegerVector& aIndexes)
         {
             acmacs::chart::Indexes indexes(aIndexes.size());
             std::transform(aIndexes.begin(), aIndexes.end(), indexes.begin(), [](auto index) { return index - 1; });
             obj_->raise(indexes);
         }
-    inline void drawing_order_lower(const Rcpp::IntegerVector& aIndexes)
+    void drawing_order_lower(const Rcpp::IntegerVector& aIndexes)
         {
             acmacs::chart::Indexes indexes(aIndexes.size());
             std::transform(aIndexes.begin(), aIndexes.end(), indexes.begin(), [](auto index) { return index - 1; });
             obj_->lower(indexes);
         }
-    inline void drawing_order_raise_sera(const Rcpp::IntegerVector& aIndexes)
+    void drawing_order_raise_sera(const Rcpp::IntegerVector& aIndexes)
         {
             acmacs::chart::Indexes indexes(aIndexes.size());
             std::transform(aIndexes.begin(), aIndexes.end(), indexes.begin(), [](auto index) { return index - 1; });
             obj_->raise_serum(indexes);
         }
-    inline void drawing_order_lower_sera(const Rcpp::IntegerVector& aIndexes)
+    void drawing_order_lower_sera(const Rcpp::IntegerVector& aIndexes)
         {
             acmacs::chart::Indexes indexes(aIndexes.size());
             std::transform(aIndexes.begin(), aIndexes.end(), indexes.begin(), [](auto index) { return index - 1; });
             obj_->lower_serum(indexes);
         }
 
-    inline void set_style_size(const Rcpp::IntegerVector& aIndexes, double aSize)
+    void set_style_size(const Rcpp::IntegerVector& aIndexes, double aSize)
         {
             for (auto index: aIndexes)
                 obj_->size(index - 1, Pixels{aSize});
         }
-    inline void set_style_fill(const Rcpp::IntegerVector& aIndexes, std::string aFill)
+    void set_style_fill(const Rcpp::IntegerVector& aIndexes, std::string aFill)
         {
             for (auto index: aIndexes)
                 obj_->fill(index - 1, aFill);
         }
-    inline void set_style_outline(const Rcpp::IntegerVector& aIndexes, std::string aOutline)
+    void set_style_outline(const Rcpp::IntegerVector& aIndexes, std::string aOutline)
         {
             for (auto index: aIndexes)
                 obj_->outline(index - 1, aOutline);
@@ -297,9 +308,9 @@ inline std::string style_shape(acmacs::PointStyle* style) { return *style->shape
 class Titers : public wrapper<acmacs::chart::TitersModify>
 {
  public:
-    inline Titers(acmacs::chart::TitersModifyP titers) : wrapper(titers) {}
-    inline std::string titer(size_t ag_no, size_t sr_no) const { return obj_->titer(ag_no - 1, sr_no - 1); }
-    inline Rcpp::StringMatrix all() const
+    Titers(acmacs::chart::TitersModifyP titers) : wrapper(titers) {}
+    std::string titer(size_t ag_no, size_t sr_no) const { return obj_->titer(ag_no - 1, sr_no - 1); }
+    Rcpp::StringMatrix all() const
         {
             Rcpp::StringMatrix result(obj_->number_of_antigens(), obj_->number_of_sera());
             for (size_t ag_no = 0; ag_no < obj_->number_of_antigens(); ++ag_no)
@@ -390,6 +401,7 @@ RCPP_MODULE(acmacs)
             .method("flip_east_west", &Projection::flip_east_west)
             .method("flip_north_south", &Projection::flip_north_south)
             .method("move_point", &Projection::move_point)
+            .method("relax", &Projection::relax)
             ;
 
     class_<PlotSpec>("acmacs.PlotSpec")
