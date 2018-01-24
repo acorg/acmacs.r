@@ -1,14 +1,19 @@
 context("Test chart$projections relax")
 
-test_chart <- function(filename, expected_stress) {
+test_relax_existing <- function(filename) {
     chart <- new(acmacs.Chart, filename)
     projection <- chart$projections[[1]]
-    print(paste("stress", projection$stress))
-    projection$relax("cg", FALSE)
-    print(paste("stress", projection$stress))
+    stress1 = projection$stress
+    projection$relax()
+    stress2 = projection$stress
+    test_that("stress after relax", { expect_equal(stress1, stress2) })
 }
 
-test_chart("2004-3.ace", 71.790977)
-test_chart("cdc-h1pdm-2009.acd1.bz2", 738.02039)
+test_relax <- function(filename, num_optimizations) {
+}
+
+test_relax_existing("2004-3.ace")
+test_relax_existing("cdc-h1pdm-2009.acd1.bz2")
+test_relax("2004-3.ace", 20)
 
 # ======================================================================

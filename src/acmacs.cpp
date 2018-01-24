@@ -189,6 +189,8 @@ class Projection : public wrapper<acmacs::chart::ProjectionModify>
             obj_->relax(optimization_options(opt_method, rough ? optimization_precision::rough : optimization_precision::fine));
         }
 
+    void relax_default() { relax("cg", false); }
+
  private:
     Rcpp::NumericMatrix layout_convert(std::shared_ptr<acmacs::chart::Layout> layout) const
         {
@@ -402,6 +404,7 @@ RCPP_MODULE(acmacs)
             .method("flip_north_south", &Projection::flip_north_south)
             .method("move_point", &Projection::move_point)
             .method("relax", &Projection::relax)
+            .method("relax", &Projection::relax_default)
             ;
 
     class_<PlotSpec>("acmacs.PlotSpec")
