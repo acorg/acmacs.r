@@ -99,6 +99,20 @@ class Chart : public wrapper<acmacs::chart::ChartModify>
       // https://stackoverflow.com/questions/42579207/rcpp-modules-validator-function-for-exposed-constructors-with-same-number-of-pa
     template <typename T> static inline bool validate_constructor(SEXP* args, int nargs) { return nargs == 1 && Rcpp::is<T>(args[0]); }
 
+    void relax2(std::string minimum_column_basis, size_t number_of_dimensions)
+        {
+            obj_->relax(minimum_column_basis, number_of_dimensions, true,
+                        acmacs::chart::optimization_options(acmacs::chart::optimization_method::alglib_cg_pca, acmacs::chart::optimization_precision::fine, 1.0));
+            obj_->projections_modify()->sort();
+        }
+
+    void relax3(std::string minimum_column_basis, size_t number_of_dimensions, bool rough)
+        {
+            obj_->relax(minimum_column_basis, number_of_dimensions, true,
+                        acmacs::chart::optimization_options(acmacs::chart::optimization_method::alglib_cg_pca, rough ? acmacs::chart::optimization_precision::rough : acmacs::chart::optimization_precision::fine, 1.0));
+            obj_->projections_modify()->sort();
+        }
+
 }; // class Chart
 RCPP_EXPOSED_CLASS_NODECL(Chart);
 
@@ -351,6 +365,8 @@ RCPP_MODULE(acmacs)
             // .method("column_bases", &Chart::column_bases_1s, "either forced or calculated column bases with the provided minimum_column_basis")
             .method("column_bases", &Chart::column_bases_0, "either forced or calculated column bases, i.e. the ones used for stress calculation and optimization")
             .method("save", &Chart::save)
+            .method("relax", &Chart::relax2)
+            .method("relax", &Chart::relax3)
             ;
     function("as.character.Rcpp_acmacs.Chart", &Chart::as_character);
 

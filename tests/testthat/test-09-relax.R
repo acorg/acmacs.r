@@ -10,6 +10,9 @@ test_relax_existing <- function(filename) {
 }
 
 test_relax <- function(filename, num_optimizations) {
+    chart <- new(acmacs.Chart, filename)
+    chart$relax("1280", 2)
+    print(chart$projections[[1]]$stress)
 }
 
 test_relax_existing("2004-3.ace")
