@@ -11,12 +11,15 @@ test_relax_existing <- function(filename) {
 
 test_relax <- function(filename, num_optimizations) {
     chart <- new(acmacs.Chart, filename)
-    chart$relax("1280", 2)
-    print(chart$projections[[1]]$stress)
+    print(chart$number_of_projections)
+    p <- chart$relax("1280", 2)
+    print(chart$number_of_projections)
+    print(p$stress)
 }
 
 test_relax_existing("2004-3.ace")
 test_relax_existing("cdc-h1pdm-2009.acd1.bz2")
 test_relax("2004-3.ace", 20)
+test_relax("cdc-h1pdm-2009.acd1.bz2", 20)
 
 # ======================================================================

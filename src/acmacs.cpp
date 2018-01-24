@@ -71,6 +71,7 @@ template <typename T> class wrapper
 
 class PlotSpec;
 class Titers;
+class Projection;
 
 class Chart : public wrapper<acmacs::chart::ChartModify>
 {
@@ -99,19 +100,8 @@ class Chart : public wrapper<acmacs::chart::ChartModify>
       // https://stackoverflow.com/questions/42579207/rcpp-modules-validator-function-for-exposed-constructors-with-same-number-of-pa
     template <typename T> static inline bool validate_constructor(SEXP* args, int nargs) { return nargs == 1 && Rcpp::is<T>(args[0]); }
 
-    void relax2(std::string minimum_column_basis, size_t number_of_dimensions)
-        {
-            obj_->relax(minimum_column_basis, number_of_dimensions, true,
-                        acmacs::chart::optimization_options(acmacs::chart::optimization_method::alglib_cg_pca, acmacs::chart::optimization_precision::fine, 1.0));
-            obj_->projections_modify()->sort();
-        }
-
-    void relax3(std::string minimum_column_basis, size_t number_of_dimensions, bool rough)
-        {
-            obj_->relax(minimum_column_basis, number_of_dimensions, true,
-                        acmacs::chart::optimization_options(acmacs::chart::optimization_method::alglib_cg_pca, rough ? acmacs::chart::optimization_precision::rough : acmacs::chart::optimization_precision::fine, 1.0));
-            obj_->projections_modify()->sort();
-        }
+    Projection relax2(std::string minimum_column_basis, size_t number_of_dimensions);
+    Projection relax3(std::string minimum_column_basis, size_t number_of_dimensions, bool rough);
 
 }; // class Chart
 RCPP_EXPOSED_CLASS_NODECL(Chart);
@@ -338,6 +328,22 @@ class Titers : public wrapper<acmacs::chart::TitersModify>
 RCPP_EXPOSED_CLASS_NODECL(Titers);
 
 inline Titers Chart::titers() { return obj_->titers_modify(); }
+
+inline Projection Chart::relax2(std::string minimum_column_basis, size_t number_of_dimensions)
+{
+    auto [status, projection] = obj_->relax(minimum_column_basis, number_of_dimensions, true,
+                                            acmacs::chart::optimization_options(acmacs::chart::optimization_method::alglib_cg_pca, acmacs::chart::optimization_precision::fine, 1.0));
+      // obj_->projections_modify()->sort();
+    return projection;
+}
+
+inline Projection Chart::relax3(std::string minimum_column_basis, size_t number_of_dimensions, bool rough)
+{
+    auto [status, projection] = obj_->relax(minimum_column_basis, number_of_dimensions, true,
+                                            acmacs::chart::optimization_options(acmacs::chart::optimization_method::alglib_cg_pca, rough ? acmacs::chart::optimization_precision::rough : acmacs::chart::optimization_precision::fine, 1.0));
+      // obj_->projections_modify()->sort();
+    return projection;
+}
 
 // ----------------------------------------------------------------------
 
