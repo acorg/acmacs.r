@@ -12,9 +12,11 @@ test_relax_existing <- function(filename) {
 test_relax <- function(filename, num_optimizations) {
     chart <- new(acmacs.Chart, filename)
     print(chart$number_of_projections)
-    p <- chart$relax("1280", 2)
+    for (iter in 1:num_optimizations) {
+        p <- chart$relax("1280", 2)
+        print(p$stress)
+    }
     print(chart$number_of_projections)
-    print(p$stress)
 }
 
 test_relax_existing("2004-3.ace")
