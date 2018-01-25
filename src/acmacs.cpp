@@ -102,6 +102,7 @@ class Chart : public wrapper<acmacs::chart::ChartModify>
 
     Projection relax2(std::string minimum_column_basis, size_t number_of_dimensions);
     Projection relax3(std::string minimum_column_basis, size_t number_of_dimensions, bool rough);
+    void sort_projections() { obj_->projections_modify()->sort(); }
 
 }; // class Chart
 RCPP_EXPOSED_CLASS_NODECL(Chart);
@@ -373,6 +374,7 @@ RCPP_MODULE(acmacs)
             .method("save", &Chart::save)
             .method("relax", &Chart::relax2)
             .method("relax", &Chart::relax3)
+            .method("sort_projections", &Chart::sort_projections)
             ;
     function("as.character.Rcpp_acmacs.Chart", &Chart::as_character);
 
