@@ -18,14 +18,17 @@
   flipping the map, moving points.
     \item Reading and modifying plot spec
     \item Reading titers
+    \item Optimization from scratch
+    \item Optimization from existing layout
     }
   \bold{Planned features:}
   \enumerate{
-    \item Optimization from scratch
-    \item Optimization from existing layout
     \item Creating antigenic tables from scratch
     \item Modifying antigens and sera
     \item Modifying titers
+    \item Making procrustes
+    \item Reporting error line data
+    \item Reporting blob data
     }
 }
 \details{

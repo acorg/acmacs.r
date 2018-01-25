@@ -102,6 +102,7 @@ class Chart : public wrapper<acmacs::chart::ChartModify>
 
     Projection relax2(std::string minimum_column_basis, size_t number_of_dimensions);
     Projection relax3(std::string minimum_column_basis, size_t number_of_dimensions, bool rough);
+    void relax_many(std::string minimum_column_basis, size_t number_of_dimensions, size_t number_of_optimizations, bool rough);
     void sort_projections() { obj_->projections_modify()->sort(); }
 
 }; // class Chart
@@ -346,6 +347,15 @@ inline Projection Chart::relax3(std::string minimum_column_basis, size_t number_
     return projection;
 }
 
+inline void Chart::relax_many(std::string minimum_column_basis, size_t number_of_dimensions, size_t number_of_optimizations, bool rough)
+{
+    acmacs::chart::optimization_options options(acmacs::chart::optimization_method::alglib_cg_pca, rough ? acmacs::chart::optimization_precision::rough : acmacs::chart::optimization_precision::fine, 1.0);
+    for (size_t attempt = 0; attempt < number_of_optimizations; ++attempt) {
+        obj_->relax(minimum_column_basis, number_of_dimensions, true, options);
+    }
+    obj_->projections_modify()->sort();
+}
+
 // ----------------------------------------------------------------------
 
 RCPP_MODULE(acmacs)
@@ -374,9 +384,10 @@ RCPP_MODULE(acmacs)
             .method("save", &Chart::save)
             .method("relax", &Chart::relax2)
             .method("relax", &Chart::relax3)
+            .method("relax_many", &Chart::relax_many, "generate maps multiple times from random starts\n\targuments:\n\tminimum column basis, e.g. \"none\", \"1280\"\n\tnumber of dimensions, e.g. 2\n\tnumber of optimizations, e.g. 10\n\tuse rough optimization (30% faster): TRUE or FALSE\n")
             .method("sort_projections", &Chart::sort_projections)
             ;
-    function("as.character.Rcpp_acmacs.Chart", &Chart::as_character);
+    function("as.character.Rcpp_acmacs.Chart", &Chart::as_character, "as.character.Rcpp_acmacs.Chart(chart) - shows brief info about passed chart");
 
     class_<Antigen>("acmacs.Antigen")
             .property<std::string>("name", &Antigen::getT<std::string, &acmacs::chart::Antigen::name>)

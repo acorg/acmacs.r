@@ -51,6 +51,30 @@ chart <- new(acmacs.Chart, raw_data)
   \item{save(filename)}{Save (modified) chart into a file, output
   format is determined by filename suffix: .ace, .save, .save.xz.}
 
+  \item{relax(minimum_column_basis, number_of_dimensions)}{creates new
+  projection with random layout and optimizes it.\cr \bold{minimum_column_basis}
+  is a string, e.g. "none" or "1280".\cr \bold{number_of_dimensions} is a number,
+  e.g. 2 or 3.}
+
+  \item{relax(minimum_column_basis,\cr number_of_dimensions,\cr
+  rough)}{creates new projection with random layout and optimizes
+  it.\cr \bold{minimum_column_basis} is a string, e.g. "none" or
+  "1280".\cr \bold{number_of_dimensions} is a number, e.g. 2 or 3.\cr \bold{rough} is
+  boolean, when TRUE optimization is about 30\% faster, result is very
+  slightly worse, visually no distinguishable.}
+
+  \item{relax_many(minimum_column_basis,\cr number_of_dimensions,\cr
+  number_of_optimizations,\cr rough)}{creates new projection with random
+  layout and optimizes it.\cr \bold{minimum_column_basis} is a string,
+  e.g. "none" or "1280".\cr \bold{number_of_dimensions} is a number,
+  e.g. 2 or 3.\cr \bold{number_of_optimizations} is a number, e.g. 10 or
+  100.\cr \bold{rough} is boolean, when TRUE optimization is about 30\%
+  faster, result is slightly worse, visually no distinguishable.}
+
+  \item{sort_projections()}{sorts projections by stress, in the result
+    the first projection (\code{chart$projections[[1]]}) will be the
+    bestone}
+
 }
 \section{Column bases}{
   Column bases is a propery of a projection. Formally, chart may contain

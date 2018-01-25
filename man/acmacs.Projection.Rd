@@ -53,6 +53,11 @@ projection$stress
     non-transformed layout by changing point_no (positive integer)
     coordinates (numeric vector). The number of the first point is 1.}
 
+  \item{relax()}{relaxes projection from the current layout}
+
+  \item{relax(method, rough)}{relaxes projection from the current
+  layout\cr\bold{method} is a string: "cg" or "lbfgs"\cr\bold{rough} is boolean}
+
 }
 \examples{
   # load chart from file

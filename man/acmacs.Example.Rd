@@ -202,6 +202,27 @@ chart$titers$all()
 # invariant
 identical(sapply(1:chart$number_of_antigens, function(no) { chart$titers$titer(no, 1) }), chart$titers$all()[,1])
 }\cr
+\bold{# ========= Making maps =========}\cr
+\preformatted{
+# make new projection in 2d without minimum column basis with random layout and relax it
+new_projection <- chart$relax("none", 2)
+new_projection$stress
+# make new projection in 2d without minimum column basis with random layout and relax it
+# use rough optimization which is 30\% faster
+new_projection <- chart$relax("none", 2, TRUE)
+new_projection$stress
+# sort all projections of the chart by stress
+chart$sort_projections()
+# make 10 new projections in 2d without minimum column basis with random layout and relax them using fine optimization
+chart$relax_many("none", 2, 10, FALSE)
+# get all stresses
+sapply(chart$projections, function(p) {p$stress})
+# relax existing projection, e.g. upon moving the first antigen
+chart$projections[[1]]$move_point(1, c(100, 100))
+chart$projections[[1]]$stress
+chart$projections[[1]]$relax()
+chart$projections[[1]]$stress
+}\cr
 }
 \docType{package}
 \keyword{ package }
