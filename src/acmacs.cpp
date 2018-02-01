@@ -291,12 +291,12 @@ class PlotSpec : public wrapper<acmacs::chart::PlotSpecModify>
     void set_style_fill(const Rcpp::IntegerVector& aIndexes, std::string aFill)
         {
             for (auto index: aIndexes)
-                obj_->fill(index - 1, aFill);
+                obj_->fill(index - 1, Color(aFill));
         }
     void set_style_outline(const Rcpp::IntegerVector& aIndexes, std::string aOutline)
         {
             for (auto index: aIndexes)
-                obj_->outline(index - 1, aOutline);
+                obj_->outline(index - 1, Color(aOutline));
         }
 };
 RCPP_EXPOSED_CLASS_NODECL(PlotSpec);
@@ -306,8 +306,8 @@ inline PlotSpec Chart::plot_spec() { return obj_->plot_spec_modify(); }
 RCPP_EXPOSED_CLASS_NODECL(acmacs::PointStyle);
 inline auto style_shown(acmacs::PointStyle* style) { return *style->shown; }
 inline auto style_size(acmacs::PointStyle* style) { return style->size->value(); }
-inline std::string style_fill(acmacs::PointStyle* style) { return *style->fill; }
-inline std::string style_outline(acmacs::PointStyle* style) { return *style->outline; }
+inline std::string style_fill(acmacs::PointStyle* style) { return style->fill->to_string(); }
+inline std::string style_outline(acmacs::PointStyle* style) { return style->outline->to_string(); }
 inline auto style_outline_width(acmacs::PointStyle* style) { return style->outline_width->value(); }
 inline auto style_rotation(acmacs::PointStyle* style) { return style->rotation->value(); }
 inline auto style_aspect(acmacs::PointStyle* style) { return style->aspect->value(); }
