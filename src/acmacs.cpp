@@ -4,6 +4,7 @@
 #include "acmacs-chart-2/chart-modify.hh"
 #include "acmacs-chart-2/factory-import.hh"
 #include "acmacs-chart-2/factory-export.hh"
+#include "acmacs-chart-2/procrustes.hh"
 
 // ----------------------------------------------------------------------
 
@@ -242,6 +243,8 @@ Rcpp::NumericVector Chart::column_bases_2(size_t aProjectionNo, std::string aMin
 
 } // Chart::column_bases_2
 
+// ----------------------------------------------------------------------
+
 class PlotSpec : public wrapper<acmacs::chart::PlotSpecModify>
 {
  public:
@@ -313,6 +316,8 @@ inline auto style_rotation(acmacs::PointStyle* style) { return style->rotation->
 inline auto style_aspect(acmacs::PointStyle* style) { return style->aspect->value(); }
 inline std::string style_shape(acmacs::PointStyle* style) { return *style->shape; }
 
+// ----------------------------------------------------------------------
+
 class Titers : public wrapper<acmacs::chart::TitersModify>
 {
  public:
@@ -354,6 +359,51 @@ inline void Chart::relax_many(std::string minimum_column_basis, size_t number_of
         obj_->relax(minimum_column_basis, number_of_dimensions, true, options);
     }
     obj_->projections_modify()->sort();
+}
+
+// ----------------------------------------------------------------------
+
+class ProcrustesData : public wrapper<acmacs::chart::ProcrustesData>
+{
+ public:
+    ProcrustesData(std::shared_ptr<acmacs::chart::ProcrustesData> src) : wrapper(src) {}
+    double rms() const { return obj_->rms; }
+
+    Rcpp::NumericMatrix transformation() const
+        {
+            const auto& a_tr = obj_->transformation;
+            Rcpp::NumericMatrix transformation(a_tr.number_of_dimensions() + 1, a_tr.number_of_dimensions() + 1);
+            for (size_t row = 0; row < a_tr.number_of_dimensions(); ++row) {
+                for (size_t col = 0; col < a_tr.number_of_dimensions(); ++col)
+                    transformation(row, col) = a_tr(row, col);
+                transformation(row, a_tr.number_of_dimensions()) = 1.0;
+            }
+            for (size_t col = 0; col < a_tr.number_of_dimensions(); ++col)
+                transformation(a_tr.number_of_dimensions(), col) = a_tr.translation(col);
+            transformation(a_tr.number_of_dimensions(), a_tr.number_of_dimensions()) = 1.0;
+            return transformation;
+        }
+
+};
+RCPP_EXPOSED_CLASS_NODECL(ProcrustesData);
+
+inline ProcrustesData procrustes(Projection primary, Projection secondary, bool scaling, std::string match)
+{
+    auto match_level{acmacs::chart::CommonAntigensSera::match_level_t::automatic};
+    if (!match.empty()) {
+        switch (match[0]) {
+          case 's': match_level = acmacs::chart::CommonAntigensSera::match_level_t::strict; break;
+          case 'r': match_level = acmacs::chart::CommonAntigensSera::match_level_t::relaxed; break;
+          case 'i': match_level = acmacs::chart::CommonAntigensSera::match_level_t::ignored; break;
+          case 'a': match_level = acmacs::chart::CommonAntigensSera::match_level_t::automatic; break;
+          default:
+              std::cerr << "Unrecognized --match argument, automatic assumed" << '\n';
+              break;
+        }
+    }
+
+    const acmacs::chart::CommonAntigensSera common(primary.obj_->chart(), secondary.obj_->chart(), match_level);
+    return ProcrustesData(std::make_shared<acmacs::chart::ProcrustesData>(acmacs::chart::procrustes(*primary.obj_, *secondary.obj_, common.points(), scaling ? acmacs::chart::procrustes_scaling_t::yes : acmacs::chart::procrustes_scaling_t::no)));
 }
 
 // ----------------------------------------------------------------------
@@ -470,6 +520,13 @@ RCPP_MODULE(acmacs)
     class_<Titers>("acmacs.Titers")
             .method("titer", &Titers::titer)
             .method("all", &Titers::all)
+            ;
+
+    function("acmacs.procrustes", &procrustes);
+
+    class_<ProcrustesData>("acmacs.ProcrustesData")
+            .property("rms", &ProcrustesData::rms, nullptr)
+            .property("transformation", &ProcrustesData::transformation, nullptr)
             ;
 }
 
