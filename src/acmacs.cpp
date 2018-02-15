@@ -126,7 +126,7 @@ class Serum : public wrapper<acmacs::chart::Serum>
 RCPP_EXPOSED_CLASS_NODECL(Serum);
 
 RCPP_EXPOSED_CLASS_NODECL(acmacs::chart::Passage);
-inline Rcpp::StringVector passage_as_character(acmacs::chart::Passage* aPassage) { return {aPassage->data()}; }
+inline Rcpp::StringVector passage_as_character(acmacs::chart::Passage* aPassage) { return {*aPassage}; }
 
 class Projection : public wrapper<acmacs::chart::ProjectionModify>
 {
