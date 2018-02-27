@@ -223,6 +223,22 @@ chart$projections[[1]]$stress
 chart$projections[[1]]$relax()
 chart$projections[[1]]$stress
 }\cr
+\bold{# ========= Procrustes =========}\cr
+\preformatted{
+# make procrustes between two projections of the same or different charts
+# 3rd argument is scaling (usually false)
+# 4th argument is passage and serum_id matching: "auto", "strict", "relaxed", "ignore"
+#   (just the first letter is enough: "a", "s", "r", "i")
+# function returns acmacs.ProcrustesData object
+pc12 <- acmacs.procrustes(chart$projections[[1]], chart$projections[[2]], FALSE, "auto")
+# get RMS value (real) of the procrustes
+rms <- pc12$rms
+# get transformation matrix that rotates the second projection to be as
+# close as possible to the first projection.
+# result is a 3x3 matrix, where the third column is 1, and the third row
+# containts translation.
+transformation_matrix <- pc12$transformation
+}\cr
 }
 \docType{package}
 \keyword{ package }
