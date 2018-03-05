@@ -408,9 +408,19 @@ inline ProcrustesData procrustes(Projection primary, Projection secondary, bool 
 
 // ----------------------------------------------------------------------
 
+static void init_cout_cerr()
+{
+    std::cout.rdbuf(Rcpp::Rcout.rdbuf());
+    std::cerr.rdbuf(Rcpp::Rcerr.rdbuf());
+}
+
+// ----------------------------------------------------------------------
+
 RCPP_MODULE(acmacs)
 {
     using namespace Rcpp;
+
+    function("acmacs.init_cout_cerr", &init_cout_cerr, "automatically called on module loading");
 
     class_<Chart>("acmacs.Chart")
             .constructor<std::string>("read chart data from a file", &Chart::validate_constructor<std::string>)
