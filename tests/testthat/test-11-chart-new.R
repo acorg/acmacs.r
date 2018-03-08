@@ -1,0 +1,7 @@
+context("Test creating chart from scratch")
+
+chart1 <- new(acmacs.Chart, 5, 3)
+test_that("number of antigens", { expect_equal(chart1$number_of_antigens, 5) })
+test_that("number of sera", { expect_equal(chart1$number_of_sera, 3) })
+test_that("number of points", { expect_equal(chart1$number_of_points, chart1$number_of_antigens + chart1$number_of_sera) })
+test_that("number of projections", { expect_equal(chart1$number_of_projections, 0) })

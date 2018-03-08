@@ -81,6 +81,8 @@ class Chart : public wrapper<acmacs::chart::ChartModify>
         : wrapper(std::make_shared<acmacs::chart::ChartModify>(acmacs::chart::import_from_file(aFilename, acmacs::chart::Verify::None, report_time::No))) {}
     Chart(Rcpp::RawVector aData)
         : wrapper(std::make_shared<acmacs::chart::ChartModify>(acmacs::chart::import_from_data(std::string_view(reinterpret_cast<const char*>(aData.cbegin()), aData.size()), acmacs::chart::Verify::None, report_time::No))) {}
+    Chart(int number_of_antigens, int number_of_sera)
+        : wrapper(std::make_shared<acmacs::chart::ChartNew>(number_of_antigens, number_of_sera)) {}
     std::string name() const { return obj_->make_name(); }
     std::string info() const { return obj_->make_info(); }
     std::string lineage() const { return obj_->lineage(); }
@@ -108,6 +110,8 @@ class Chart : public wrapper<acmacs::chart::ChartModify>
 
 }; // class Chart
 RCPP_EXPOSED_CLASS_NODECL(Chart);
+
+template <> inline bool Chart::validate_constructor<int>(SEXP* args, int nargs) { return nargs == 2 && Rcpp::is<double>(args[0]) && Rcpp::is<double>(args[1]); }
 
 class Antigen : public wrapper<acmacs::chart::Antigen>
 {
@@ -425,6 +429,7 @@ RCPP_MODULE(acmacs)
     class_<Chart>("acmacs.Chart")
             .constructor<std::string>("read chart data from a file", &Chart::validate_constructor<std::string>)
             .constructor<Rcpp::RawVector>("read chart from raw inline data", &Chart::validate_constructor<Rcpp::RawVector>)
+            .constructor<int, int>("create new chart from scratch", &Chart::validate_constructor<int>)
             .property<size_t>("number_of_antigens", &Chart::number_of_antigens)
             .property<size_t>("number_of_sera", &Chart::number_of_sera)
             .property<size_t>("number_of_points", &Chart::number_of_points)
