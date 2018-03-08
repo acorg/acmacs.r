@@ -12,6 +12,11 @@ ag$lineage <- "YAMAGATA"
 ag$reassortant <- "NYMC-000"
 ag$reference <- TRUE
 ag$set_passage("E4")
+ag$add_annotation("NOT-NEW")
+ag$add_annotation("*HOT*")
+ag$add_annotation("*HOT*")
+ag$add_annotation("NOT-NEW")
+ag$remove_annotation("NOT-NEW")
 
 chart1$antigens[[1]]$set_name("AG-1set")
 # fails: property is read-only: chart1$antigens[[1]]$name <- "AG-1A"
@@ -23,6 +28,7 @@ sr$reassortant <- "HGR"
 sr$set_passage("E4")
 sr$set_serum_id("F18/18")
 sr$set_serum_species("VULCAN")
+sr$add_annotation("NOT-NEW")
 
 cat(sprintf("after mods:\n antigens (%d): \"%s\"\n sera (%d): \"%s\"\n", chart1$number_of_antigens, paste0(sapply(chart1$antigens, toString), collapse="\" \""), chart1$number_of_sera, paste0(sapply(chart1$sera, toString), collapse="\" \"")))
 

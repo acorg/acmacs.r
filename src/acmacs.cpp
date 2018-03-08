@@ -158,6 +158,8 @@ class Antigen : public wrapper<acmacs::chart::AntigenModify>
     void set_reference(bool reference) { obj_->reference(reference); }
     Rcpp::StringVector get_lab_ids() const { return getStringVector(obj_->lab_ids()); }
     Rcpp::StringVector get_annotations() const { return getStringVector(obj_->annotations()); }
+    void add_annotation(std::string annotation) { obj_->add_annotation(annotation); }
+    void remove_annotation(std::string annotation) { obj_->remove_annotation(annotation); }
 
     static inline Rcpp::StringVector as_character(Antigen* aAntigen) { return {aAntigen->obj_->full_name()}; }
 };
@@ -182,6 +184,8 @@ class Serum : public wrapper<acmacs::chart::SerumModify>
     std::string get_serum_species() const { return obj_->serum_species(); }
     void set_serum_species(std::string serum_species) { obj_->serum_species(serum_species); }
     Rcpp::StringVector get_annotations() const { return getStringVector(obj_->annotations()); }
+    void add_annotation(std::string annotation) { obj_->add_annotation(annotation); }
+    void remove_annotation(std::string annotation) { obj_->remove_annotation(annotation); }
 
     static inline Rcpp::StringVector as_character(Serum* aSerum) { return {aSerum->obj_->full_name()}; }
 };
@@ -531,6 +535,8 @@ RCPP_MODULE(acmacs)
             .method("set_reference", &Antigen::set_reference)
             .property<Rcpp::StringVector>("lab_ids", &Antigen::get_lab_ids)
             .property<Rcpp::StringVector>("annotations", &Antigen::get_annotations)
+            .method("add_annotation", &Antigen::add_annotation)
+            .method("remove_annotation", &Antigen::remove_annotation)
             ;
     function("as.character.Rcpp_acmacs.Antigen", &Antigen::as_character);
 
@@ -545,11 +551,13 @@ RCPP_MODULE(acmacs)
             .method("set_lineage", &Serum::set_lineage)
             .property("reassortant", &Serum::get_reassortant, &Serum::set_reassortant)
             .method("set_reassortant", &Serum::set_reassortant)
-            .property<Rcpp::StringVector>("annotations", &Serum::get_annotations)
             .property("serum_id", &Serum::get_serum_id, &Serum::set_serum_id)
             .method("set_serum_id", &Serum::set_serum_id)
             .property("serum_species", &Serum::get_serum_species, &Serum::set_serum_species)
             .method("set_serum_species", &Serum::set_serum_species)
+            .property<Rcpp::StringVector>("annotations", &Serum::get_annotations)
+            .method("add_annotation", &Serum::add_annotation)
+            .method("remove_annotation", &Serum::remove_annotation)
             ;
     function("as.character.Rcpp_acmacs.Serum", &Serum::as_character);
 
