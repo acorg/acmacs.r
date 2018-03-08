@@ -121,7 +121,8 @@ class Chart : public wrapper<acmacs::chart::ChartModify>
     Titers titers();
     static Rcpp::StringVector as_character(Chart* aChart) { return {aChart->name()}; }
 
-    Rcpp::List get_antigens() const; // { return getList(obj_->antigens_modify()); }
+    Rcpp::List get_antigens() const;
+    Rcpp::List get_sera() const;
     void save(std::string aFilename) { acmacs::chart::export_factory(*obj_, aFilename, "acmacs.r", report_time::No); }
 
       // https://stackoverflow.com/questions/42579207/rcpp-modules-validator-function-for-exposed-constructors-with-same-number-of-pa
@@ -157,15 +158,31 @@ class Antigen : public wrapper<acmacs::chart::AntigenModify>
     void set_reference(bool reference) { obj_->reference(reference); }
     Rcpp::StringVector get_lab_ids() const { return getStringVector(obj_->lab_ids()); }
     Rcpp::StringVector get_annotations() const { return getStringVector(obj_->annotations()); }
-    static inline Rcpp::StringVector as_character(Antigen* aAntigen) { return {aAntigen->obj_->full_name()}; }
 
+    static inline Rcpp::StringVector as_character(Antigen* aAntigen) { return {aAntigen->obj_->full_name()}; }
 };
 RCPP_EXPOSED_CLASS_NODECL(Antigen);
 
-class Serum : public wrapper<acmacs::chart::Serum>
+class Serum : public wrapper<acmacs::chart::SerumModify>
 {
  public:
-    Serum(acmacs::chart::SerumP serum) : wrapper(serum) {}
+    Serum(acmacs::chart::SerumModifyP serum) : wrapper(serum) {}
+    std::string get_name() { return obj_->name(); }
+    void set_name(std::string name) { obj_->name(name); }
+    std::string get_full_name() const { return obj_->full_name(); }
+    std::string get_abbreviated_name() const { return obj_->abbreviated_name(); }
+    std::string get_lineage() const { return obj_->lineage(); }
+    void set_lineage(std::string lineage) { obj_->lineage(lineage); }
+    std::string get_reassortant() const { return obj_->reassortant(); }
+    void set_reassortant(std::string reassortant) { obj_->reassortant(reassortant); }
+    acmacs::chart::Passage get_passage() const { return obj_->passage(); }
+    void set_passage(std::string passage) { return obj_->passage(passage); }
+    std::string get_serum_id() const { return obj_->serum_id(); }
+    void set_serum_id(std::string serum_id) { obj_->serum_id(serum_id); }
+    std::string get_serum_species() const { return obj_->serum_species(); }
+    void set_serum_species(std::string serum_species) { obj_->serum_species(serum_species); }
+    Rcpp::StringVector get_annotations() const { return getStringVector(obj_->annotations()); }
+
     static inline Rcpp::StringVector as_character(Serum* aSerum) { return {aSerum->obj_->full_name()}; }
 };
 RCPP_EXPOSED_CLASS_NODECL(Serum);
@@ -173,6 +190,7 @@ RCPP_EXPOSED_CLASS_NODECL(Serum);
 RCPP_EXPOSED_CLASS_NODECL(acmacs::chart::Passage);
 inline Rcpp::StringVector passage_as_character(acmacs::chart::Passage* aPassage) { return {*aPassage}; }
 inline Rcpp::List Chart::get_antigens() const { return getList<Antigen>(obj_->antigens_modify()); }
+inline Rcpp::List Chart::get_sera() const { return getList<Serum>(obj_->sera_modify()); }
 
 class Projection : public wrapper<acmacs::chart::ProjectionModify>
 {
@@ -480,8 +498,7 @@ RCPP_MODULE(acmacs)
             .property<std::string>("info", &Chart::info, "multi-line string brifly describing data stored in the chart")
             .property<std::string>("name", &Chart::name)
             .property<Rcpp::List>("antigens", &Chart::get_antigens)
-            // .property<Rcpp::List>("antigens", &Chart::getList<Antigen, &acmacs::chart::ChartModify::antigens_modify>, "antigens")
-            .property<Rcpp::List>("sera", &Chart::getList<Serum, &acmacs::chart::ChartModify::sera>)
+            .property<Rcpp::List>("sera", &Chart::get_sera)
             .property<Rcpp::List>("projections", &Chart::getListViaAt<Projection, &acmacs::chart::ChartModify::projections_modify>)
             .property<PlotSpec>("plot_spec", &Chart::plot_spec)
             .property<Titers>("titers", &Chart::titers)
@@ -501,8 +518,8 @@ RCPP_MODULE(acmacs)
             .property("name", &Antigen::get_name, &Antigen::set_name, "antigen name")
             .method("set_name", &Antigen::set_name)
             .property("full_name", &Antigen::get_full_name)
-            .property<std::string>("abbreviated_name", &Antigen::get_abbreviated_name)
-            .property<std::string>("date", &Antigen::get_date, &Antigen::set_date)
+            .property("abbreviated_name", &Antigen::get_abbreviated_name)
+            .property("date", &Antigen::get_date, &Antigen::set_date)
             .method("set_date", &Antigen::set_date)
             .property<acmacs::chart::Passage>("passage", &Antigen::get_passage)
             .method("set_passage", &Antigen::set_passage)
@@ -518,15 +535,21 @@ RCPP_MODULE(acmacs)
     function("as.character.Rcpp_acmacs.Antigen", &Antigen::as_character);
 
     class_<Serum>("acmacs.Serum")
-            .property<std::string>("name", &Serum::getT<std::string, &acmacs::chart::Serum::name>)
-            .property<std::string>("full_name", &Serum::getT<std::string, &acmacs::chart::Serum::full_name>)
-            .property<std::string>("abbreviated_name", &Serum::getT<std::string, &acmacs::chart::Serum::abbreviated_name>)
-            .property<std::string>("passage", &Serum::getT<std::string, &acmacs::chart::Serum::passage>)
-            .property<std::string>("lineage", &Serum::getT<std::string, &acmacs::chart::Serum::lineage>)
-            .property<std::string>("reassortant", &Serum::getT<std::string, &acmacs::chart::Serum::reassortant>)
-            .property<Rcpp::StringVector>("annotations", &Serum::getSV<&acmacs::chart::Serum::annotations>)
-            .property<std::string>("serum_id", &Serum::getT<std::string, &acmacs::chart::Serum::serum_id>)
-            .property<std::string>("serum_species", &Serum::getT<std::string, &acmacs::chart::Serum::serum_species>)
+            .property("name", &Serum::get_name, &Serum::set_name)
+            .method("set_name", &Serum::set_name)
+            .property("full_name", &Serum::get_full_name)
+            .property("abbreviated_name", &Serum::get_abbreviated_name)
+            .property("passage", &Serum::get_passage)
+            .method("set_passage", &Serum::set_passage)
+            .property("lineage", &Serum::get_lineage, &Serum::set_lineage)
+            .method("set_lineage", &Serum::set_lineage)
+            .property("reassortant", &Serum::get_reassortant, &Serum::set_reassortant)
+            .method("set_reassortant", &Serum::set_reassortant)
+            .property<Rcpp::StringVector>("annotations", &Serum::get_annotations)
+            .property("serum_id", &Serum::get_serum_id, &Serum::set_serum_id)
+            .method("set_serum_id", &Serum::set_serum_id)
+            .property("serum_species", &Serum::get_serum_species, &Serum::set_serum_species)
+            .method("set_serum_species", &Serum::set_serum_species)
             ;
     function("as.character.Rcpp_acmacs.Serum", &Serum::as_character);
 

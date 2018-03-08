@@ -16,6 +16,14 @@ ag$set_passage("E4")
 chart1$antigens[[1]]$set_name("AG-1set")
 # fails: property is read-only: chart1$antigens[[1]]$name <- "AG-1A"
 
+sr <- chart1$sera[[2]]
+sr$name <- "SR-2"
+sr$lineage <- "YAMAGATA"
+sr$reassortant <- "HGR"
+sr$set_passage("E4")
+sr$set_serum_id("F18/18")
+sr$set_serum_species("VULCAN")
+
 cat(sprintf("after mods:\n antigens (%d): \"%s\"\n sera (%d): \"%s\"\n", chart1$number_of_antigens, paste0(sapply(chart1$antigens, toString), collapse="\" \""), chart1$number_of_sera, paste0(sapply(chart1$sera, toString), collapse="\" \"")))
 
 cat(sprintf("\n\n"))
