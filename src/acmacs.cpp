@@ -146,10 +146,15 @@ class Antigen : public wrapper<acmacs::chart::AntigenModify>
     std::string get_full_name() const { return obj_->full_name(); }
     std::string get_abbreviated_name() const { return obj_->abbreviated_name(); }
     std::string get_date() const { return obj_->date(); }
+    void set_date(std::string date) { obj_->date(date); }
     std::string get_lineage() const { return obj_->lineage(); }
+    void set_lineage(std::string lineage) { obj_->lineage(lineage); }
     std::string get_reassortant() const { return obj_->reassortant(); }
+    void set_reassortant(std::string reassortant) { obj_->reassortant(reassortant); }
     acmacs::chart::Passage get_passage() const { return obj_->passage(); }
+    void set_passage(std::string passage) { return obj_->passage(passage); }
     bool get_reference() const { return obj_->reference(); }
+    void set_reference(bool reference) { obj_->reference(reference); }
     Rcpp::StringVector get_lab_ids() const { return getStringVector(obj_->lab_ids()); }
     Rcpp::StringVector get_annotations() const { return getStringVector(obj_->annotations()); }
     static inline Rcpp::StringVector as_character(Antigen* aAntigen) { return {aAntigen->obj_->full_name()}; }
@@ -494,13 +499,19 @@ RCPP_MODULE(acmacs)
 
     class_<Antigen>("acmacs.Antigen")
             .property("name", &Antigen::get_name, &Antigen::set_name, "antigen name")
-            .property<std::string>("full_name", &Antigen::get_full_name)
+            .method("set_name", &Antigen::set_name)
+            .property("full_name", &Antigen::get_full_name)
             .property<std::string>("abbreviated_name", &Antigen::get_abbreviated_name)
-            .property<std::string>("date", &Antigen::get_date)
+            .property<std::string>("date", &Antigen::get_date, &Antigen::set_date)
+            .method("set_date", &Antigen::set_date)
             .property<acmacs::chart::Passage>("passage", &Antigen::get_passage)
-            .property<std::string>("lineage", &Antigen::get_lineage)
-            .property<std::string>("reassortant", &Antigen::get_reassortant)
-            .property<bool>("reference", &Antigen::get_reference)
+            .method("set_passage", &Antigen::set_passage)
+            .property("lineage", &Antigen::get_lineage, &Antigen::set_lineage)
+            .method("set_lineage", &Antigen::set_lineage)
+            .property("reassortant", &Antigen::get_reassortant, &Antigen::set_reassortant)
+            .method("set_reassortant", &Antigen::set_reassortant)
+            .property("reference", &Antigen::get_reference, &Antigen::set_reference)
+            .method("set_reference", &Antigen::set_reference)
             .property<Rcpp::StringVector>("lab_ids", &Antigen::get_lab_ids)
             .property<Rcpp::StringVector>("annotations", &Antigen::get_annotations)
             ;
