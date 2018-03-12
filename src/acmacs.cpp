@@ -204,7 +204,12 @@ class Chart : public wrapper<acmacs::chart::ChartModify>
 }; // class Chart
 RCPP_EXPOSED_CLASS_NODECL(Chart);
 
-template <> inline bool Chart::validate_constructor<int>(SEXP* args, int nargs) { return nargs == 2 && Rcpp::is<double>(args[0]) && Rcpp::is<double>(args[1]); }
+template <> inline bool Chart::validate_constructor<int>(SEXP* args, int nargs)
+{
+    return nargs == 2
+            && (Rcpp::is<double>(args[0]) || Rcpp::is<int>(args[0]))
+            && (Rcpp::is<double>(args[1]) || Rcpp::is<int>(args[1]));
+}
 
 RCPP_EXPOSED_CLASS_NODECL(acmacs::chart::Passage);
 inline Rcpp::StringVector passage_as_character(acmacs::chart::Passage* aPassage) { return {*aPassage}; }

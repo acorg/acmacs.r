@@ -10,6 +10,28 @@ print_table <- function(chart, title) {
     cat(sprintf("\n"))
 }
 
+read_from_file <- function(filename) {
+    rows <- readLines(filename)
+    serum_names <- scan(text=rows[[1]], what="c", quiet=TRUE)
+    chart <- new(acmacs.Chart, length(rows) - 1, length(serum_names))
+    for (sr_no in 1:length(serum_names)) {
+        chart$sera[[sr_no]]$set_name(serum_names[[sr_no]])
+    }
+    for (row_no in 2:length(rows)) {
+        name_titers <- scan(text=rows[[row_no]], what="c", quiet=TRUE)
+        chart$antigens[[row_no-1]]$set_name(name_titers[[1]])
+        for (sr_no in 1:length(serum_names)) {
+            chart$titers$set_titer(row_no-1, sr_no, name_titers[[sr_no + 1]]);
+        }
+    }
+    chart
+}
+
+chart <- read_from_file("/r/a.tab")
+print_table(chart, "/r/a.tab")
+chart$relax_many("none", 2, 100, TRUE)
+print(chart$info)
+
 sTiters <- c("<10", "20", "40", "80", "160", "320", "640", "1280", "2560", ">2560");
 
 cat(sprintf("\n\n"))

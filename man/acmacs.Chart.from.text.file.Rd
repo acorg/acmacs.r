@@ -22,9 +22,26 @@ AL/1/17 1280 320 80 80 20
 \preformatted{
 library(acmacs.r)
 rows <- readLines("tab.tab")
-serum_names <- scan(text=rows[[1]], what="c")
+serum_names <- scan(text=rows[[1]], what="c", quiet=TRUE)
 chart <- new(acmacs.Chart, length(rows) - 1, length(serum_names))
-sapply(1:length(serum_names), function(index) { chart$sera[[index]]$set_name(serum_names[[index]]) }
+for (sr_no in 1:length(serum_names)) \{
+  chart$sera[[sr_no]]$set_name(serum_names[[sr_no]])
+\}
+for (row_no in 2:length(rows)) \{
+   name_titers <- scan(text=rows[[row_no]], what="c", quiet=TRUE)
+   chart$antigens[[row_no-1]]$set_name(name_titers[[1]])
+   for (sr_no in 1:length(serum_names)) \{
+     chart$titers$set_titer(row_no-1, sr_no, name_titers[[sr_no + 1]])
+   \}
+\}
+}
+\bold{# ========= Make a map =========}\cr
+\preformatted{
+# optimize chart 100 times in 2d without minimum column basis using fine optimization
+# table is small, 100 optimizations take less than a second
+chart$relax_many("none", 2, 100, FALSE)
+# report best map info
+cat(chart$info)
 }
 }
 \docType{package}
