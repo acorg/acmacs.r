@@ -93,51 +93,6 @@ template <typename T> class wrapper
 
 // ----------------------------------------------------------------------
 
-class PlotSpec;
-class Titers;
-class Projection;
-
-class Chart : public wrapper<acmacs::chart::ChartModify>
-{
- public:
-    Chart(std::string aFilename)
-        : wrapper(std::make_shared<acmacs::chart::ChartModify>(acmacs::chart::import_from_file(aFilename, acmacs::chart::Verify::None, report_time::No))) {}
-    Chart(Rcpp::RawVector aData)
-        : wrapper(std::make_shared<acmacs::chart::ChartModify>(acmacs::chart::import_from_data(std::string_view(reinterpret_cast<const char*>(aData.cbegin()), aData.size()), acmacs::chart::Verify::None, report_time::No))) {}
-    Chart(int number_of_antigens, int number_of_sera)
-        : wrapper(std::make_shared<acmacs::chart::ChartNew>(number_of_antigens, number_of_sera)) {}
-    std::string name() const { return obj_->make_name(); }
-    std::string info() const { return obj_->make_info(); }
-    std::string lineage() const { return obj_->lineage(); }
-    size_t number_of_antigens() const { return obj_->number_of_antigens(); }
-    size_t number_of_sera() const { return obj_->number_of_sera(); }
-    size_t number_of_points() const { return obj_->number_of_points(); }
-    size_t number_of_projections() const { return obj_->number_of_projections(); }
-    Rcpp::NumericVector column_bases_2(size_t aProjectionNo, std::string aMinimumColumnBasis) const;
-    Rcpp::NumericVector column_bases_1(size_t aProjectionNo) const { return column_bases_2(aProjectionNo, "none"); }
-    Rcpp::NumericVector column_bases_1s(std::string aMinimumColumnBasis) const { return column_bases_2(std::numeric_limits<size_t>::max(), aMinimumColumnBasis); }
-    Rcpp::NumericVector column_bases_0() const { return column_bases_2(0, "none"); }
-    PlotSpec plot_spec();
-    Titers titers();
-    static Rcpp::StringVector as_character(Chart* aChart) { return {aChart->name()}; }
-
-    Rcpp::List get_antigens() const;
-    Rcpp::List get_sera() const;
-    void save(std::string aFilename) { acmacs::chart::export_factory(*obj_, aFilename, "acmacs.r", report_time::No); }
-
-      // https://stackoverflow.com/questions/42579207/rcpp-modules-validator-function-for-exposed-constructors-with-same-number-of-pa
-    template <typename T> static inline bool validate_constructor(SEXP* args, int nargs) { return nargs == 1 && Rcpp::is<T>(args[0]); }
-
-    Projection relax2(std::string minimum_column_basis, size_t number_of_dimensions);
-    Projection relax3(std::string minimum_column_basis, size_t number_of_dimensions, bool rough);
-    void relax_many(std::string minimum_column_basis, size_t number_of_dimensions, size_t number_of_optimizations, bool rough);
-    void sort_projections() { obj_->projections_modify()->sort(); }
-
-}; // class Chart
-RCPP_EXPOSED_CLASS_NODECL(Chart);
-
-template <> inline bool Chart::validate_constructor<int>(SEXP* args, int nargs) { return nargs == 2 && Rcpp::is<double>(args[0]) && Rcpp::is<double>(args[1]); }
-
 class Antigen : public wrapper<acmacs::chart::AntigenModify>
 {
  public:
@@ -190,6 +145,66 @@ class Serum : public wrapper<acmacs::chart::SerumModify>
     static inline Rcpp::StringVector as_character(Serum* aSerum) { return {aSerum->obj_->full_name()}; }
 };
 RCPP_EXPOSED_CLASS_NODECL(Serum);
+
+class PlotSpec;
+class Titers;
+class Projection;
+
+class Chart : public wrapper<acmacs::chart::ChartModify>
+{
+ public:
+    Chart(std::string aFilename)
+        : wrapper(std::make_shared<acmacs::chart::ChartModify>(acmacs::chart::import_from_file(aFilename, acmacs::chart::Verify::None, report_time::No))) {}
+    Chart(Rcpp::RawVector aData)
+        : wrapper(std::make_shared<acmacs::chart::ChartModify>(acmacs::chart::import_from_data(std::string_view(reinterpret_cast<const char*>(aData.cbegin()), aData.size()), acmacs::chart::Verify::None, report_time::No))) {}
+    Chart(int number_of_antigens, int number_of_sera)
+        : wrapper(std::make_shared<acmacs::chart::ChartNew>(number_of_antigens, number_of_sera)) {}
+    std::string name() const { return obj_->make_name(); }
+    std::string info() const { return obj_->make_info(); }
+    std::string lineage() const { return obj_->lineage(); }
+    size_t number_of_antigens() const { return obj_->number_of_antigens(); }
+    size_t number_of_sera() const { return obj_->number_of_sera(); }
+    size_t number_of_points() const { return obj_->number_of_points(); }
+    size_t number_of_projections() const { return obj_->number_of_projections(); }
+    Rcpp::NumericVector column_bases_2(size_t aProjectionNo, std::string aMinimumColumnBasis) const;
+    Rcpp::NumericVector column_bases_1(size_t aProjectionNo) const { return column_bases_2(aProjectionNo, "none"); }
+    Rcpp::NumericVector column_bases_1s(std::string aMinimumColumnBasis) const { return column_bases_2(std::numeric_limits<size_t>::max(), aMinimumColumnBasis); }
+    Rcpp::NumericVector column_bases_0() const { return column_bases_2(0, "none"); }
+    PlotSpec plot_spec();
+    Titers titers();
+    static Rcpp::StringVector as_character(Chart* aChart) { return {aChart->name()}; }
+
+    Rcpp::List get_antigens() const;
+    Rcpp::List get_sera() const;
+    Antigen insert_antigen(size_t before) { return obj_->insert_antigen(before - 1); }
+    Serum insert_serum(size_t before) { return obj_->insert_serum(before - 1); }
+    void remove_antigens(const Rcpp::NumericVector& aIndexes)
+        {
+            std::vector<size_t> indexes(aIndexes.size());
+            std::transform(aIndexes.begin(), aIndexes.end(), indexes.begin(), [](const auto& ind) -> size_t { return ind - 1; });
+            obj_->remove_antigens(acmacs::ReverseSortedIndexes(indexes));
+        }
+    void remove_sera(const Rcpp::NumericVector& aIndexes)
+        {
+            std::vector<size_t> indexes(aIndexes.size());
+            std::transform(aIndexes.begin(), aIndexes.end(), indexes.begin(), [](const auto& ind) -> size_t { return ind - 1; });
+            obj_->remove_sera(acmacs::ReverseSortedIndexes(indexes));
+        }
+
+    void save(std::string aFilename) { acmacs::chart::export_factory(*obj_, aFilename, "acmacs.r", report_time::No); }
+
+      // https://stackoverflow.com/questions/42579207/rcpp-modules-validator-function-for-exposed-constructors-with-same-number-of-pa
+    template <typename T> static inline bool validate_constructor(SEXP* args, int nargs) { return nargs == 1 && Rcpp::is<T>(args[0]); }
+
+    Projection relax2(std::string minimum_column_basis, size_t number_of_dimensions);
+    Projection relax3(std::string minimum_column_basis, size_t number_of_dimensions, bool rough);
+    void relax_many(std::string minimum_column_basis, size_t number_of_dimensions, size_t number_of_optimizations, bool rough);
+    void sort_projections() { obj_->projections_modify()->sort(); }
+
+}; // class Chart
+RCPP_EXPOSED_CLASS_NODECL(Chart);
+
+template <> inline bool Chart::validate_constructor<int>(SEXP* args, int nargs) { return nargs == 2 && Rcpp::is<double>(args[0]) && Rcpp::is<double>(args[1]); }
 
 RCPP_EXPOSED_CLASS_NODECL(acmacs::chart::Passage);
 inline Rcpp::StringVector passage_as_character(acmacs::chart::Passage* aPassage) { return {*aPassage}; }
@@ -503,6 +518,10 @@ RCPP_MODULE(acmacs)
             .property<std::string>("name", &Chart::name)
             .property<Rcpp::List>("antigens", &Chart::get_antigens)
             .property<Rcpp::List>("sera", &Chart::get_sera)
+            .method("insert_antigen", &Chart::insert_antigen)
+            .method("insert_serum", &Chart::insert_serum)
+            .method("remove_antigens", &Chart::remove_antigens)
+            .method("remove_sera", &Chart::remove_sera)
             .property<Rcpp::List>("projections", &Chart::getListViaAt<Projection, &acmacs::chart::ChartModify::projections_modify>)
             .property<PlotSpec>("plot_spec", &Chart::plot_spec)
             .property<Titers>("titers", &Chart::titers)
