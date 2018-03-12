@@ -10,9 +10,17 @@ print_table <- function(chart, title) {
     cat(sprintf("\n"))
 }
 
+sTiters <- c("<10", "20", "40", "80", "160", "320", "640", "1280", "2560", ">2560");
+
 cat(sprintf("\n\n"))
 
 chart1 <- new(acmacs.Chart, 5, 10)
+titers <- chart1$titers
+for (ag in 1:chart1$number_of_antigens) {
+    for (sr in 1:chart1$number_of_sera) {
+        titers$set_titer(ag, sr, sample(sTiters, 1))
+    }
+}
 print_table(chart1, "initial")
 # cat(sprintf("initial:\n antigens (%d): \"%s\"\n sera (%d): \"%s\"\n", chart1$number_of_antigens, paste0(sapply(chart1$antigens, toString), collapse="\" \""), chart1$number_of_sera, paste0(sapply(chart1$sera, toString), collapse="\" \"")))
 
@@ -50,5 +58,12 @@ sr$add_annotation("NOT-NEW")
 
 print_table(chart1, "after name modifications")
 # cat(sprintf("after mods:\n antigens (%d): \"%s\"\n sera (%d): \"%s\"\n", chart1$number_of_antigens, paste0(sapply(chart1$antigens, toString), collapse="\" \""), chart1$number_of_sera, paste0(sapply(chart1$sera, toString), collapse="\" \"")))
+
+titers$set_dontcare_for_serum(chart1$number_of_sera)
+titers$multiply_by_for_antigen(chart1$number_of_antigens, 2)
+titers$multiply_by_for_antigen(chart1$number_of_antigens - 1, 0.5)
+titers$multiply_by_for_antigen(chart1$number_of_antigens - 1, 0.5)
+titers$multiply_by_for_antigen(chart1$number_of_antigens - 1, 0.5)
+print_table(chart1, "after titer modifications")
 
 cat(sprintf("\n\n"))
