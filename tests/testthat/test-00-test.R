@@ -5,17 +5,21 @@ print_table <- function(chart, title) {
     rownames(table) <- sapply(chart$antigens, toString)
     colnames(table) <- sapply(chart$sera, toString)
     cat(sprintf("%s (antigens: %d, sera: %d)\n", title, chart$number_of_antigens, chart1$number_of_sera))
-    print(table)
+    options(width = 500)
+    print(table, zero.print = ".")
     cat(sprintf("\n"))
 }
 
 cat(sprintf("\n\n"))
 
-chart1 <- new(acmacs.Chart, 5, 3)
+chart1 <- new(acmacs.Chart, 5, 10)
 print_table(chart1, "initial")
 # cat(sprintf("initial:\n antigens (%d): \"%s\"\n sera (%d): \"%s\"\n", chart1$number_of_antigens, paste0(sapply(chart1$antigens, toString), collapse="\" \""), chart1$number_of_sera, paste0(sapply(chart1$sera, toString), collapse="\" \"")))
 
-ag0 <- chart1$insert_antigen(1)
+ag0 <- chart1$insert_antigen(3)
+ag0$set_passage("E4")
+#chart1$remove_sera(1)
+chart1$remove_sera(c(1,3,8))
 print_table(chart1, "after insert")
 # cat(sprintf("insert:\n antigens (%d): \"%s\"\n sera (%d): \"%s\"\n", chart1$number_of_antigens, paste0(sapply(chart1$antigens, toString), collapse="\" \""), chart1$number_of_sera, paste0(sapply(chart1$sera, toString), collapse="\" \"")))
 
