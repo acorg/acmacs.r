@@ -101,6 +101,28 @@ chart <- new(acmacs.Chart, raw_data)
   recalculated (with minimum column basis = "1280") column bases.
 
 }
+\section{Adding/removing antigens/sera}{
+  \code{insert_antigen(before)} - inserts new antigen before the
+  provided index. chart$insert_antigen(1) inserts new antigen before the
+  first one, chart$insert_antigen(chart$number_of_antigens+1) appends
+  new antigen. New antigen will have random name and all titers
+  will be set to *.
+
+  \code{insert_serum(before)} - inserts new serum before the
+  provided index. chart$insert_serum(1) inserts new serum before the
+  first one, chart$insert_serum(chart$number_of_sera+1) appends
+  new serum. New serum will have random name and all titers
+  will be set to *.
+
+  \code{remove_antigens(list_of_indexes)} - removes antigens with the
+  specified indexes. chart$remove_antigens(c(1,2,3)) removes the first
+  three antigens.
+
+  \code{remove_sera(list_of_indexes)} - removes sera with the
+  specified indexes. chart$remove_sera(c(1,2,3)) removes the first
+  three sera.
+
+}
 \keyword{ package }
 \examples{
   # load chart from file

@@ -5,10 +5,10 @@
 % library(acmacs.r, lib.loc="/r/R/library"); ?acmacs.example
 \section{Example}{
 \code{# library(acmacs.r)}\cr\cr
-\bold{# load chart from file}\cr
+\bold{# == Loading chart from file ==}\cr
 \code{\var{chart} <- new(acmacs.Chart, "table.ace")} # .save, .ace, .acd1 files are supported\cr
 \cr
-\bold{# == load chart from remote file ==}\cr
+\bold{# == Loading chart from remote file ==}\cr
 \code{
   \var{url} <- "https://github.com/acorg/acmacs.r/blob/master/tests/testthat/cdc-h1pdm-20090612.ace?raw=true"\cr
   \var{connection} <- file(\var{url}, open="rb")\cr
@@ -17,6 +17,13 @@
   \cr
   \var{chart} <- new(acmacs.Chart, \var{raw_data})\cr
 }\cr
+\bold{# == Creating chart from scratch ==}\cr
+\preformatted{
+num_antigens <- 5
+num_sera <- 3
+chart <- new(acmacs.Chart, num_antigens, num_sera)
+}
+See \code{\link{acmacs.Chart.from.scratch}} for more complete example\cr\cr
 \bold{# ====== Info about chart ======}\cr
 \code{
   cat(paste("chart name:", chart$name, "\n"))\cr
@@ -243,11 +250,12 @@ transformation_matrix <- pc12$transformation
 \docType{package}
 \keyword{ package }
 \seealso{
-  \code{\link{acmacs.r-package}}
-  \code{\link{acmacs.Chart}}
-  \code{\link{acmacs.Antigen}}
-  \code{\link{acmacs.Serum}}
-  \code{\link{acmacs.Projection}}
+  \code{\link{acmacs.r-package}}\cr
+  \code{\link{acmacs.Chart}}\cr
+  \code{\link{acmacs.Chart.from.scratch}}\cr
+  \code{\link{acmacs.Antigen}}\cr
+  \code{\link{acmacs.Serum}}\cr
+  \code{\link{acmacs.Projection}}\cr
   \code{\link{acmacs.PlotSpec}}\cr
   \code{\link{acmacs.Titers}}\cr
 }

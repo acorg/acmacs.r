@@ -60,6 +60,28 @@ antigen$passage$type()
 
   \code{paste(antigen$passage)} converts passage to string.
 }
+\section{Changing fields}{
+  \code{set_name(new_name)}
+
+  \code{set_date(new_date)} - date is expected in format YYYY-MM-DD
+
+  \code{set_passage(new_passage)}
+
+  \code{set_lineage(lineage)} - lineage is either VICTORIA or YAMAGATA
+
+  \code{set_reassortant(reassortant)}
+
+  \code{set_reference(TRUE)}
+
+  \code{add_annotation(annotation)} - annotations is a set of unique strings
+
+  \code{remove_annotation(annotation)}
+}
+\section{Adding/removing antigens}{
+  Adding and removing antigens is done via Chart object because it affects
+  other chart fields (titers, projections, etc.)
+  see \code{\link{acmacs.Chart}} and \code{\link{acmacs.Chart.from.scratch}}
+}
 \examples{
   # load chart from file
   chart <- new(acmacs.Chart, "/tmp/table.save")

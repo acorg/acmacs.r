@@ -4,7 +4,7 @@ print_table <- function(chart, title) {
     table <- chart$titers$all()
     rownames(table) <- sapply(chart$antigens, toString)
     colnames(table) <- sapply(chart$sera, toString)
-    cat(sprintf("%s (antigens: %d, sera: %d)\n", title, chart$number_of_antigens, chart1$number_of_sera))
+    cat(sprintf("%s (antigens: %d, sera: %d)\n", title, chart$number_of_antigens, chart$number_of_sera))
     options(width = 500)
     print(table, zero.print = ".")
     cat(sprintf("\n"))

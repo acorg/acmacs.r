@@ -40,6 +40,28 @@ serum$passage
 
   \item{serum_species}{Serum species.}
 }
+\section{Changing fields}{
+  \code{set_name(new_name)}
+
+  \code{set_passage(new_passage)}
+
+  \code{set_lineage(lineage)} - lineage is either VICTORIA or YAMAGATA
+
+  \code{set_reassortant(reassortant)}
+
+  \code{set_serum_id(serum_id)}
+
+  \code{set_serum_species(serum_species)}
+
+  \code{add_annotation(annotation)} - annotations is a set of unique strings
+
+  \code{remove_annotation(annotation)}
+}
+\section{Adding/removing sera}{
+  Adding and removing sera is done via Chart object because it affects
+  other chart fields (titers, projections, etc.)
+  see \code{\link{acmacs.Chart}} and \code{\link{acmacs.Chart.from.scratch}}
+}
 \examples{
   # load chart from file
   chart <- new(acmacs.Chart, "/tmp/table.save")
