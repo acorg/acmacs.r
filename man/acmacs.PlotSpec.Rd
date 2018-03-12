@@ -65,5 +65,7 @@ chart$plot_spec$drawing_order
   \code{\link{acmacs.Projection}}\cr
   \code{\link{acmacs.Titers}}\cr
   \code{\link{acmacs.Example}}
+  \code{\link{acmacs.Chart.from.scratch}}\cr
+  \code{\link{acmacs.Chart.from.text.file}}\cr
 }
 \author{Eugene Skepner, eu@antigenic-cartography.org.}

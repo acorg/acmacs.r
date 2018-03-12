@@ -23,7 +23,8 @@ num_antigens <- 5
 num_sera <- 3
 chart <- new(acmacs.Chart, num_antigens, num_sera)
 }
-See \code{\link{acmacs.Chart.from.scratch}} for more complete example\cr\cr
+See \code{\link{acmacs.Chart.from.scratch}} and
+\code{\link{acmacs.Chart.from.text.file}} for more complete examples\cr\cr
 \bold{# ====== Info about chart ======}\cr
 \code{
   cat(paste("chart name:", chart$name, "\n"))\cr
@@ -253,6 +254,7 @@ transformation_matrix <- pc12$transformation
   \code{\link{acmacs.r-package}}\cr
   \code{\link{acmacs.Chart}}\cr
   \code{\link{acmacs.Chart.from.scratch}}\cr
+  \code{\link{acmacs.Chart.from.text.file}}\cr
   \code{\link{acmacs.Antigen}}\cr
   \code{\link{acmacs.Serum}}\cr
   \code{\link{acmacs.Projection}}\cr

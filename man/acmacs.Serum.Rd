@@ -73,8 +73,11 @@ serum$passage
   cat(paste(sapply(srs, toString), collapse="\n"))
 }
 \seealso{
- \code{\link{acmacs.Antigen}}\cr
- \code{\link{acmacs.Example}}
+  \code{\link{acmacs.Chart}}\cr
+  \code{\link{acmacs.Antigen}}\cr
+  \code{\link{acmacs.Example}}
+  \code{\link{acmacs.Chart.from.scratch}}\cr
+  \code{\link{acmacs.Chart.from.text.file}}\cr
 }
 \keyword{ package }
 \author{Eugene Skepner, eu@antigenic-cartography.org.}

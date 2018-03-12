@@ -141,5 +141,7 @@ chart <- new(acmacs.Chart, raw_data)
   \code{\link{acmacs.PlotSpec}}\cr
   \code{\link{acmacs.Titers}}\cr
   \code{\link{acmacs.Example}}
+  \code{\link{acmacs.Chart.from.scratch}}\cr
+  \code{\link{acmacs.Chart.from.text.file}}\cr
 }
 \author{Eugene Skepner, eu@antigenic-cartography.org.}

@@ -9,10 +9,23 @@ ps <- chart$titers
 \value{An object of class \code{"acmacs.Titers"} to access titers of the
   chart. It has the following properties and methods:
 
-  \item{titers(antigen_no, serum_no)}{Single titer for antigen and serum.}
-
   \item{all()}{Dense matrix of all titers.}
 
+  \item{titer(antigen_no, serum_no)}{Single titer for antigen and serum.}
+
+  \item{set_titer(antigen_no, serum_no, titer)}{Set titer for antigen and serum.}
+
+  \item{set_dontcare_for_antigen(antigen_no)}{Set all titers for antigen
+    to *.}
+
+  \item{set_dontcare_for_serum(serum_no)}{Set all titers for serum
+    to *.}
+
+  \item{multiply_by_for_antigen(antigen_no, multiply_by)}{Multiply all
+    titers of the antigen by some number.}
+
+  \item{multiply_by_for_serum(serum_no, multiply_by)}{Multiply all
+    titers of the serum by some number.}
 }
 \keyword{ package }
 \examples{
@@ -32,5 +45,7 @@ identical(sapply(1:chart$number_of_antigens, function(ag_no) { chart$titers$tite
   \code{\link{acmacs.Projection}}\cr
   \code{\link{acmacs.PlotSpec}}\cr
   \code{\link{acmacs.Example}}
+  \code{\link{acmacs.Chart.from.scratch}}\cr
+  \code{\link{acmacs.Chart.from.text.file}}\cr
 }
 \author{Eugene Skepner, eu@antigenic-cartography.org.}

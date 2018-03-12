@@ -11,22 +11,20 @@
   \enumerate{
     \item Loading data from .ace, acd1, .save files (can be compressed
   with bzip2 and xz)
+    \item Creating antigenic tables from scratch
     \item Saving data to .ace and .save files, i.e. possible converting from
     acmacs to lispmds and vice versa.
-    \item Reading antigen and serum names, passages and other related data
+    \item Reading and modifying antigen and serum names, passages and other related data
     \item Reading projection layout, column bases, stress, rotating and
   flipping the map, moving points.
     \item Reading and modifying plot spec
-    \item Reading titers
+    \item Reading and modifying titers
     \item Optimization from scratch
     \item Optimization from existing layout
+    \item Making procrustes
     }
   \bold{Planned features:}
   \enumerate{
-    \item Creating antigenic tables from scratch
-    \item Modifying antigens and sera
-    \item Modifying titers
-    \item Making procrustes
     \item Reporting error line data
     \item Reporting blob data
     }
@@ -42,7 +40,9 @@
 }
 \keyword{ package }
 \seealso{
- \code{\link{acmacs.Chart}}\cr
- \code{\link{acmacs.Example}}
+  \code{\link{acmacs.Chart}}\cr
+  \code{\link{acmacs.Example}}
+  \code{\link{acmacs.Chart.from.scratch}}\cr
+  \code{\link{acmacs.Chart.from.text.file}}\cr
 }
 \author{Eugene Skepner, \email{eu@antigenic-cartography.org}}
