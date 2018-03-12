@@ -20,8 +20,11 @@ AL/1/17 1280 320 80 80 20
 }
 \bold{# ========= Reading text file into a chart =========}\cr
 \preformatted{
-  library(acmacs.r)
-
+library(acmacs.r)
+rows <- readLines("tab.tab")
+serum_names <- scan(text=rows[[1]], what="c")
+chart <- new(acmacs.Chart, length(rows) - 1, length(serum_names))
+sapply(1:length(serum_names), function(index) { chart$sera[[index]]$set_name(serum_names[[index]]) }
 }
 }
 \docType{package}
