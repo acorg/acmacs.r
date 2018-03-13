@@ -34,7 +34,7 @@
 }
 \examples{
   # load file
-  chart <- new(acmacs.Chart, "/tmp/table.save")
+  chart <- new(acmacs.Chart, path.expand("/tmp/table.save"))
   # print chart name
   cat(chart$name)
 }

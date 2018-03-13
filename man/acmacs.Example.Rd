@@ -6,8 +6,9 @@
 \section{Example}{
 \code{# library(acmacs.r)}\cr\cr
 \bold{# == Loading chart from file ==}\cr
-\code{\var{chart} <- new(acmacs.Chart, "table.ace")} # .save, .ace, .acd1 files are supported\cr
-\cr
+\preformatted{chart <- new(acmacs.Chart, path.expand("~/tables/table.ace")) # .save, .ace, .acd1 files are supported
+#  Automatic expansion of ~ in filenames is not supported, please use path.expand
+}\cr
 \bold{# == Loading chart from remote file ==}\cr
 \code{
   \var{url} <- "https://github.com/acorg/acmacs.r/blob/master/tests/testthat/cdc-h1pdm-20090612.ace?raw=true"\cr

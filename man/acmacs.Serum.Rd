@@ -64,7 +64,7 @@ serum$passage
 }
 \examples{
   # load chart from file
-  chart <- new(acmacs.Chart, "/tmp/table.save")
+  chart <- new(acmacs.Chart, path.expand("/tmp/table.save"))
   # print information about sera
   srs <- chart$sera
   format_serum <- function(a) \{ paste(c(a$name, a$annotations, a$serum_id, a$serum_species), collapse=" ", sep="") \}

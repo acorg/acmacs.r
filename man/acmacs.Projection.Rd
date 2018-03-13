@@ -61,7 +61,7 @@ projection$stress
 }
 \examples{
   # load chart from file
-  chart <- new(acmacs.Chart, "/tmp/table.save")
+  chart <- new(acmacs.Chart, path.expand("/tmp/table.save"))
   # print information about projections
   prj <- chart$projections[[0]]
 }

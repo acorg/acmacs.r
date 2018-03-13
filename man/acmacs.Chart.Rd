@@ -5,14 +5,14 @@
 \alias{acmacs.ColumnBases}
 \docType{package}
 \usage{
-chart <- new(acmacs.Chart, filename)
+chart <- new(acmacs.Chart, path.expand(filename))
 
 raw_data <- readBin(file(url, open="rb"), "raw", n=999999)
 chart <- new(acmacs.Chart, raw_data)
 }
 \arguments{
   \item{filename}{A character object specifying a file pathname with
-    chart data to load}
+    chart data to load, ~ expansion is not supported, please use path.expand()}
   \item{raw_data}{A raw vector specifying raw data (e.g. read from a
     remote file) to load}
 }
@@ -49,7 +49,8 @@ chart <- new(acmacs.Chart, raw_data)
   \item{titers}{\code{\link{acmacs.Titers}} object.}
 
   \item{save(filename)}{Save (modified) chart into a file, output
-  format is determined by filename suffix: .ace, .save, .save.xz.}
+  format is determined by filename suffix: .ace, .save,
+  .save.xz. Please use path.expand() to expand ~ in filenames}
 
   \item{relax(minimum_column_basis, number_of_dimensions)}{creates new
   projection with random layout and optimizes it.\cr \bold{minimum_column_basis}
@@ -126,7 +127,7 @@ chart <- new(acmacs.Chart, raw_data)
 \keyword{ package }
 \examples{
   # load chart from file
-  chart <- new(acmacs.Chart, "/tmp/table.save")
+  chart <- new(acmacs.Chart, path.expand("/tmp/table.save"))
   # print information about antigens
   ags <- chart$antigens
   format_antigen <- function(a) \{ paste(c(a$name, a$passage, a$reassortant, a$reference, a$annotations, paste("[", a$date, "]", sep="", collapse=""), a$lab_ids), collapse=" ", sep="") \}
