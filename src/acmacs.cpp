@@ -270,6 +270,7 @@ class Projection : public wrapper<acmacs::chart::ProjectionModify>
         }
 
     double stress() const { return obj_->stress(); }
+    double recalculate_stress() const { return obj_->stress(acmacs::chart::RecalculateStress::yes); }
 
     std::string minimum_column_basis() const { return obj_->minimum_column_basis(); }
 
@@ -600,7 +601,8 @@ RCPP_MODULE(acmacs)
 
     class_<Projection>("acmacs.Projection")
             .property<std::string>("info", &Projection::make_info)
-            .property<double>("stress", &Projection::stress)
+            .property("stress", &Projection::stress)
+            .method("recalculate_stress", &Projection::recalculate_stress)
             .property<std::string>("comment", &Projection::comment)
             .property<std::string>("minimum_column_basis", &Projection::minimum_column_basis)
             .property("forced_column_bases", &Projection::forced_column_bases)
