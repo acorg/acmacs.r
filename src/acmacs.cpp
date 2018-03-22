@@ -449,9 +449,7 @@ inline Projection Chart::relax3(std::string minimum_column_basis, size_t number_
 inline void Chart::relax_many(std::string minimum_column_basis, size_t number_of_dimensions, size_t number_of_optimizations, bool rough)
 {
     acmacs::chart::optimization_options options(acmacs::chart::optimization_method::alglib_cg_pca, rough ? acmacs::chart::optimization_precision::rough : acmacs::chart::optimization_precision::fine, 1.0);
-    for (size_t attempt = 0; attempt < number_of_optimizations; ++attempt) {
-        obj_->relax(minimum_column_basis, number_of_dimensions, true, options);
-    }
+    obj_->relax(number_of_optimizations, minimum_column_basis, number_of_dimensions, true, options, false);
     obj_->projections_modify()->sort();
 }
 

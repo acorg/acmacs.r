@@ -39,6 +39,7 @@ for (row_no in 2:length(rows)) \{
 \preformatted{
 # optimize chart 100 times in 2d without minimum column basis using fine optimization
 # table is small, 100 optimizations take less than a second
+# relaxation is perfomed in parallel, if multiple CPU cores available
 chart$relax_many("none", 2, 100, FALSE)
 # report best map info
 cat(chart$info)

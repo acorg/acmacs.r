@@ -223,6 +223,7 @@ new_projection$stress
 # sort all projections of the chart by stress
 chart$sort_projections()
 # make 10 new projections in 2d without minimum column basis with random layout and relax them using fine optimization
+# relaxation is perfomed in parallel, if multiple CPU cores available
 chart$relax_many("none", 2, 10, FALSE)
 # get all stresses
 sapply(chart$projections, function(p) {p$stress})

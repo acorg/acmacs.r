@@ -69,8 +69,9 @@ chart <- new(acmacs.Chart, raw_data)
   layout and optimizes it.\cr \bold{minimum_column_basis} is a string,
   e.g. "none" or "1280".\cr \bold{number_of_dimensions} is a number,
   e.g. 2 or 3.\cr \bold{number_of_optimizations} is a number, e.g. 10 or
-  100.\cr \bold{rough} is boolean, when TRUE optimization is about 30\%
-  faster, result is slightly worse, visually no distinguishable.}
+  100, optimization is performed in parallel if multiple CPU cores
+  available.\cr \bold{rough} is boolean, when TRUE optimization is about
+  30\% faster, result is slightly worse, visually no distinguishable.}
 
   \item{sort_projections()}{sorts projections by stress, in the result
     the first projection (\code{chart$projections[[1]]}) will be the
