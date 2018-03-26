@@ -30,6 +30,16 @@ read_from_file <- function(filename) {
     chart
 }
 
+test3 <- function() {
+    # c1 <- new(acmacs.Chart, "cdc-h1pdm-20090612.ace")
+    c1 <- new(acmacs.Chart, "/r/u/sam/landscapes_map.ace")
+    g <- new(acmacs.GridTest, c1)
+    r <- g$test()
+    print(r)
+}
+
+# ----------------------------------------------------------------------
+
 test2 <- function() {
     # chart <- new(acmacs.Chart, "/r/landscapes_map.acd1")
     chart <- read_from_file("/r/a.table.txt")
@@ -62,6 +72,8 @@ test2 <- function() {
     print(stresses)
     cat("\n")
 }
+
+# ----------------------------------------------------------------------
 
 test1 <- function() {
     chart <- read_from_file("/r/a.tab")
@@ -128,6 +140,10 @@ test1 <- function() {
     cat(sprintf("\n\n"))
 }
 
-## cat("\n\n")
+# ----------------------------------------------------------------------
+
+cat("\n\n")
+test3()
+
 ## test1()
 ## test2()
