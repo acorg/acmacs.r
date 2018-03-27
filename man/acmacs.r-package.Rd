@@ -44,5 +44,6 @@
   \code{\link{acmacs.Example}}
   \code{\link{acmacs.Chart.from.scratch}}\cr
   \code{\link{acmacs.Chart.from.text.file}}\cr
+  \code{\link{acmacs.GridTest}}\cr
 }
 \author{Eugene Skepner, \email{eu@antigenic-cartography.org}}

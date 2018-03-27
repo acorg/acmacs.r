@@ -249,6 +249,21 @@ rms <- pc12$rms
 # containts translation.
 transformation_matrix <- pc12$transformation
 }\cr
+\bold{# ========= Grid test =========}\cr
+\preformatted{
+# Grid test is similar to hemi/local/grid test of acmacs-web
+gr <- new(acmacs.GridTest, chart)
+gr_result <- gr$test()
+# gr_result is data frame with the test results
+# if there are trapped points, you may create new projection with better
+# positions of the trapped points and relax it
+new_proj <- gr$make_new_projection_and_relax()
+# gr is automatically adjusted to handle new projection
+# new layout
+new_proj$layout
+# test new projection
+new_result <- gr$test()
+}\cr
 }
 \docType{package}
 \keyword{ package }
@@ -262,5 +277,6 @@ transformation_matrix <- pc12$transformation
   \code{\link{acmacs.Projection}}\cr
   \code{\link{acmacs.PlotSpec}}\cr
   \code{\link{acmacs.Titers}}\cr
+  \code{\link{acmacs.GridTest}}\cr
 }
 \author{Eugene Skepner, eu@antigenic-cartography.org.}

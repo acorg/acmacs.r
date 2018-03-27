@@ -57,5 +57,6 @@ cat(chart$info)
   \code{\link{acmacs.Projection}}\cr
   \code{\link{acmacs.PlotSpec}}\cr
   \code{\link{acmacs.Titers}}\cr
+  \code{\link{acmacs.GridTest}}\cr
 }
 \author{Eugene Skepner, eu@antigenic-cartography.org.}
