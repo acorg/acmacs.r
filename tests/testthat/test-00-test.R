@@ -33,7 +33,16 @@ read_from_file <- function(filename) {
 test3 <- function() {
     # c1 <- new(acmacs.Chart, "cdc-h1pdm-20090612.ace")
     c1 <- new(acmacs.Chart, "/r/u/sam/landscapes_map.ace")
+    print(c1$projections[[1]]$stress)
     g <- new(acmacs.GridTest, c1)
+    r <- g$test()
+    # print(r)
+    p <- g$make_new_projection_and_relax()
+    print(p$stress)
+    r <- g$test()
+    print(r)
+    p <- g$make_new_projection_and_relax()
+    print(p$stress)
     r <- g$test()
     print(r)
 }
