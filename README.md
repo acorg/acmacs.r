@@ -37,13 +37,15 @@ Please replace /tmp/R/library with your local directory for packages
 or remove lib="/tmp/R/library" argument.
 
 ```R
-install.packages("https://github.com/acorg/acmacs.r/releases/download/v1.0/acmacs.r_1.0.macOS-10.12.tgz", repos=NULL, lib="/tmp/R/library")
+install.packages("https://github.com/acorg/acmacs.r/releases/download/v2.1/acmacs.r_2.1.macOS-10.12.tgz", repos=NULL, lib="/tmp/R/library")
 ```
 
 Linux
 -----
 
-Not yet supported.
+```R
+install.packages("https://github.com/acorg/acmacs.r/releases/download/v2.1/acmacs.r_2.1_R_x86_64-pc-linux-gnu.tar.gz", repos=NULL, lib="/tmp/R/library")
+```
 
 Usage example
 =============
