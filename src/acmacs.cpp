@@ -547,7 +547,7 @@ Rcpp::DataFrame GridTest::results()
         size_t index = 0;
         for (const auto& result : *results_) {
             if (result) {
-                v_point_no[index] = result.point_no;
+                v_point_no[index] = result.point_no + 1;
                 v_diagnosis[index] = result.diagnosis_str();
                 v_pos_x[index] = result.pos[0];
                 v_pos_y[index] = result.pos[1];

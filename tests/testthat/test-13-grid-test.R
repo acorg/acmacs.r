@@ -7,7 +7,7 @@ test_chart <- function(filename, expected_rows) {
     test_that(paste("number of hemi and trapped points in", filename), { expect_equal(nrow(r1), expected_rows) })
     if (nrow(r1) > 0) {
         diags <- unique(r1["diagnosis"])
-        # print(diags)
+        # print(r1)
         test_that(paste("only hemi points in", filename), { expect_true(diags == list("hemisphering")) })
     }
 }
