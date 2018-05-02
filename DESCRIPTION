@@ -1,7 +1,7 @@
 Package: acmacs.r
 Type: Package
 Title: Read, modify, write data stored in the acmacs files, make maps
-Version: 2.2
+Version: 2.3
 Date: 2018-05-02
 Encoding: UTF-8
 Author: Eugene Skepner
