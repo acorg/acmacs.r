@@ -18,7 +18,7 @@ To Do
 -----
 - Merging two tables
 - Merging a table into an optimised map, freezing that map and only optimised the data added
-- ? Merging two maps together (not used very often)
+- Overlay merge of two maps. Layouts are oriented using procrustes, merged, then relaxed from the merging state. (not used very often)
 
 Implemented
 -----------
