@@ -36,6 +36,8 @@ install.packages("Rcpp")
 Installation
 ============
 
+R 3.5 is required, other versions are not supported!
+
 Package is supposed to be installed from a binary archive for the
 specific platform. Building package from sources is complicated and it
 cannot be done within R.
@@ -60,14 +62,14 @@ Please replace /tmp/R/library with your local directory for packages
 or remove lib="/tmp/R/library" argument.
 
 ```R
-install.packages("https://github.com/acorg/acmacs.r/releases/download/v2.2/acmacs.r_2.2.macOS-10.12.tgz", repos=NULL, lib="/tmp/R/library")
+install.packages("https://github.com/acorg/acmacs.r/releases/download/v2.3/acmacs.r_2.3.macOS-10.12.tgz", repos=NULL, lib="/tmp/R/library")
 ```
 
 Linux
 -----
 
 ```R
-install.packages("https://github.com/acorg/acmacs.r/releases/download/v2.1/acmacs.r_2.2_R_x86_64-pc-linux-gnu.tar.gz", repos=NULL, lib="/tmp/R/library")
+install.packages("https://github.com/acorg/acmacs.r/releases/download/v2.3/acmacs.r_2.3_R_x86_64-pc-linux-gnu.tar.gz", repos=NULL, lib="/tmp/R/library")
 ```
 
 Usage example
