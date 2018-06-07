@@ -20,9 +20,8 @@ def main(target_package_dir, *libraries):
     while to_process:
         library = to_process.pop()
         processed.add(library)
-        print(library)
         for linked_to in subprocess.check_output(["/usr/bin/ldd", library]).strip().split("\n"):
-            if "=> not found" in linked_to:
+            if "linux-vdso.so.1 =>" not in linked_to and "=> /usr/lib/" not in linked_to and "=> /lib/" not in linked_to and "/lib64/" not in linked_to:
                 name = linked_to.split("=>")[0].strip()
                 target_lib = os.path.join(target_package_dir, "libs", name)
                 if target_lib not in processed and target_lib not in to_process:
