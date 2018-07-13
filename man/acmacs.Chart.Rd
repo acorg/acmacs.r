@@ -19,7 +19,8 @@ chart <- new(acmacs.Chart, raw_data)
 \value{An object of class \code{"acmacs.Chart"} to access and modify
   chart data. It has the following properties:
 
-  \item{name}{name of the chart.}
+  \item{name}{name of the chart. assigning to it changes chart name or
+  name prefix depending on the other fields in the original chart data.}
 
   \item{paste(chart), toString(chart)}{equivalent to chart$name.}
 
@@ -135,6 +136,8 @@ chart <- new(acmacs.Chart, raw_data)
   cat("antigens:", length(ags), "\n ", paste(sapply(ags, format_antigen), collapse="\n  "), "\n")
   # print full names of all antigens (full name includes annotations, reassortant, passage)
   cat(paste(sapply(chart$antigens, toString), collapse="\n"))
+  # change chart name
+  chart$name <- "modified"
 }
 \seealso{
   \code{\link{acmacs.Antigen}}\cr

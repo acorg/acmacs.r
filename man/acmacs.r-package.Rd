@@ -37,6 +37,9 @@
   chart <- new(acmacs.Chart, path.expand("/tmp/table.save"))
   # print chart name
   cat(chart$name)
+  # change chart name (or name prefix)
+  chart$name <- "itheberg"
+  cat(chart$name)
 }
 \keyword{ package }
 \seealso{

@@ -192,6 +192,7 @@ class Chart : public wrapper<acmacs::chart::ChartModify>
             obj_->remove_sera(acmacs::ReverseSortedIndexes(indexes));
         }
 
+    void set_name(std::string name) { return obj_->info_modify()->name(name); }
     void save(std::string aFilename) { acmacs::chart::export_factory(*obj_, aFilename, "acmacs.r", report_time::No); }
 
       // https://stackoverflow.com/questions/42579207/rcpp-modules-validator-function-for-exposed-constructors-with-same-number-of-pa
@@ -605,7 +606,7 @@ RCPP_MODULE(acmacs)
             .property<size_t>("number_of_projections", &Chart::number_of_projections)
             .property<std::string>("lineage", &Chart::lineage)
             .property<std::string>("info", &Chart::info, "multi-line string brifly describing data stored in the chart")
-            .property<std::string>("name", &Chart::name)
+            .property<std::string>("name", &Chart::name, &Chart::set_name)
             .property<Rcpp::List>("antigens", &Chart::get_antigens)
             .property<Rcpp::List>("sera", &Chart::get_sera)
             .method("insert_antigen", &Chart::insert_antigen)

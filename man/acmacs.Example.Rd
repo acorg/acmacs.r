@@ -27,11 +27,14 @@ chart <- new(acmacs.Chart, num_antigens, num_sera)
 See \code{\link{acmacs.Chart.from.scratch}} and
 \code{\link{acmacs.Chart.from.text.file}} for more complete examples\cr\cr
 \bold{# ====== Info about chart ======}\cr
-\code{
-  cat(paste("chart name:", chart$name, "\n"))\cr
-  cat(paste0("chart multi-line info:\n\n", chart$info, "\n\n"))\cr
-  cat(paste("number of points (sum of antigens and sera):", chart$number_of_points, "\n"))\cr
-  cat(paste("lineage (influenza B only):", chart$lineage, "\n"))\cr
+\preformatted{
+cat(paste("chart name:", chart$name, "\n"))\cr
+cat(paste0("chart multi-line info:\n\n", chart$info, "\n\n"))\cr
+cat(paste("number of points (sum of antigens and sera):", chart$number_of_points, "\n"))\cr
+cat(paste("lineage (influenza B only):", chart$lineage, "\n"))\cr
+# change chart name
+chart$name <- "modified name"
+cat(paste("changed chart name:", chart$name, "\n"))\cr
 }\cr
 \bold{# ========== Antigens ==========}\cr
 \preformatted{
