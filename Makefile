@@ -2,12 +2,13 @@
 
 PKG_NAME = acmacs.r
 
-ifneq ($(R),)
-  ROOT_DIR = $(R)/R
-  export TMPDIR = $(R)/T
-else ifeq ($(ROOT_DIR),)
-  $(error Please provide ROOT_DIR, e.g. make ROOT_DIR=/my/local/r/installation)
-endif
+ROOT_DIR = $(HOME)/R
+# ifneq ($(R),)
+#   ROOT_DIR = $(R)/R
+#   export TMPDIR = $(R)/T
+# else ifeq ($(ROOT_DIR),)
+#   $(error Please provide ROOT_DIR, e.g. make ROOT_DIR=/my/local/r/installation)
+# endif
 
 PKG_DIR = $(ROOT_DIR)/pkg
 LIB_DIR = $(ROOT_DIR)/library
