@@ -8,7 +8,7 @@ test_chart <- function(filename, expected_num_antigens, test_passages) {
 
     ags <- chart$antigens
     r_antigen_list <- sapply(1:chart$number_of_antigens, function(no) {
-        paste("AG", format(no - 1, justify="right", width= if (expected_num_antigens <100) 2 else 3), ags[[no]]$full_name, paste0("[", ags[[no]]$date, "]"), collapse=" ")
+        trimws(paste("AG", format(no - 1, justify="right", width= if (expected_num_antigens <100) 2 else 3), ags[[no]]$full_name, paste0("[", ags[[no]]$date, "]"), ags[[no]]$lab_ids, collapse=" "))
     })
 
     test_that("number of antigens", { expect_equal(chart$number_of_antigens, expected_num_antigens) })
