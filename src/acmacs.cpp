@@ -1,10 +1,6 @@
 #include <limits>
 
 #include "chart.hh"
-#include "grid-test.hh"
-
-// ----------------------------------------------------------------------
-
 
 // ----------------------------------------------------------------------
 
@@ -181,14 +177,6 @@ RCPP_MODULE(acmacs)
             .property("transformation", &ProcrustesData::transformation, nullptr)
             ;
 
-    class_<GridTest>("acmacs.GridTest")
-            .constructor<Chart&, size_t>()
-            .constructor<Chart&>()
-            .method("test", &GridTest::test_parallel)
-            .method("test_single_thread", &GridTest::test_single_thread)
-            .method("results", &GridTest::results)
-            .method("make_new_projection_and_relax", &GridTest::make_new_projection_and_relax)
-            ;
 }
 
 // ----------------------------------------------------------------------
