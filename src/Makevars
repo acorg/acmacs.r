@@ -12,8 +12,8 @@ endif
 
 ifeq ($(shell uname),Darwin)
   CXX_ROOT = /usr/local/opt/llvm
-  override CXX17 = $(CXX_ROOT)/bin/clang++
-  override CXX = $(CXX_ROOT)/bin/clang++
+  override CXX17 = gtime $(CXX_ROOT)/bin/clang++
+  override CXX = gtime $(CXX_ROOT)/bin/clang++
   PKG_CXXFLAGS += -O3 -std=c++17
   CXX_STD = CXX17
   SHLIB_SUFFIX_1 =

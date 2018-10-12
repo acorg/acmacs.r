@@ -4,8 +4,8 @@ chart <- new(acmacs.Chart, "/Users/eu/ac/results/ssm/2018-0924-ssm/merges/nimr-b
 
 cat(chart$info)
 
-gr <- new(acmacs.GridTest, chart); gr_result <- gr$test()
-gr <- new(acmacs.GridTest, chart); gr_result <- gr$test_single_thread()
+gr <- new(acmacs.GridTest, chart); system.time({gr_result <- gr$test()})
+gr <- new(acmacs.GridTest, chart); system.time({gr_result <- gr$test_single_thread()})
 
 ?acmacs.Example
 
