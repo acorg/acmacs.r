@@ -507,7 +507,8 @@ class GridTest
  public:
     GridTest(Chart& chart, size_t projection_no = 0, double grid_step = 0.1) :
         grid_test_(new acmacs::chart::GridTest(*chart.obj_, projection_no, grid_step)) {}
-    Rcpp::DataFrame test() { results_ = std::make_shared<acmacs::chart::GridTest::Results>(grid_test_->test_all()); return results(); }
+    Rcpp::DataFrame test_parallel() { results_ = std::make_shared<acmacs::chart::GridTest::Results>(grid_test_->test_all_parallel()); return results(); }
+    Rcpp::DataFrame test_single_thread() { results_ = std::make_shared<acmacs::chart::GridTest::Results>(grid_test_->test_all()); return results(); }
     Rcpp::DataFrame results();
     Projection make_new_projection_and_relax();
 
@@ -743,7 +744,8 @@ RCPP_MODULE(acmacs)
     class_<GridTest>("acmacs.GridTest")
             .constructor<Chart&, size_t>()
             .constructor<Chart&>()
-            .method("test", &GridTest::test)
+            .method("test", &GridTest::test_parallel)
+            .method("test_single_thread", &GridTest::test_single_thread)
             .method("results", &GridTest::results)
             .method("make_new_projection_and_relax", &GridTest::make_new_projection_and_relax)
             ;

@@ -5,7 +5,8 @@
 \usage{
 grid_test <- new(acmacs.GridTest, chart)
 grid_test <- new(acmacs.GridTest, chart, 1) - for the second best projection
-result <- grid_test$test()
+result <- grid_test$test() - multithreaded (omp) version
+result <- grid_test$test_single_thread() - single thread version (if multithreaded one crashes R)
 new_projection <- grid_test$make_new_projection_and_relax()
 new_result <- grid_test$test()
 }

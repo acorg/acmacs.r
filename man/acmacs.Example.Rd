@@ -256,7 +256,10 @@ transformation_matrix <- pc12$transformation
 \preformatted{
 # Grid test is similar to hemi/local/grid test of acmacs-web
 gr <- new(acmacs.GridTest, chart)
+# Run multithreaded (omp) version of the test (faster), may conflict with other packages and crash R
 gr_result <- gr$test()
+# Run single thread version of the test, use it if multithreaded version crashes R
+gr_result <- gr$test_single_thread()
 # gr_result is data frame with the test results
 # if there are trapped points, you may create new projection with better
 # positions of the trapped points and relax it
