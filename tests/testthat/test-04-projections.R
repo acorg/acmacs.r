@@ -32,6 +32,10 @@ test_chart <- function(filename, expected_num_projections, expected_stress, expe
     move_to <- c(1967.0, -2017.0)
     chart$projections[[1]]$move_point(point_no, move_to)
     test_that("last point moved", { expect_equal(chart$projections[[1]]$layout[point_no,], move_to) })
+
+    # remove all projections (must be the last test)
+    chart$remove_all_projections()
+    test_that("number of projections upon removal all ones", { expect_equal(chart$number_of_projections, 0) })
 }
 
 test_chart("2004-3.ace", 1, 71.790977, "none")

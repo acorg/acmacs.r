@@ -1,8 +1,9 @@
 acmacs.r NEWS -- history of user-visible changes.
 
 * Changes in 2.7
-** signle thread variant of the grid test
 ** R 3.5.1
+** signle thread variant of the grid test
+** remove all projections in the chart (chart$remove_all_projections())
 
 
 * Changes in 2.6 (2018-07-15)
