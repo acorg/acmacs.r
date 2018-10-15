@@ -4,6 +4,7 @@ acmacs.r NEWS -- history of user-visible changes.
 ** R 3.5.1
 ** signle thread variant of the grid test
 ** remove all projections in the chart (chart$remove_all_projections())
+** remove all projections except one in the chart (chart$remove_all_projections_except(number))
 
 
 * Changes in 2.6 (2018-07-15)

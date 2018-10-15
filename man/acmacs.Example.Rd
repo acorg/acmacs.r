@@ -115,6 +115,12 @@ chart$projections[[1]]$transformed_layout
 # invariant
 identical(chart$projections[[1]]$transformed_layout, chart$projections[[1]]$layout \%*\% chart$projections[[1]]$transformation)
 
+# remove all projections
+chart$remove_all_projections()
+
+# remove all projections except the best one
+chart$remove_all_projections_except(1)
+
 }\cr
 \bold{# ===== Modifying projection =====}\cr
 \preformatted{

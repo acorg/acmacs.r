@@ -45,6 +45,15 @@ chart <- new(acmacs.Chart, raw_data)
 
   \item{projections}{List of \code{\link{acmacs.Projection}} objects.}
 
+  \item{sort_projections()}{sorts projections by stress, in the result
+    the first projection (\code{chart$projections[[1]]}) will be the
+    bestone}
+
+  \item{remove_all_projections()}{removes all projections from the chart}
+
+  \item{remove_all_projections_except(projection_number)}{removes all projections except
+  one specified by number from the chart}
+
   \item{plot_spec}{\code{\link{acmacs.PlotSpec}} object.}
 
   \item{titers}{\code{\link{acmacs.Titers}} object.}
@@ -74,9 +83,6 @@ chart <- new(acmacs.Chart, raw_data)
   available.\cr \bold{rough} is boolean, when TRUE optimization is about
   30\% faster, result is slightly worse, visually no distinguishable.}
 
-  \item{sort_projections()}{sorts projections by stress, in the result
-    the first projection (\code{chart$projections[[1]]}) will be the
-    bestone}
 
 }
 \section{Column bases}{

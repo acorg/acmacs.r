@@ -115,6 +115,7 @@ class Chart : public wrapper<acmacs::chart::ChartModify>
     void relax_many(std::string minimum_column_basis, size_t number_of_dimensions, size_t number_of_optimizations, bool rough);
     void sort_projections() { obj_->projections_modify()->sort(); }
     void remove_all_projections() { obj_->projections_modify()->remove_all(); }
+    void remove_all_projections_except(size_t projection_no_one_based) { obj_->projections_modify()->remove_all_except(projection_no_one_based - 1); }
 
 }; // class Chart
 RCPP_EXPOSED_CLASS_NODECL(Chart);
