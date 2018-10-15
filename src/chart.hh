@@ -12,7 +12,6 @@
 // ----------------------------------------------------------------------
 
 RCPP_EXPOSED_CLASS_NODECL(acmacs::chart::Passage);
-RCPP_EXPOSED_CLASS_NODECL(acmacs::PointStyle);
 
 class PlotSpec;
 class Titers;
@@ -160,26 +159,6 @@ RCPP_EXPOSED_CLASS_NODECL(Projection);
 
 // ----------------------------------------------------------------------
 
-class PlotSpec : public wrapper<acmacs::chart::PlotSpecModify>
-{
- public:
-    PlotSpec(acmacs::chart::PlotSpecModifyP plot_spec) : wrapper(plot_spec) {}
-
-    Rcpp::List styles() const { const auto styles = obj_->all_styles(); return {styles.begin(), styles.end()}; }
-
-    Rcpp::IntegerVector drawing_order() const;
-    void drawing_order_raise(const Rcpp::IntegerVector& aIndexes);
-    void drawing_order_lower(const Rcpp::IntegerVector& aIndexes);
-    void drawing_order_raise_sera(const Rcpp::IntegerVector& aIndexes);
-    void drawing_order_lower_sera(const Rcpp::IntegerVector& aIndexes);
-    void set_style_size(const Rcpp::IntegerVector& aIndexes, double aSize);
-    void set_style_fill(const Rcpp::IntegerVector& aIndexes, std::string aFill);
-    void set_style_outline(const Rcpp::IntegerVector& aIndexes, std::string aOutline);
-};
-RCPP_EXPOSED_CLASS_NODECL(PlotSpec);
-
-// ----------------------------------------------------------------------
-
 class ProcrustesData : public wrapper<acmacs::chart::ProcrustesData>
 {
  public:
@@ -193,8 +172,6 @@ RCPP_EXPOSED_CLASS_NODECL(ProcrustesData);
 ProcrustesData procrustes(Projection primary, Projection secondary, bool scaling, std::string match);
 
 // ----------------------------------------------------------------------
-
-inline PlotSpec Chart::plot_spec() { return obj_->plot_spec_modify(); }
 
 template <> inline bool Chart::validate_constructor<int>(SEXP* args, int nargs)
 {

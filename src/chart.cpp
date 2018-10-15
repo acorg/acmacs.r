@@ -2,6 +2,7 @@
 
 #include "chart.hh"
 #include "titers.hh"
+#include "plot-spec.hh"
 
 // ----------------------------------------------------------------------
 
@@ -18,6 +19,7 @@ inline Rcpp::StringVector passage_as_character(acmacs::chart::Passage* aPassage)
 inline Rcpp::List Chart::get_antigens() const { return getList<Antigen>(obj_->antigens_modify()); }
 inline Rcpp::List Chart::get_sera() const { return getList<Serum>(obj_->sera_modify()); }
 inline Titers Chart::titers() { return obj_->titers_modify(); }
+inline PlotSpec Chart::plot_spec() { return obj_->plot_spec_modify(); }
 
 // ----------------------------------------------------------------------
 
@@ -127,18 +129,6 @@ RCPP_MODULE(acmacs_chart)
             .method("relax", &Projection::relax_default)
             ;
 
-    class_<PlotSpec>("acmacs.PlotSpec")
-            .property("styles", &PlotSpec::styles)
-            .property("drawing_order", &PlotSpec::drawing_order)
-            .method("raise", &PlotSpec::drawing_order_raise)
-            .method("lower", &PlotSpec::drawing_order_lower)
-            .method("raise_sera", &PlotSpec::drawing_order_raise_sera)
-            .method("lower_sera", &PlotSpec::drawing_order_lower_sera)
-            .method("set_size", &PlotSpec::set_style_size)
-            .method("set_fill", &PlotSpec::set_style_fill)
-            .method("set_outline", &PlotSpec::set_style_outline)
-            ;
-
     class_<acmacs::PointStyle>("acmacs.PointStyle")
             .property("shown", &style_shown, nullptr)
             .property("size", &style_size, nullptr)
@@ -151,16 +141,6 @@ RCPP_MODULE(acmacs_chart)
               // LabelStyle label;
               // field<std::string> label_text;
             ;
-
-    // class_<Titers>("acmacs.Titers")
-    //         .method("all", &Titers::all)
-    //         .method("titer", &Titers::titer)
-    //         .method("set_titer", &Titers::set_titer)
-    //         .method("set_dontcare_for_antigen", &Titers::set_dontcare_for_antigen)
-    //         .method("set_dontcare_for_serum", &Titers::set_dontcare_for_serum)
-    //         .method("multiply_by_for_antigen", &Titers::multiply_by_for_antigen)
-    //         .method("multiply_by_for_serum", &Titers::multiply_by_for_serum)
-    //         ;
 
     function("acmacs.procrustes", &procrustes);
 
@@ -332,88 +312,6 @@ Rcpp::NumericMatrix Projection::layout_convert(std::shared_ptr<acmacs::chart::La
         }
     }
     return result;
-}
-
-// ----------------------------------------------------------------------
-
-Rcpp::StringMatrix Titers::all() const
-{
-    Rcpp::StringMatrix result(obj_->number_of_antigens(), obj_->number_of_sera());
-    for (size_t ag_no = 0; ag_no < obj_->number_of_antigens(); ++ag_no)
-        for (size_t sr_no = 0; sr_no < obj_->number_of_sera(); ++sr_no)
-            result(ag_no, sr_no) = static_cast<std::string>(obj_->titer(ag_no, sr_no));
-    return result;
-}
-
-// ----------------------------------------------------------------------
-
-Rcpp::IntegerVector PlotSpec::drawing_order() const
-{
-    const auto drawing_order = obj_->drawing_order();
-    Rcpp::IntegerVector result(drawing_order.size());
-    std::transform(drawing_order.begin(), drawing_order.end(), result.begin(), [](auto index) { return index + 1; });
-    return result;
-    // return {drawing_order.begin(), drawing_order.end()};
-}
-
-// ----------------------------------------------------------------------
-
-void PlotSpec::drawing_order_raise(const Rcpp::IntegerVector& aIndexes)
-{
-    acmacs::chart::Indexes indexes(aIndexes.size());
-    std::transform(aIndexes.begin(), aIndexes.end(), indexes.begin(), [](auto index) { return index - 1; });
-    obj_->raise(indexes);
-}
-
-// ----------------------------------------------------------------------
-
-void PlotSpec::drawing_order_lower(const Rcpp::IntegerVector& aIndexes)
-{
-    acmacs::chart::Indexes indexes(aIndexes.size());
-    std::transform(aIndexes.begin(), aIndexes.end(), indexes.begin(), [](auto index) { return index - 1; });
-    obj_->lower(indexes);
-}
-
-// ----------------------------------------------------------------------
-
-void PlotSpec::drawing_order_raise_sera(const Rcpp::IntegerVector& aIndexes)
-{
-    acmacs::chart::Indexes indexes(aIndexes.size());
-    std::transform(aIndexes.begin(), aIndexes.end(), indexes.begin(), [](auto index) { return index - 1; });
-    obj_->raise_serum(indexes);
-}
-
-// ----------------------------------------------------------------------
-
-void PlotSpec::drawing_order_lower_sera(const Rcpp::IntegerVector& aIndexes)
-{
-    acmacs::chart::Indexes indexes(aIndexes.size());
-    std::transform(aIndexes.begin(), aIndexes.end(), indexes.begin(), [](auto index) { return index - 1; });
-    obj_->lower_serum(indexes);
-}
-
-// ----------------------------------------------------------------------
-
-void PlotSpec::set_style_size(const Rcpp::IntegerVector& aIndexes, double aSize)
-{
-    for (auto index : aIndexes)
-        obj_->size(index - 1, Pixels{aSize});
-}
-
-// ----------------------------------------------------------------------
-
-void PlotSpec::set_style_fill(const Rcpp::IntegerVector& aIndexes, std::string aFill)
-{
-    for (auto index : aIndexes)
-        obj_->fill(index - 1, Color(aFill));
-}
-
-// ----------------------------------------------------------------------
-
-void PlotSpec::set_style_outline(const Rcpp::IntegerVector& aIndexes, std::string aOutline)
-{
-    for (auto index : aIndexes)
-        obj_->outline(index - 1, Color(aOutline));
 }
 
 // ----------------------------------------------------------------------
