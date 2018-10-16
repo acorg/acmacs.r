@@ -21,6 +21,8 @@ projection$stress
 
   \item{minimum_column_basis}{(string), "none", "1280"}
 
+  \item{number_of_dimensions}{(integer)}
+
   \item{forced_column_bases}{vector of doubles, if column bases were forced in projection
   (by user or after merge of tables having more-than titers), otherwise
   NA.}
@@ -29,6 +31,9 @@ projection$stress
     2x2)}
 
   \item{layout}{matrix with point coordinates.}
+
+  \item{layout <- matrix(c(0), nrow=chart$number_of_points,
+  ncol=projection$number_of_dimensions)}{set layout to matrix.}
 
   \item{transformed_layout}{matrix with point coordinates,
   transformation applied.}

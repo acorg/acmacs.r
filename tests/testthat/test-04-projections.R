@@ -4,13 +4,20 @@ test_chart <- function(filename, expected_num_projections, expected_stress, expe
     chart <- new(acmacs.Chart, filename)
 
     layout <- chart$projections[[1]]$layout
+    test_that("number of points", { expect_equal(chart$number_of_points, nrow(layout)) })
+    test_that("number of dimensions", { expect_equal(chart$projections[[1]]$number_of_dimensions, ncol(layout)) })
 
     test_that("number of projections", { expect_equal(chart$number_of_projections, expected_num_projections) })
     test_that("stress", { expect_equal(chart$projections[[1]]$stress, expected_stress) })
     test_that("minimum_column_basis", { expect_equal(chart$projections[[1]]$minimum_column_basis, expected_minimum_column_basis) })
     test_that("layout vs. transformed_layout vs. transformation", { expect_equal(chart$projections[[1]]$layout %*% chart$projections[[1]]$transformation, chart$projections[[1]]$transformed_layout) })
 
-    pr_new <- chart$new_projection("none", 2);
+    pr_new <- chart$new_projection(chart$projections[[1]]$minimum_column_basis, chart$projections[[1]]$number_of_dimensions);
+    test_that("new projection stress", { expect_lt(chart$projections[[1]]$stress, pr_new$stress) })
+    pr_new$layout <- layout
+    test_that("new projection stress", { expect_equal(chart$projections[[1]]$stress, pr_new$stress) })
+    test_that("layouts equal", { expect_equal(chart$projections[[1]]$layout, pr_new$layout) })
+    pr_new$layout <- matrix(c(0), nrow=chart$number_of_points, ncol=chart$projections[[1]]$number_of_dimensions)
     test_that("new projection stress", { expect_lt(chart$projections[[1]]$stress, pr_new$stress) })
 
     tr1 <- chart$projections[[1]]$transformation

@@ -122,9 +122,10 @@ RCPP_MODULE(acmacs_chart)
             .method("recalculate_stress", &Projection::recalculate_stress)
             .property<std::string>("comment", &Projection::comment)
             .property<std::string>("minimum_column_basis", &Projection::minimum_column_basis)
+            .property("number_of_dimensions", &Projection::number_of_dimensions)
             .property("forced_column_bases", &Projection::forced_column_bases)
             .property("transformation", &Projection::transformation)
-            .property("layout", &Projection::layout)
+            .property("layout", &Projection::layout, &Projection::set_layout)
             .property("transformed_layout", &Projection::transformed_layout)
             .method("rotate_degrees", &Projection::rotate_degrees)
             .method("rotate_radians", &Projection::rotate_radians)
@@ -345,6 +346,19 @@ Rcpp::NumericMatrix Projection::layout_convert(std::shared_ptr<acmacs::chart::La
     }
     return result;
 }
+
+// ----------------------------------------------------------------------
+
+acmacs::Layout Projection::layout_convert(const Rcpp::NumericMatrix& source) const
+{
+    acmacs::Layout result(source.nrow(), source.ncol());
+    for (size_t point_no = 0; point_no < result.number_of_points(); ++point_no) {
+        for (size_t dim_no = 0; dim_no < result.number_of_dimensions(); ++dim_no)
+            result.set(point_no, dim_no, source(point_no, dim_no));
+    }
+    return result;
+
+} // Projection::layout_convert
 
 // ----------------------------------------------------------------------
 

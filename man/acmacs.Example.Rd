@@ -100,7 +100,8 @@ sapply(1:chart$number_of_projections, function(no) { chart$projections[[no]]$inf
 # list with more detailed info about each projection
 get_projection <- function(no) \{
   p <- chart$projections[[no]]
-  list("stress"=p$stress, "comment"=p$comment, "minimum_column_basis"=p$minimum_column_basis,
+  list("stress"=p$stress, "comment"=p$comment, "number_of_dimensions"=p$number_of_dimensions,
+       "minimum_column_basis"=p$minimum_column_basis,
        "forced_column_bases"=p$forced_column_bases, "transformation"=p$transformation,
        "layout"=p$layout, "transformed_layout"=p$transformed_layout)
 \}
@@ -168,6 +169,9 @@ chart$projections[[1]]$move_point(chart$number_of_antigens + 1, c(100, 100))
 chart$projections[[1]]$move_point(chart$number_of_antigens + chart$number_of_sera, c(100, 100))
 # direct assignment to layout fails
 # does not work: chart$projections[[1]]$layout[1,] <- c(10, 10)
+
+# set layout to matrix filled with 0
+chart$projections[[1]]$layout <- matrix(c(0), nrow=chart$number_of_points, ncol=chart$projections[[1]]$number_of_dimensions)
 
 }\cr
 \bold{# ========= Save chart =========}\cr
