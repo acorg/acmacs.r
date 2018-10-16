@@ -12,6 +12,7 @@ RCPP_MODULE(acmacs_titers)
             .method("set_dontcare_for_serum", &Titers::set_dontcare_for_serum)
             .method("multiply_by_for_antigen", &Titers::multiply_by_for_antigen)
             .method("multiply_by_for_serum", &Titers::multiply_by_for_serum)
+            .property("number_of_layers", &Titers::number_of_layers)
             ;
 }
 

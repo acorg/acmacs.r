@@ -83,6 +83,10 @@ chart <- new(acmacs.Chart, raw_data)
   available.\cr \bold{rough} is boolean, when TRUE optimization is about
   30\% faster, result is slightly worse, visually no distinguishable.}
 
+  \item{remove_layers()}{if chart is a merge, titers cannot be
+    modified. if you want to change them anyway, you have to remove
+    layers from the chart. merging resulting (flattened) chart with
+    other charts usually gives wrong result.}
 
 }
 \section{Column bases}{

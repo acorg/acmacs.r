@@ -219,6 +219,13 @@ chart$titers$titer(chart$number_of_antigens, chart$number_of_sera)
 chart$titers$all()
 # invariant
 identical(sapply(1:chart$number_of_antigens, function(no) { chart$titers$titer(no, 1) }), chart$titers$all()[,1])
+
+# remove layers
+# if chart is a merge, titers cannot be modified. if you
+# want to change them anyway, you have to remove layers from the
+# chart first. merging resulting (flattened) chart with other charts usually
+# gives wrong result.
+chart$remove_layers()
 }\cr
 \bold{# ========= Making maps =========}\cr
 \preformatted{

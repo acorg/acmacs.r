@@ -116,6 +116,7 @@ class Chart : public wrapper<acmacs::chart::ChartModify>
     void sort_projections() { obj_->projections_modify()->sort(); }
     void remove_all_projections() { obj_->projections_modify()->remove_all(); }
     void remove_all_projections_except(size_t projection_no_one_based) { obj_->projections_modify()->remove_all_except(projection_no_one_based - 1); }
+    void remove_layers() { obj_->remove_layers(); }
 
 }; // class Chart
 RCPP_EXPOSED_CLASS_NODECL(Chart);

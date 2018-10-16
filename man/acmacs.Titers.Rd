@@ -26,6 +26,11 @@ ps <- chart$titers
 
   \item{multiply_by_for_serum(serum_no, multiply_by)}{Multiply all
     titers of the serum by some number.}
+
+  \item{number_of_layers}{If chart is a merge, it has layers. In that
+    case titers cannot be modified. Use chart$remove_layers() to get rid
+    of them and be able to modify titers.}
+
 }
 \keyword{ package }
 \examples{
