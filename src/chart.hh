@@ -111,6 +111,7 @@ class Chart : public wrapper<acmacs::chart::ChartModify>
       // https://stackoverflow.com/questions/42579207/rcpp-modules-validator-function-for-exposed-constructors-with-same-number-of-pa
     template <typename T> static inline bool validate_constructor(SEXP* args, int nargs) { return nargs == 1 && Rcpp::is<T>(args[0]); }
 
+    Projection new_projection(std::string minimum_column_basis, size_t number_of_dimensions);
     Projection relax2(std::string minimum_column_basis, size_t number_of_dimensions);
     Projection relax3(std::string minimum_column_basis, size_t number_of_dimensions, bool rough);
     void relax_many(std::string minimum_column_basis, size_t number_of_dimensions, size_t number_of_optimizations, bool rough);

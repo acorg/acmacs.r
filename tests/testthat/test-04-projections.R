@@ -10,6 +10,9 @@ test_chart <- function(filename, expected_num_projections, expected_stress, expe
     test_that("minimum_column_basis", { expect_equal(chart$projections[[1]]$minimum_column_basis, expected_minimum_column_basis) })
     test_that("layout vs. transformed_layout vs. transformation", { expect_equal(chart$projections[[1]]$layout %*% chart$projections[[1]]$transformation, chart$projections[[1]]$transformed_layout) })
 
+    pr_new <- chart$new_projection("none", 2);
+    test_that("new projection stress", { expect_lt(chart$projections[[1]]$stress, pr_new$stress) })
+
     tr1 <- chart$projections[[1]]$transformation
     chart$projections[[1]]$rotate_degrees(30)
     tr2 <- chart$projections[[1]]$transformation

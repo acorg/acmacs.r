@@ -1,5 +1,6 @@
 #include <limits>
 
+#include "acmacs-chart-2/randomizer.hh"
 #include "chart.hh"
 #include "titers.hh"
 #include "plot-spec.hh"
@@ -55,6 +56,7 @@ RCPP_MODULE(acmacs_chart)
             // .method("column_bases", &Chart::column_bases_1s, "either forced or calculated column bases with the provided minimum_column_basis")
             .method("column_bases", &Chart::column_bases_0, "either forced or calculated column bases, i.e. the ones used for stress calculation and optimization")
             .method("save", &Chart::save)
+            .method("new_projection", &Chart::new_projection)
             .method("relax", &Chart::relax2)
             .method("relax", &Chart::relax3)
             .method("relax_many", &Chart::relax_many, "generate maps multiple times from random starts\n\targuments:\n\tminimum column basis, e.g. \"none\", \"1280\"\n\tnumber of dimensions, e.g. 2\n\tnumber of optimizations, e.g. 10\n\tuse rough optimization (30% faster): TRUE or FALSE\n")
@@ -234,6 +236,18 @@ Rcpp::NumericVector Chart::column_bases_2(size_t aProjectionNo, std::string aMin
         return Rcpp::NumericVector::create(NA_REAL);
 
 } // Chart::column_bases_2
+
+// ----------------------------------------------------------------------
+
+Projection Chart::new_projection(std::string minimum_column_basis, size_t number_of_dimensions)
+{
+    auto projection = obj_->projections_modify()->new_from_scratch(number_of_dimensions, minimum_column_basis);
+    acmacs::chart::optimization_options options;
+    auto stress = acmacs::chart::stress_factory<double>(*projection, options.mult);
+    projection->randomize_layout(randomizer_plain_from_sample_optimization(*projection, stress, options.randomization_diameter_multiplier));
+    return static_cast<std::shared_ptr<acmacs::chart::ProjectionModify>>(projection);
+
+} // Chart::new_projection
 
 // ----------------------------------------------------------------------
 

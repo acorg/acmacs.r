@@ -88,7 +88,13 @@ chart <- new(acmacs.Chart, raw_data)
     layers from the chart. merging resulting (flattened) chart with
     other charts usually gives wrong result.}
 
-  \item{clone()}{chart is cloned by exporting it into ace (in memory) and re-reading it}
+  \item{clone()}{chart is cloned by exporting it into ace (in memory)
+    and re-reading it}
+
+  \item{new_projection(minimum_column_basis,\cr
+  number_of_dimensions)}{creates new projection with random layout,
+  optimization is not run, dimension annealing cannot be used.}
+
 }
 \section{Column bases}{
   Column bases is a propery of a projection. Formally, chart may contain

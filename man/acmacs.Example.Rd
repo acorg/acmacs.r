@@ -252,6 +252,10 @@ chart$projections[[1]]$move_point(1, c(100, 100))
 chart$projections[[1]]$stress
 chart$projections[[1]]$relax()
 chart$projections[[1]]$stress
+
+# create new projection in 2d without minimum column basis with random layout without optimisation (dimension annealing cannot be used)
+projection <- chart$new_projection("none", 2)
+
 }\cr
 \bold{# ========= Procrustes =========}\cr
 \preformatted{
