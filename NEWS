@@ -7,6 +7,7 @@ acmacs.r NEWS -- history of user-visible changes.
 ** remove all projections except one in the chart (chart$remove_all_projections_except(number))
 ** get number of layers (chart$titers$number_of_layers)
 ** remove layers (flatten) (chart$remove_layers())
+** clone chart (chart$clone())
 
 
 * Changes in 2.6 (2018-07-15)

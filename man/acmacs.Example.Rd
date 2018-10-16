@@ -35,6 +35,10 @@ cat(paste("lineage (influenza B only):", chart$lineage, "\n"))\cr
 # change chart name
 chart$name <- "modified name"
 cat(paste("changed chart name:", chart$name, "\n"))\cr
+
+# cloning chart (via hidden export/import)
+chart2 <- chart$clone()
+
 }\cr
 \bold{# ========== Antigens ==========}\cr
 \preformatted{

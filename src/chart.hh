@@ -82,6 +82,7 @@ class Chart : public wrapper<acmacs::chart::ChartModify>
     Chart(std::string aFilename);
     Chart(Rcpp::RawVector aData);
     Chart(int number_of_antigens, int number_of_sera);
+    Chart(std::shared_ptr<acmacs::chart::ChartModify> src);
     std::string name() const { return obj_->make_name(); }
     std::string info() const { return obj_->make_info(); }
     std::string lineage() const { return obj_->lineage(); }
@@ -117,8 +118,10 @@ class Chart : public wrapper<acmacs::chart::ChartModify>
     void remove_all_projections() { obj_->projections_modify()->remove_all(); }
     void remove_all_projections_except(size_t projection_no_one_based) { obj_->projections_modify()->remove_all_except(projection_no_one_based - 1); }
     void remove_layers() { obj_->remove_layers(); }
+    Chart clone() const;
 
 }; // class Chart
+
 RCPP_EXPOSED_CLASS_NODECL(Chart);
 
 // ----------------------------------------------------------------------

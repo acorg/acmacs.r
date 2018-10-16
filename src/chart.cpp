@@ -59,6 +59,7 @@ RCPP_MODULE(acmacs_chart)
             .method("relax", &Chart::relax3)
             .method("relax_many", &Chart::relax_many, "generate maps multiple times from random starts\n\targuments:\n\tminimum column basis, e.g. \"none\", \"1280\"\n\tnumber of dimensions, e.g. 2\n\tnumber of optimizations, e.g. 10\n\tuse rough optimization (30% faster): TRUE or FALSE\n")
             .method("sort_projections", &Chart::sort_projections)
+            .method("clone", &Chart::clone)
             ;
     function("as.character.Rcpp_acmacs.Chart", &Chart::as_character, "as.character.Rcpp_acmacs.Chart(chart) - shows brief info about passed chart");
 
@@ -156,6 +157,11 @@ RCPP_MODULE(acmacs_chart)
 
 // ----------------------------------------------------------------------
 
+Chart::Chart(std::shared_ptr<acmacs::chart::ChartModify> src)
+    : wrapper(src)
+{
+}
+
 Chart::Chart(std::string aFilename)
     : wrapper(std::make_shared<acmacs::chart::ChartModify>(acmacs::chart::import_from_file(aFilename, acmacs::chart::Verify::None, report_time::No)))
 {
@@ -170,6 +176,15 @@ Chart::Chart(int number_of_antigens, int number_of_sera)
     : wrapper(std::make_shared<acmacs::chart::ChartNew>(number_of_antigens, number_of_sera))
 {
 }
+
+// ----------------------------------------------------------------------
+
+Chart Chart::clone() const
+{
+    const auto data = acmacs::chart::export_factory(*obj_, acmacs::chart::export_format::ace, "acmacs.r", report_time::No);
+    return std::make_shared<acmacs::chart::ChartModify>(acmacs::chart::import_from_data(data, acmacs::chart::Verify::None, report_time::No));
+
+} // Chart::clone
 
 // ----------------------------------------------------------------------
 

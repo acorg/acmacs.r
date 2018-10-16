@@ -18,3 +18,18 @@ test_that("column bases", { expect_equal(chart2$column_bases(), c(7.333602628268
 test_that("number of layers", { expect_equal(chart2$titers$number_of_layers, 6) })
 chart2$remove_layers()
 test_that("number of layers upon layers removal", { expect_equal(chart2$titers$number_of_layers, 0) })
+
+# cloning
+output_filename_ace <- "/tmp/acmacs.r.test01.ace"
+chart1 <- new(acmacs.Chart, "2004-3.ace")
+chart2 <- chart1$clone()
+chart2$save(output_filename_ace)
+chart3 <- new(acmacs.Chart, output_filename_ace)
+unlink(c(output_filename_ace))
+test_that("cloned chart name", { expect_equal(chart1$name, chart3$name) })
+test_that("cloned number of antigens", { expect_equal(chart1$number_of_antigens, chart3$number_of_antigens) })
+test_that("cloned number of sera", { expect_equal(chart1$number_of_sera, chart3$number_of_sera) })
+test_that("cloned number of points", { expect_equal(chart1$number_of_points, chart3$number_of_points) })
+test_that("cloned number of projections", { expect_equal(chart1$number_of_projections, chart3$number_of_projections) })
+test_that("cloned column bases", { expect_equal(chart1$column_bases(), chart3$column_bases()) })
+test_that("cloned number of layers", { expect_equal(chart1$titers$number_of_layers, chart3$titers$number_of_layers) })
