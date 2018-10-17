@@ -48,7 +48,18 @@ test_chart <- function(filename, expected_num_projections, expected_stress, expe
     test_that("number of projections upon removal all ones", { expect_equal(chart$number_of_projections, 0) })
 }
 
+test_clone_projection <- function(filename) {
+    chart <- new(acmacs.Chart, filename)
+
+    p1 <- chart$clone_projection(1)
+    test_that("stress after clone 1", { expect_equal(chart$projections[[1]]$stress, p1$stress) })
+    p2 <- chart$clone_projection(2)
+    test_that("stress after clone 2", { expect_equal(chart$projections[[2]]$stress, p2$stress) })
+    # print(sapply(1:chart$number_of_projections, function(no) { chart$projections[[no]]$info }))
+}
+
 test_chart("2004-3.ace", 1, 71.790977, "none")
 test_chart("cdc-h1pdm-2009.acd1.bz2", 1, 738.02039, "1280")
+test_clone_projection("cdc-h1pdm-20090612.ace")
 
 # ======================================================================

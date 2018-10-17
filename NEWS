@@ -11,6 +11,8 @@ acmacs.r NEWS -- history of user-visible changes.
 ** create new projection with random layout (dimension annealing cannot be used) (chart$new_projection("none", 2))
 ** projection$number_of_dimensions
 ** set layout of projection to matrix (projection$layout <- matrix(c(0), nrow=chart$number_of_points, ncol=projection$number_of_dimensions))
+** clone projection (p_new <- chart$clone_projection(1))
+
 
 * Changes in 2.6 (2018-07-15)
 ** fixed bug in making procrustes between projections of the same chart

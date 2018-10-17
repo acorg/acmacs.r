@@ -95,6 +95,9 @@ chart <- new(acmacs.Chart, raw_data)
   number_of_dimensions)}{creates new projection with random layout,
   optimization is not run, dimension annealing cannot be used.}
 
+  \item{new_proj <- clone_projection(projection_no)}{clones the specified
+    projection, adds it to the same chart.}
+
 }
 \section{Column bases}{
   Column bases is a propery of a projection. Formally, chart may contain

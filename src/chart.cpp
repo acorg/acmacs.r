@@ -62,6 +62,7 @@ RCPP_MODULE(acmacs_chart)
             .method("relax_many", &Chart::relax_many, "generate maps multiple times from random starts\n\targuments:\n\tminimum column basis, e.g. \"none\", \"1280\"\n\tnumber of dimensions, e.g. 2\n\tnumber of optimizations, e.g. 10\n\tuse rough optimization (30% faster): TRUE or FALSE\n")
             .method("sort_projections", &Chart::sort_projections)
             .method("clone", &Chart::clone)
+            .method("clone_projection", &Chart::clone_projection)
             ;
     function("as.character.Rcpp_acmacs.Chart", &Chart::as_character, "as.character.Rcpp_acmacs.Chart(chart) - shows brief info about passed chart");
 
@@ -188,6 +189,14 @@ Chart Chart::clone() const
     return std::make_shared<acmacs::chart::ChartModify>(acmacs::chart::import_from_data(data, acmacs::chart::Verify::None, report_time::No));
 
 } // Chart::clone
+
+// ----------------------------------------------------------------------
+
+Projection Chart::clone_projection(size_t projection_no) const
+{
+    return static_cast<std::shared_ptr<acmacs::chart::ProjectionModify>>(obj_->projections_modify()->at(projection_no - 1)->clone(*obj_));
+
+} // Chart::clone_projection
 
 // ----------------------------------------------------------------------
 

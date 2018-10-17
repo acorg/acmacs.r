@@ -173,6 +173,8 @@ chart$projections[[1]]$move_point(chart$number_of_antigens + chart$number_of_ser
 # set layout to matrix filled with 0
 chart$projections[[1]]$layout <- matrix(c(0), nrow=chart$number_of_points, ncol=chart$projections[[1]]$number_of_dimensions)
 
+# clone the best projection
+new_proj <- chart$clone_projection(1)
 }\cr
 \bold{# ========= Save chart =========}\cr
 \preformatted{
