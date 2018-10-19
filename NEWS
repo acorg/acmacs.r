@@ -1,5 +1,9 @@
 acmacs.r NEWS -- history of user-visible changes.
 
+* Changes in 2.8 (2018-10-19)
+** bug fix in reading layered charts made by acmacs-web
+
+
 * Changes in 2.7 (2018-10-17)
 ** R 3.5.1
 ** single thread variant of the grid test
