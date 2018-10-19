@@ -1,5 +1,11 @@
 context("Test chart$titers")
 
+chart <- new(acmacs.Chart, "bv.acd1.xz")
+titers <- chart$titers
+
+chart <- new(acmacs.Chart, "cdc-h1pdm-2009.acd1.bz2")
+titers <- chart$titers
+
 chart <- new(acmacs.Chart, "cdc-h1pdm-20090612.ace")
 titers <- chart$titers
 all <- titers$all()
