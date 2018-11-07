@@ -37,7 +37,7 @@ bin: build | $(LIB_DIR)
 	@echo '***** BIN'
 	cd $(ROOT_DIR) && \
 	env LD_LIBRARY_PATH=$(LD_LIBRARY_PATH) R CMD INSTALL --build --clean --debug --built-timestamp=$(shell date +%Y-%m-%d) -l $(LIB_DIR) $(PKG_FILE) && \
-	if [[ -f $(PKG_NAME)_$(PKG_VERSION).tgz ]]; then mv $(PKG_NAME)_$(PKG_VERSION).tgz $(PKG_NAME)_$(PKG_VERSION)_R_$(PKG_PLATFORM).tgz; fi
+	if [ -f $(PKG_NAME)_$(PKG_VERSION).tgz ]; then mv $(PKG_NAME)_$(PKG_VERSION).tgz $(PKG_NAME)_$(PKG_VERSION)_R_$(PKG_PLATFORM).tgz; fi
 
 build: compile-attributes | $(PKG_DIR)
 	@echo '***** BUILD'
