@@ -131,6 +131,7 @@ RCPP_EXPOSED_CLASS_NODECL(Chart);
 class Projection : public wrapper<acmacs::chart::ProjectionModify>
 {
  public:
+    Projection(const Projection& src) : wrapper(src) {}
     Projection(acmacs::chart::ProjectionModifyP projection) : wrapper(projection) {}
       // static Rcpp::StringVector as_character(Projection* aProjection) { return {aProjection->obj_->full_name()}; }
 
@@ -160,12 +161,18 @@ class Projection : public wrapper<acmacs::chart::ProjectionModify>
 
     void relax(std::string method, bool rough);
     void relax_default() { relax("cg", false); }
+    bool relax_one_iteration(std::string method, bool rough); // returns if optimization can be performed further
+    bool relax_one_iteration_default() { return relax_one_iteration("cg", false); }
     void randomize_layout(std::string randomization_method, double diameter_multiplier);
     void randomize_layout_default() { randomize_layout("table-max-distance", 2.0); }
 
  private:
+    std::unique_ptr<acmacs::chart::IntermediateLayouts> intermediate_layouts_;
+    size_t next_layout_;
+
     Rcpp::NumericMatrix layout_convert(std::shared_ptr<acmacs::chart::Layout> layout) const;
     acmacs::Layout layout_convert(const Rcpp::NumericMatrix& source) const;
+    acmacs::chart::optimization_method optimization_method(std::string method) const;
 
 }; // class Projection
 RCPP_EXPOSED_CLASS_NODECL(Projection);

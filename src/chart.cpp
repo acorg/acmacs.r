@@ -135,6 +135,8 @@ RCPP_MODULE(acmacs_chart)
             .method("move_point", &Projection::move_point)
             .method("relax", &Projection::relax)
             .method("relax", &Projection::relax_default)
+            .method("relax_one_iteration", &Projection::relax_one_iteration)
+            .method("relax_one_iteration", &Projection::relax_one_iteration_default)
             .method("randomize_layout", &Projection::randomize_layout)
             .method("randomize_layout", &Projection::randomize_layout_default)
             ;
@@ -327,15 +329,39 @@ void Projection::move_point(size_t aPointNo, const Rcpp::NumericVector& aCoordin
 
 // ----------------------------------------------------------------------
 
+acmacs::chart::optimization_method Projection::optimization_method(std::string method) const
+{
+    if (method == "lbfgs")
+        return acmacs::chart::optimization_method::alglib_lbfgs_pca;
+    else if (method.empty() || method == "cg")
+        return acmacs::chart::optimization_method::alglib_cg_pca;
+    else
+        throw std::invalid_argument("invalid optimization method");
+}
+
+// ----------------------------------------------------------------------
+
 void Projection::relax(std::string method, bool rough)
 {
-    using namespace acmacs::chart;
-    optimization_method opt_method{optimization_method::alglib_cg_pca};
-    if (method == "lbfgs")
-        opt_method = optimization_method::alglib_lbfgs_pca;
-    else if (!method.empty() && method != "cg")
-        throw std::invalid_argument("invalid optimization method");
-    obj_->relax(optimization_options(opt_method, rough ? optimization_precision::rough : optimization_precision::fine));
+    obj_->relax(acmacs::chart::optimization_options(optimization_method(method), rough ? acmacs::chart::optimization_precision::rough : acmacs::chart::optimization_precision::fine));
+    intermediate_layouts_.reset();
+}
+
+// ----------------------------------------------------------------------
+
+bool Projection::relax_one_iteration(std::string method, bool rough)
+{
+    if (!intermediate_layouts_) {
+        intermediate_layouts_.reset(new acmacs::chart::IntermediateLayouts{});
+        obj_->relax(acmacs::chart::optimization_options(optimization_method(method), rough ? acmacs::chart::optimization_precision::rough : acmacs::chart::optimization_precision::fine), *intermediate_layouts_);
+        next_layout_ = 0;
+    }
+    if (next_layout_ < intermediate_layouts_->size()) {
+        obj_->set_layout(intermediate_layouts_->at(next_layout_).layout);
+        obj_->set_stress(intermediate_layouts_->at(next_layout_).stress);
+        ++next_layout_;
+    }
+    return intermediate_layouts_ && next_layout_ < intermediate_layouts_->size();
 }
 
 // ----------------------------------------------------------------------
@@ -353,6 +379,7 @@ void Projection::randomize_layout(std::string randomization_method, double diame
     else
         throw std::invalid_argument("invalid randomization method, supported: \"sample-optimization\", \"table-max-distance\", \"current-layout-area\"");
     obj_->randomize_layout(rnd, diameter_multiplier);
+    intermediate_layouts_.reset();
 }
 
 // ----------------------------------------------------------------------

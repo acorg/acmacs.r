@@ -2,7 +2,7 @@ acmacs.r NEWS -- history of user-visible changes.
 
 * Changes in 2.9 (2018-11-07)
 ** randomizing layout of a projection (projection$randomize_layout())
-
+** running optimization step by step (projection$relax_one_iteration())
 
 * Changes in 2.8 (2018-10-19)
 ** bug fix in reading layered charts made by acmacs-web

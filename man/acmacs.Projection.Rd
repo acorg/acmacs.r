@@ -58,11 +58,6 @@ projection$stress
     non-transformed layout by changing point_no (positive integer)
     coordinates (numeric vector). The number of the first point is 1.}
 
-  \item{relax()}{relaxes projection from the current layout}
-
-  \item{relax(method, rough)}{relaxes projection from the current
-  layout\cr\bold{method} is a string: "cg" or "lbfgs"\cr\bold{rough} is boolean}
-
   \item{randomize_layout()}{randomizes layout using table-max-distance randomizer and diameter_multiplier=2.0}
 
   \item{randomize_layout(randomization_method,
@@ -76,6 +71,17 @@ projection$stress
   randomization diameter)\cr \bold{diameter_multiplier} is a number to
   multiply inferred diameter for "sample-optimization" and
   "current-layout-area" }
+
+  \item{relax()}{relaxes projection from the current layout}
+
+  \item{relax(method, rough)}{relaxes projection from the current
+  layout\cr\bold{method} is a string: "cg" or "lbfgs"\cr\bold{rough} is boolean}
+
+  \item{relax_one_iteration()}{performs one iteration of optimization}
+
+  \item{relax_one_iteration(method, rough)}{performs one iteration of optimization
+  layout\cr\bold{method} is a string: "cg" or "lbfgs"\cr\bold{rough} is boolean\cr
+  method and rough are used in the first call only}
 
 }
 \examples{

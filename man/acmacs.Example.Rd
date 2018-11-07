@@ -270,6 +270,9 @@ projection$randomize_layout("sample-optimization", 2.0)
 projection$randomize_layout("table-max-distance", 2.0)
 projection$randomize_layout("current-layout-area", 2.0)
 
+# perform optimization step by step
+while(projection$relax_one_iteration()) { print(projection$stress); print(projection$layout); }
+
 }\cr
 \bold{# ========= Procrustes =========}\cr
 \preformatted{
