@@ -77,11 +77,13 @@ projection$stress
   \item{relax(method, rough)}{relaxes projection from the current
   layout\cr\bold{method} is a string: "cg" or "lbfgs"\cr\bold{rough} is boolean}
 
-  \item{relax_one_iteration()}{performs one iteration of optimization}
+  \item{relax_one_iteration()}{performs one iteration of optimization. returns if further optimization steps available.}
 
-  \item{relax_one_iteration(method, rough)}{performs one iteration of optimization
-  layout\cr\bold{method} is a string: "cg" or "lbfgs"\cr\bold{rough} is boolean\cr
-  method and rough are used in the first call only}
+  \item{relax_one_iteration(method, rough)}{performs one iteration of
+  optimization layout, returns if further optimization steps
+  available.\cr\bold{method} is a string: "cg" or
+  "lbfgs"\cr\bold{rough} is boolean\cr method and rough are used in
+  the first call only.}
 
 }
 \examples{
