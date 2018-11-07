@@ -63,6 +63,20 @@ projection$stress
   \item{relax(method, rough)}{relaxes projection from the current
   layout\cr\bold{method} is a string: "cg" or "lbfgs"\cr\bold{rough} is boolean}
 
+  \item{randomize_layout()}{randomizes layout using table-max-distance randomizer and diameter_multiplier=2.0}
+
+  \item{randomize_layout(randomization_method,
+  diameter_multiplier)}{randomizes layout\cr
+  \bold{randomization_method} is a string: "sample-optimization"
+  (layout is randomzed using "table-max-distance", then relaxed to
+  find out resulting point area, diameter of that area used for the
+  final randomization), "table-max-distance" (randomization diameter
+  is based on the maximum distance between antigen and serum in the
+  table), "current-layout-area" (current layout area is used to infer
+  randomization diameter)\cr \bold{diameter_multiplier} is a number to
+  multiply inferred diameter for "sample-optimization" and
+  "current-layout-area" }
+
 }
 \examples{
   # load chart from file

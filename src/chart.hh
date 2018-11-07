@@ -160,6 +160,8 @@ class Projection : public wrapper<acmacs::chart::ProjectionModify>
 
     void relax(std::string method, bool rough);
     void relax_default() { relax("cg", false); }
+    void randomize_layout(std::string randomization_method, double diameter_multiplier);
+    void randomize_layout_default() { randomize_layout("table-max-distance", 2.0); }
 
  private:
     Rcpp::NumericMatrix layout_convert(std::shared_ptr<acmacs::chart::Layout> layout) const;

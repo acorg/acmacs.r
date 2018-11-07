@@ -262,6 +262,14 @@ chart$projections[[1]]$stress
 # create new projection in 2d without minimum column basis with random layout without optimisation (dimension annealing cannot be used)
 projection <- chart$new_projection("none", 2)
 
+# randomize layout in the projection using "table-max-distance" method
+projection$randomize_layout()
+
+# randomize layout in the projection using specific method (see \link{acmacs.Projection})
+projection$randomize_layout("sample-optimization", 2.0)
+projection$randomize_layout("table-max-distance", 2.0)
+projection$randomize_layout("current-layout-area", 2.0)
+
 }\cr
 \bold{# ========= Procrustes =========}\cr
 \preformatted{

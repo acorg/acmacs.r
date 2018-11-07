@@ -135,6 +135,8 @@ RCPP_MODULE(acmacs_chart)
             .method("move_point", &Projection::move_point)
             .method("relax", &Projection::relax)
             .method("relax", &Projection::relax_default)
+            .method("randomize_layout", &Projection::randomize_layout)
+            .method("randomize_layout", &Projection::randomize_layout_default)
             ;
 
     class_<acmacs::PointStyle>("acmacs.PointStyle")
@@ -253,8 +255,7 @@ Projection Chart::new_projection(std::string minimum_column_basis, size_t number
 {
     auto projection = obj_->projections_modify()->new_from_scratch(number_of_dimensions, minimum_column_basis);
     acmacs::chart::optimization_options options;
-    auto stress = acmacs::chart::stress_factory<double>(*projection, options.mult);
-    projection->randomize_layout(randomizer_plain_from_sample_optimization(*projection, stress, options.randomization_diameter_multiplier));
+    projection->randomize_layout(acmacs::chart::ProjectionModify::randomizer::plain_from_sample_optimization, options.randomization_diameter_multiplier);
     return static_cast<std::shared_ptr<acmacs::chart::ProjectionModify>>(projection);
 
 } // Chart::new_projection
@@ -335,6 +336,23 @@ void Projection::relax(std::string method, bool rough)
     else if (!method.empty() && method != "cg")
         throw std::invalid_argument("invalid optimization method");
     obj_->relax(optimization_options(opt_method, rough ? optimization_precision::rough : optimization_precision::fine));
+}
+
+// ----------------------------------------------------------------------
+
+void Projection::randomize_layout(std::string randomization_method, double diameter_multiplier)
+{
+    using namespace acmacs::chart;
+    ProjectionModify::randomizer rnd{ProjectionModify::randomizer::plain_from_sample_optimization};
+    if (randomization_method == "sample-optimization")
+        rnd = ProjectionModify::randomizer::plain_from_sample_optimization;
+    else if (randomization_method == "table-max-distance")
+        rnd = ProjectionModify::randomizer::plain_with_table_max_distance;
+    else if (randomization_method == "current-layout-area")
+        rnd = ProjectionModify::randomizer::plain_with_current_layout_area;
+    else
+        throw std::invalid_argument("invalid randomization method, supported: \"sample-optimization\", \"table-max-distance\", \"current-layout-area\"");
+    obj_->randomize_layout(rnd, diameter_multiplier);
 }
 
 // ----------------------------------------------------------------------
