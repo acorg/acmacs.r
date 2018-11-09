@@ -1,6 +1,7 @@
 #include <limits>
 
 #include "acmacs-chart-2/randomizer.hh"
+#include "acmacs-chart-2/merge.hh"
 #include "chart.hh"
 #include "titers.hh"
 #include "plot-spec.hh"
@@ -155,6 +156,12 @@ RCPP_MODULE(acmacs_chart)
             ;
 
     function("acmacs.procrustes", &procrustes);
+
+    function("acmacs.merge", &merge);
+    function("acmacs.merge", &merge_default);
+    function("acmacs.merge_incremental", &merge_incremental);
+    function("acmacs.merge_frozen", &merge_frozen);
+    function("acmacs.merge_overlay", &merge_overlay);
 
     class_<ProcrustesData>("acmacs.ProcrustesData")
             .property("rms", &ProcrustesData::rms, nullptr)
@@ -450,6 +457,52 @@ ProcrustesData procrustes(Projection primary, Projection secondary, bool scaling
 
     const acmacs::chart::CommonAntigensSera common(primary.obj_->chart(), secondary.obj_->chart(), match_level);
     return ProcrustesData(std::make_shared<acmacs::chart::ProcrustesData>(acmacs::chart::procrustes(*primary.obj_, *secondary.obj_, common.points(), scaling ? acmacs::chart::procrustes_scaling_t::yes : acmacs::chart::procrustes_scaling_t::no)));
+}
+
+// ----------------------------------------------------------------------
+
+Chart merge(Chart chart1, Chart chart2, std::string match_level, std::string projection_merge)
+{
+    acmacs::chart::MergeSettings settings;
+    if (!match_level.empty()) {
+        switch (std::tolower(match_level[0])) {
+          case 's':
+              settings.match_level = acmacs::chart::CommonAntigensSera::match_level_t::strict;
+              break;
+          case 'r':
+              settings.match_level = acmacs::chart::CommonAntigensSera::match_level_t::relaxed;
+              break;
+          case 'i':
+              settings.match_level = acmacs::chart::CommonAntigensSera::match_level_t::ignored;
+              break;
+        }
+    }
+    if (!projection_merge.empty()) {
+        switch (std::tolower(projection_merge[0])) {
+          case 'i':
+              settings.projection_merge = acmacs::chart::projection_merge_t::incremental;
+              break;
+          case 'o':
+              settings.projection_merge = acmacs::chart::projection_merge_t::overlay;
+              break;
+        }
+    }
+    auto [result, diagnostics] = acmacs::chart::merge(*chart1.obj_, *chart2.obj_, settings);
+    return result;
+}
+
+// ----------------------------------------------------------------------
+
+Chart merge_overlay(Chart chart1, Chart chart2)
+{
+    return merge(chart1, chart2, "a", "o");
+}
+
+// ----------------------------------------------------------------------
+
+Chart merge_incremental(Chart chart1, Chart chart2)
+{
+    return merge(chart1, chart2, "a", "i");
 }
 
 // ----------------------------------------------------------------------
