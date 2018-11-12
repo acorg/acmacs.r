@@ -17,3 +17,19 @@ test_that("merge2 number of sera", { expect_equal(merge2$number_of_sera, expecte
 test_that("merge2 number of layers", { expect_equal(merge2$titers$number_of_layers, expected1$titers$number_of_layers) })
 test_that("merge2 column bases", { expect_equal(merge2$column_bases(), expected1$column_bases()) })
 test_that("merge2 stress", { expect_equal(merge2$projections[[1]]$stress, expected1$projections[[1]]$stress) })
+
+merge3 <- acmacs.merge_frozen(chart1, chart2);
+expected3 <- new(acmacs.Chart, "2004-01-02.frozen.ace");
+test_that("merge3 number of antigens", { expect_equal(merge3$number_of_antigens, expected3$number_of_antigens) })
+test_that("merge3 number of sera", { expect_equal(merge3$number_of_sera, expected3$number_of_sera) })
+test_that("merge3 number of layers", { expect_equal(merge3$titers$number_of_layers, expected3$titers$number_of_layers) })
+test_that("merge3 column bases", { expect_equal(merge3$column_bases(), expected3$column_bases()) })
+test_that("merge3 stress", { expect_equal(merge3$projections[[1]]$stress, expected3$projections[[1]]$stress) })
+
+merge4 <- acmacs.merge_overlay(chart1, chart2);
+expected4 <- new(acmacs.Chart, "2004-01-02.overlay.ace");
+test_that("merge4 number of antigens", { expect_equal(merge4$number_of_antigens, expected4$number_of_antigens) })
+test_that("merge4 number of sera", { expect_equal(merge4$number_of_sera, expected4$number_of_sera) })
+test_that("merge4 number of layers", { expect_equal(merge4$titers$number_of_layers, expected4$titers$number_of_layers) })
+test_that("merge4 column bases", { expect_equal(merge4$column_bases(), expected4$column_bases()) })
+test_that("merge4 stress", { expect_equal(merge4$projections[[1]]$stress, expected4$projections[[1]]$stress) })

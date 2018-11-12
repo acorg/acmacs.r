@@ -155,12 +155,12 @@ RCPP_MODULE(acmacs_chart)
               // field<std::string> label_text;
             ;
 
-    function("acmacs.procrustes", &procrustes);
+    function("acmacs.procrustes", &procrustes, List::create(_["projection_primary"], _["projection_secondary"], _["scaling"] = false, _["match"] = "a"));
 
     function("acmacs.merge", &merge, List::create(_["chart1"], _["chart2"], _["match"] = "a", _["merge"] = "n"));
     function("acmacs.merge_incremental", &merge_incremental, List::create(_["chart1"], _["chart2"], _["optimizations"] = 100, _["threads"] = 0));
-    function("acmacs.merge_frozen", &merge_frozen);
-    function("acmacs.merge_overlay", &merge_overlay);
+    function("acmacs.merge_frozen", &merge_frozen, List::create(_["chart1"], _["chart2"]));
+    function("acmacs.merge_overlay", &merge_overlay, List::create(_["chart1"], _["chart2"]));
 
     class_<ProcrustesData>("acmacs.ProcrustesData")
             .property("rms", &ProcrustesData::rms, nullptr)
@@ -495,7 +495,9 @@ Chart merge(Chart chart1, Chart chart2, std::string match_level, std::string pro
 Chart merge_overlay(Chart chart1, Chart chart2)
 {
     auto result = merge(chart1, chart2, "a", "o");
+      // std::cout << "overlay 1 " << result.obj_->projection(0)->stress() << '\n';
     result.obj_->projection_modify(0)->relax(acmacs::chart::optimization_options{});
+      // std::cout << "overlay 2 " << result.obj_->projection(0)->stress() << '\n';
     return result;
 }
 
@@ -503,7 +505,9 @@ Chart merge_overlay(Chart chart1, Chart chart2)
 
 Chart merge_frozen(Chart chart1, Chart chart2)
 {
-    return merge(chart1, chart2, "a", "o");
+    auto result = merge(chart1, chart2, "a", "o");
+      // std::cout << "frozen " << result.obj_->projection(0)->stress() << '\n';
+    return result;
 }
 
 // ----------------------------------------------------------------------
