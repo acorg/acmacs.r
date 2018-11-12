@@ -195,6 +195,7 @@ Chart merge(Chart chart1, Chart chart2, std::string match_level, std::string pro
 Chart merge_incremental(Chart chart1, Chart chart2, size_t number_of_optimizations, size_t num_threads = 0);
 Chart merge_overlay(Chart chart1, Chart chart2);
 Chart merge_frozen(Chart chart1, Chart chart2);
+std::string merge_report(Chart chart1, Chart chart2, std::string match_level);
 
 // ----------------------------------------------------------------------
 
