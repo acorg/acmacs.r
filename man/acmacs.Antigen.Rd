@@ -99,6 +99,7 @@ antigen$passage$type()
   \code{\link{acmacs.Example}}
   \code{\link{acmacs.Chart.from.scratch}}\cr
   \code{\link{acmacs.Chart.from.text.file}}\cr
+  \code{\link{acmacs.merge}}\cr
 }
 \keyword{ package }
 \author{Eugene Skepner, eu@antigenic-cartography.org.}

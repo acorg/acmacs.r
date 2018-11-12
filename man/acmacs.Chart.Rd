@@ -169,5 +169,6 @@ chart <- new(acmacs.Chart, raw_data)
   \code{\link{acmacs.Chart.from.scratch}}\cr
   \code{\link{acmacs.Chart.from.text.file}}\cr
   \code{\link{acmacs.GridTest}}\cr
+  \code{\link{acmacs.merge}}\cr
 }
 \author{Eugene Skepner, eu@antigenic-cartography.org.}

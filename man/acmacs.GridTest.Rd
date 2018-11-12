@@ -33,5 +33,6 @@ new_result <- grid_test$test()
   \code{\link{acmacs.PlotSpec}}\cr
   \code{\link{acmacs.Titers}}\cr
   \code{\link{acmacs.Example}}\cr
+  \code{\link{acmacs.merge}}\cr
 }
 \author{Eugene Skepner, eu@antigenic-cartography.org.}

@@ -322,5 +322,6 @@ new_result <- gr$test()
   \code{\link{acmacs.PlotSpec}}\cr
   \code{\link{acmacs.Titers}}\cr
   \code{\link{acmacs.GridTest}}\cr
+  \code{\link{acmacs.merge}}\cr
 }
 \author{Eugene Skepner, eu@antigenic-cartography.org.}
