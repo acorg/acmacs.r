@@ -157,8 +157,7 @@ RCPP_MODULE(acmacs_chart)
 
     function("acmacs.procrustes", &procrustes);
 
-    function("acmacs.merge", &merge);
-    function("acmacs.merge", &merge_default);
+    function("acmacs.merge", &merge, List::create(_["chart1"], _["chart2"], _["match"] = "a", _["merge"] = "n"));
     function("acmacs.merge_incremental", &merge_incremental);
     function("acmacs.merge_frozen", &merge_frozen);
     function("acmacs.merge_overlay", &merge_overlay);
@@ -495,14 +494,27 @@ Chart merge(Chart chart1, Chart chart2, std::string match_level, std::string pro
 
 Chart merge_overlay(Chart chart1, Chart chart2)
 {
+    auto result = merge(chart1, chart2, "a", "o");
+    result.obj_->projection_modify(0)->relax(acmacs::chart::optimization_options{});
+    return result;
+}
+
+// ----------------------------------------------------------------------
+
+Chart merge_frozen(Chart chart1, Chart chart2)
+{
     return merge(chart1, chart2, "a", "o");
 }
 
 // ----------------------------------------------------------------------
 
-Chart merge_incremental(Chart chart1, Chart chart2)
+Chart merge_incremental(Chart chart1, Chart chart2, size_t number_of_optimizations, size_t num_threads)
 {
-    return merge(chart1, chart2, "a", "i");
+    auto result = merge(chart1, chart2, "a", "i");
+    acmacs::chart::optimization_options options(acmacs::chart::optimization_method::alglib_cg_pca, acmacs::chart::optimization_precision::fine, 2.0);
+    options.num_threads = num_threads;
+    result.obj_->relax_incremetal(0, number_of_optimizations, options);
+    return result;
 }
 
 // ----------------------------------------------------------------------
