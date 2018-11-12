@@ -45,7 +45,7 @@ overlay_merge <- acmacs.merge_overlay(chart1, chart2)
   }
 }
 \section{Incremental merge}{
-  The best projection of the first (master) chart is copied, projections
+  The best projection of the first (master) chart is copied to the resulting chart, projections
       of the second (merged in) char ignored. Positions of points that are in the
       merged in chart and not in the master chart are randomized and
       resulting layout relaxed.
@@ -62,8 +62,20 @@ overlay_merge <- acmacs.merge_overlay(chart1, chart2)
   }
 }
 \section{Frozen merge}{
+  The best projection of the first chart is copied to the resulting chart.
+  The best projection of the second chart is oriented to the best
+    projection of the first chart using procrustes, then points that are
+    found just in the second chart receive coordinates from that
+    reoriented projection. Points that are common for the first and the
+    second chart placed to their middle positions between the first
+    chart layout and reoriented second chart layout.
+
+  \code{frozen_merge <- acmacs.merge_frozen(chart1, chart2)}
 }
 \section{Overlay merge}{
+  Frozen merge followed by relaxation of the resulting projection.
+
+  \code{overlay_merge <- acmacs.merge_overlay(chart1, chart2)}
 }
 \keyword{ package }
 \seealso{
