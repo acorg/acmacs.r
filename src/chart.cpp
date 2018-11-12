@@ -158,7 +158,7 @@ RCPP_MODULE(acmacs_chart)
     function("acmacs.procrustes", &procrustes);
 
     function("acmacs.merge", &merge, List::create(_["chart1"], _["chart2"], _["match"] = "a", _["merge"] = "n"));
-    function("acmacs.merge_incremental", &merge_incremental);
+    function("acmacs.merge_incremental", &merge_incremental, List::create(_["chart1"], _["chart2"], _["optimizations"] = 100, _["threads"] = 0));
     function("acmacs.merge_frozen", &merge_frozen);
     function("acmacs.merge_overlay", &merge_overlay);
 
