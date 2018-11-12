@@ -161,6 +161,7 @@ RCPP_MODULE(acmacs_chart)
     function("acmacs.merge_incremental", &merge_incremental, List::create(_["chart1"], _["chart2"], _["optimizations"] = 100, _["threads"] = 0));
     function("acmacs.merge_frozen", &merge_frozen, List::create(_["chart1"], _["chart2"]));
     function("acmacs.merge_overlay", &merge_overlay, List::create(_["chart1"], _["chart2"]));
+    function("acmacs.merge_report", &merge_report, List::create(_["chart1"], _["chart2"], _["match"] = "a"));
 
     class_<ProcrustesData>("acmacs.ProcrustesData")
             .property("rms", &ProcrustesData::rms, nullptr)
@@ -519,6 +520,12 @@ Chart merge_incremental(Chart chart1, Chart chart2, size_t number_of_optimizatio
     options.num_threads = num_threads;
     result.obj_->relax_incremetal(0, number_of_optimizations, options);
     return result;
+}
+
+// ----------------------------------------------------------------------
+
+std::string merge_report(Chart chart1, Chart chart2, std::string match_level)
+{
 }
 
 // ----------------------------------------------------------------------
