@@ -461,7 +461,9 @@ ProcrustesData procrustes(Projection primary, Projection secondary, bool scaling
 
 // ----------------------------------------------------------------------
 
-Chart merge(Chart chart1, Chart chart2, std::string match_level, std::string projection_merge)
+static acmacs::chart::MergeSettings merge_settinsg(std::string match_level, std::string projection_merge);
+
+acmacs::chart::MergeSettings merge_settinsg(std::string match_level, std::string projection_merge)
 {
     acmacs::chart::MergeSettings settings;
     if (!match_level.empty()) {
@@ -487,7 +489,14 @@ Chart merge(Chart chart1, Chart chart2, std::string match_level, std::string pro
               break;
         }
     }
-    auto [result, diagnostics] = acmacs::chart::merge(*chart1.obj_, *chart2.obj_, settings);
+    return settings;
+}
+
+// ----------------------------------------------------------------------
+
+Chart merge(Chart chart1, Chart chart2, std::string match_level, std::string projection_merge)
+{
+    auto [result, diagnostics] = acmacs::chart::merge(*chart1.obj_, *chart2.obj_, merge_settinsg(match_level, projection_merge));
     return result;
 }
 
@@ -526,6 +535,8 @@ Chart merge_incremental(Chart chart1, Chart chart2, size_t number_of_optimizatio
 
 std::string merge_report(Chart chart1, Chart chart2, std::string match_level)
 {
+    auto [result, diagnostics] = acmacs::chart::merge(*chart1.obj_, *chart2.obj_, merge_settinsg(match_level, "none"));
+
 }
 
 // ----------------------------------------------------------------------
