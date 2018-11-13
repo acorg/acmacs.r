@@ -301,8 +301,8 @@ Rcpp::NumericMatrix Projection::transformation() const
     const auto a_tr = obj_->transformation();
     Rcpp::NumericMatrix transformation(a_tr.number_of_dimensions, a_tr.number_of_dimensions);
     for (size_t row = 0; row < a_tr.number_of_dimensions; ++row)
-    for (size_t column = 0; column < a_tr.number_of_dimensions; ++column)
-        transformation(0, 0) = a_tr._x(row, column);
+        for (size_t column = 0; column < a_tr.number_of_dimensions; ++column)
+            transformation(row, column) = a_tr._x(row, column);
     return transformation;
 }
 
