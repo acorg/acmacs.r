@@ -1,6 +1,11 @@
 acmacs.r NEWS -- history of user-visible changes.
 
 * Changes in 2.10 (2018-11-)
+** merging tables
+** incremental merge
+** frozen merge
+** overlay merge
+** titer merge diagnostics
 
 * Changes in 2.9 (2018-11-07)
 ** randomizing layout of a projection (projection$randomize_layout())
