@@ -299,11 +299,10 @@ void Chart::relax_many(std::string minimum_column_basis, size_t number_of_dimens
 Rcpp::NumericMatrix Projection::transformation() const
 {
     const auto a_tr = obj_->transformation();
-    Rcpp::NumericMatrix transformation(2, 2);
-    transformation(0, 0) = a_tr.a;
-    transformation(0, 1) = a_tr.b;
-    transformation(1, 0) = a_tr.c;
-    transformation(1, 1) = a_tr.d;
+    Rcpp::NumericMatrix transformation(a_tr.number_of_dimensions, a_tr.number_of_dimensions);
+    for (size_t row = 0; row < a_tr.number_of_dimensions; ++row)
+    for (size_t column = 0; column < a_tr.number_of_dimensions; ++column)
+        transformation(0, 0) = a_tr._x(row, column);
     return transformation;
 }
 
