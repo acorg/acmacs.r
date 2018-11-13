@@ -10,6 +10,7 @@ table_merge <- acmacs.merge(chart1, chart2)
 incremental_merge <- acmacs.merge_incremental(chart1, chart2, optimizations=100, threads=0)
 frozen_merge <- acmacs.merge_frozen(chart1, chart2)
 overlay_merge <- acmacs.merge_overlay(chart1, chart2)
+report <- acmacs.merge_report(chart1, chart2)
 }
 \section{Table merge}{
   Merging two tables, if source charts have projections, they are
@@ -76,6 +77,11 @@ overlay_merge <- acmacs.merge_overlay(chart1, chart2)
   Frozen merge followed by relaxation of the resulting projection.
 
   \code{overlay_merge <- acmacs.merge_overlay(chart1, chart2)}
+}
+\section{Merge report}{
+  Long text showing how titers were merged
+
+  \code{acmacs.merge_report(chart1, chart2)}
 }
 \keyword{ package }
 \seealso{

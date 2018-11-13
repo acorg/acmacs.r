@@ -308,6 +308,24 @@ new_proj$layout
 # test new projection
 new_result <- gr$test()
 }\cr
+\bold{# ========= Merging charts =========}\cr
+\preformatted{
+# merge two tables, source projections ignored, result has no projections
+table_merge <- acmacs.merge(chart1, chart2)
+
+# merge two charts incrementally (see \link{acmacs.merge})
+incremental_merge <- acmacs.merge_incremental(chart1, chart2, optimizations=100, threads=0)
+
+# make frozen merge of two charts with projections (see \link{acmacs.merge})
+frozen_merge <- acmacs.merge_frozen(chart1, chart2)
+
+# make overlay merge of two charts with projections (see \link{acmacs.merge})
+overlay_merge <- acmacs.merge_overlay(chart1, chart2)
+
+# generate text report of merging titers (see \link{acmacs.merge})
+report <- acmacs.merge_report(chart1, chart2)
+cat(report)
+}
 }
 \docType{package}
 \keyword{ package }

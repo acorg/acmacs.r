@@ -536,7 +536,7 @@ Chart merge_incremental(Chart chart1, Chart chart2, size_t number_of_optimizatio
 std::string merge_report(Chart chart1, Chart chart2, std::string match_level)
 {
     auto [result, diagnostics] = acmacs::chart::merge(*chart1.obj_, *chart2.obj_, merge_settinsg(match_level, "none"));
-
+    return diagnostics.titer_merge_report(*result);
 }
 
 // ----------------------------------------------------------------------

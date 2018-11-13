@@ -33,3 +33,6 @@ test_that("merge4 number of sera", { expect_equal(merge4$number_of_sera, expecte
 test_that("merge4 number of layers", { expect_equal(merge4$titers$number_of_layers, expected4$titers$number_of_layers) })
 test_that("merge4 column bases", { expect_equal(merge4$column_bases(), expected4$column_bases()) })
 test_that("merge4 stress", { expect_equal(merge4$projections[[1]]$stress, expected4$projections[[1]]$stress) })
+
+report <- acmacs.merge_report(chart1, chart2)
+# cat(report)
