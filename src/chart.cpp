@@ -425,15 +425,15 @@ acmacs::Layout Projection::layout_convert(const Rcpp::NumericMatrix& source) con
 Rcpp::NumericMatrix ProcrustesData::transformation() const
 {
     const auto& a_tr = obj_->transformation;
-    Rcpp::NumericMatrix transformation(a_tr.number_of_dimensions() + 1, a_tr.number_of_dimensions() + 1);
-    for (size_t row = 0; row < a_tr.number_of_dimensions(); ++row) {
-        for (size_t col = 0; col < a_tr.number_of_dimensions(); ++col)
+    Rcpp::NumericMatrix transformation(a_tr.number_of_dimensions + 1, a_tr.number_of_dimensions + 1);
+    for (size_t row = 0; row < a_tr.number_of_dimensions; ++row) {
+        for (size_t col = 0; col < a_tr.number_of_dimensions; ++col)
             transformation(row, col) = a_tr(row, col);
-        transformation(row, a_tr.number_of_dimensions()) = 1.0;
+        transformation(row, a_tr.number_of_dimensions) = 1.0;
     }
-    for (size_t col = 0; col < a_tr.number_of_dimensions(); ++col)
-        transformation(a_tr.number_of_dimensions(), col) = a_tr.translation(col);
-    transformation(a_tr.number_of_dimensions(), a_tr.number_of_dimensions()) = 1.0;
+    for (size_t col = 0; col < a_tr.number_of_dimensions; ++col)
+        transformation(a_tr.number_of_dimensions, col) = a_tr.translation(col);
+    transformation(a_tr.number_of_dimensions, a_tr.number_of_dimensions) = 1.0;
     return transformation;
 }
 
