@@ -15,6 +15,7 @@ LIB_DIR = $(ROOT_DIR)/library
 OUT_DIR = $(ROOT_DIR)/$(PKG_NAME)
 PKG_VERSION = $(shell awk '/^Version:/ {print $$2}' DESCRIPTION)
 PKG_FILE = $(PKG_DIR)/$(PKG_NAME)_$(PKG_VERSION).tar.gz
+INSTALLED_LIB = $(LIB_DIR)/$(PKG_NAME)/libs/acmacs.r.so
 
 ifeq ($(shell uname),Linux)
 LD_LIBRARY_PATH = "$(LIB_DIR)/acmacs.r/libs:$$LD_LIBRARY_PATH"
@@ -49,8 +50,15 @@ check: build | $(OUT_DIR) $(LIB_DIR)
 compile-attributes:
 	Rscript -e "library(Rcpp); compileAttributes(verbose=TRUE);"
 
+$(INSTALLED_LIB): $(wildcard src/*.cpp) $(wildcard src/*.hh)
+	$(MAKE) install
+
 test:
 	R_LIBS=$(LIB_DIR) Rscript --vanilla --default-packages=methods,utils,devtools,stats -e 'devtools::test()' | cat
+
+test2: $(INSTALLED_LIB)
+	@#R_LIBS=$(LIB_DIR) Rscript --vanilla -e 'library(acmacs.r); print(sessionInfo())'
+	R_LIBS=$(LIB_DIR) Rscript --vanilla tests/test-move-point-speed.R
 
 clean:
 	rm -rf $(OUT_DIR) $(ROOT_DIR)/$(PKG_NAME)_*.tgz $(PKG_FILE) $(LIB_DIR)/$(PKG_NAME) src/*.o src/*.so
