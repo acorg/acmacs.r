@@ -18,21 +18,23 @@ timeit(
 , paste("move", chart$number_of_antigens, "points"))
 # print(prj$layout)
 
+tts <- chart$titers
 titer <- "40"
 timeit(chart$remove_layers(), "remove_layers")
 n_ags <- 273 # chart$number_of_antigens
-n_srs <- 20 # 79 # chart$number_of_sera
+n_srs <- 79 # chart$number_of_sera
 timeit(
   for (ag_no in 1:n_ags) {
       for (sr_no in 1:n_srs) {
-          tt <- chart$titers$titer(ag_no, sr_no)
+          tt <- tts$titer(ag_no, sr_no)
       }
   }
 , paste("get", n <- n_ags * n_srs, "titers"))
+
 timeit(
   for (ag_no in 1:n_ags) {
       for (sr_no in 1:n_srs) {
-          chart$titers$set_titer(ag_no, sr_no, titer)
+          tts$set_titer(ag_no, sr_no, titer)
       }
   }
 , paste("set", n <- n_ags * n_srs, "titers"))
