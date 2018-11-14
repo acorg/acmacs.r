@@ -108,7 +108,6 @@ get_projection <- function(no) \{
 sapply(1:chart$number_of_projections, get_projection)
 
 # transfomation matrix of the first projection (usually best, if chart loaded from acmacs file)
-# makes sense for 2d maps only
 chart$projections[[1]]$transformation
 
 # stored layout of the first projection
@@ -134,6 +133,12 @@ chart$remove_all_projections_except(1)
 save_transformation <- chart$projections[[1]]$transformation
 save_layout <- chart$projections[[1]]$layout
 save_transformed_layout <- chart$projections[[1]]$transformed_layout
+
+# set transfomation matrix for 2D projection
+chart$projections[[1]]$transformation <- matrix(c(1, 0, 0, 1), nrow=2, byrow=TRUE)
+
+# set transfomation matrix for 3D projection
+chart$projections[[1]]$transformation <- matrix(c(1, 0, 0, 0, 1, 0, 0, 0, 1), nrow=3, byrow=TRUE)
 
 # rotate the first projection 30 degrees counter-clockwise
 chart$projections[[1]]$rotate_degrees(30)

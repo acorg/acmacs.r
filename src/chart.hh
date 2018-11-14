@@ -140,6 +140,7 @@ class Projection : public wrapper<acmacs::chart::ProjectionModify>
     size_t number_of_dimensions() const { return obj_->number_of_dimensions(); }
 
     Rcpp::NumericMatrix transformation() const;
+    void set_transformation(Rcpp::NumericMatrix src) { obj_->transformation(transformation_convert(src)); }
     Rcpp::NumericVector forced_column_bases() const;
     Rcpp::NumericMatrix layout() const { return layout_convert(obj_->layout()); }
     void set_layout(Rcpp::NumericMatrix src) { obj_->set_layout(layout_convert(src)); }
@@ -172,6 +173,7 @@ class Projection : public wrapper<acmacs::chart::ProjectionModify>
 
     Rcpp::NumericMatrix layout_convert(std::shared_ptr<acmacs::chart::Layout> layout) const;
     acmacs::Layout layout_convert(const Rcpp::NumericMatrix& source) const;
+    acmacs::Transformation transformation_convert(const Rcpp::NumericMatrix& source) const;
     acmacs::chart::optimization_method optimization_method(std::string method) const;
 
 }; // class Projection

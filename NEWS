@@ -1,6 +1,8 @@
 acmacs.r NEWS -- history of user-visible changes.
 
 * Changes in 2.11 (2018-11)
+** getting transformation of projection (2D and 3D)
+** setting transformation of projection (2D and 3D)
 
 * Changes in 2.10 (2018-11-13)
 ** merging tables

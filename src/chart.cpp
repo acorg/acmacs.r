@@ -126,7 +126,7 @@ RCPP_MODULE(acmacs_chart)
             .property<std::string>("minimum_column_basis", &Projection::minimum_column_basis)
             .property("number_of_dimensions", &Projection::number_of_dimensions)
             .property("forced_column_bases", &Projection::forced_column_bases)
-            .property("transformation", &Projection::transformation)
+            .property("transformation", &Projection::transformation, &Projection::set_transformation)
             .property("layout", &Projection::layout, &Projection::set_layout)
             .property("transformed_layout", &Projection::transformed_layout)
             .method("rotate_degrees", &Projection::rotate_degrees)
@@ -419,6 +419,20 @@ acmacs::Layout Projection::layout_convert(const Rcpp::NumericMatrix& source) con
     return result;
 
 } // Projection::layout_convert
+
+// ----------------------------------------------------------------------
+
+acmacs::Transformation Projection::transformation_convert(const Rcpp::NumericMatrix& source) const
+{
+    if (source.nrow() != source.ncol() || source.nrow() != number_of_dimensions())
+        throw std::invalid_argument{"invalid transfromation matrix size"};
+    acmacs::Transformation result(number_of_dimensions());
+    for (size_t row = 0; row < number_of_dimensions(); ++row)
+        for (size_t column = 0; column < number_of_dimensions(); ++column)
+            result(row, column) = source(row, column);
+    return result;
+
+} // Projection::transformation_convert
 
 // ----------------------------------------------------------------------
 

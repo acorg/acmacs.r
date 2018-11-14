@@ -28,7 +28,13 @@ projection$stress
   NA.}
 
   \item{transformation}{transformation matrix of the projection (matrix
-    2x2)}
+    2x2 for 2D projection, matrix 3x3 for 3D projection)}
+
+  \item{transformation <- matrix(c(1, 0, 0, 1), nrow=2, byrow=TRUE)}{set
+    transformation matrix for 2D projection}
+
+  \item{transformation <- matrix(c(1, 0, 0, 0, 1, 0, 0, 0, 1), nrow=3, byrow=TRUE)}{set
+    transformation matrix for 3D projection}
 
   \item{layout}{matrix with point coordinates.}
 
