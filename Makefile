@@ -58,7 +58,8 @@ test:
 
 test2: $(INSTALLED_LIB)
 	@#R_LIBS=$(LIB_DIR) Rscript --vanilla -e 'library(acmacs.r); print(sessionInfo())'
-	R_LIBS=$(LIB_DIR) Rscript --vanilla tests/test-move-point-speed.R
+	@#R_LIBS=$(LIB_DIR) Rscript --vanilla tests/test-move-point-speed.R
+	R_LIBS=$(LIB_DIR) Rscript --vanilla tests/test-export-table.R
 
 clean:
 	rm -rf $(OUT_DIR) $(ROOT_DIR)/$(PKG_NAME)_*.tgz $(PKG_FILE) $(LIB_DIR)/$(PKG_NAME) src/*.o src/*.so
