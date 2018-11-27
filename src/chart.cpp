@@ -140,6 +140,8 @@ RCPP_MODULE(acmacs_chart)
             .method("relax_one_iteration", &Projection::relax_one_iteration_default)
             .method("randomize_layout", &Projection::randomize_layout)
             .method("randomize_layout", &Projection::randomize_layout_default)
+            .method("reorient", &Projection::reorient)
+            .method("reorient", &Projection::reorient_default)
             ;
 
     class_<acmacs::PointStyle>("acmacs.PointStyle")
@@ -433,6 +435,16 @@ acmacs::Transformation Projection::transformation_convert(const Rcpp::NumericMat
     return result;
 
 } // Projection::transformation_convert
+
+// ----------------------------------------------------------------------
+
+void Projection::reorient(const Projection& master, std::string match, std::string subset)
+{
+    const auto procrustes_data = procrustes(master, *this, false, match, subset);
+    const auto& transformation_raw = procrustes_data.transformation_raw();
+    obj_->transformation(transformation_raw);
+
+} // Projection::reorient
 
 // ----------------------------------------------------------------------
 

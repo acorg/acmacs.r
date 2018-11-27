@@ -21,4 +21,8 @@ test_that("rms 2004-01.ace vs. 2004-02.ace (antigens only)", { expect_equal(pc5$
 pc6 <- acmacs.procrustes(chart2$projections[[1]], chart3$projections[[1]], subset="sera")
 test_that("rms 2004-01.ace vs. 2004-02.ace (sera only)", { expect_equal(pc6$rms, 2.3673757463275220125353826006176) })
 
+test_that("transformation before orienting", { expect_equal(chart2$projections[[1]]$transformation, matrix(c(1, 0, 0, 1), nrow=2, byrow=TRUE)) })
+chart2$projections[[1]]$reorient(chart3$projections[[1]])
+test_that("transformation after orienting", { expect_equal(chart2$projections[[1]]$transformation, matrix(c(-0.1906027, -0.9816673, 0.9816673, -0.1906027), nrow=2, byrow=TRUE), tolerance=1e-7) })
+
 # ======================================================================

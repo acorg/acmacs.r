@@ -167,6 +167,9 @@ class Projection : public wrapper<acmacs::chart::ProjectionModify>
     void randomize_layout(std::string randomization_method, double diameter_multiplier);
     void randomize_layout_default() { randomize_layout("table-max-distance", 2.0); }
 
+    void reorient(const Projection& master, std::string match, std::string subset);
+    void reorient_default(const Projection& master) { reorient(master, "auto", "all"); }
+
  private:
     std::unique_ptr<acmacs::chart::IntermediateLayouts> intermediate_layouts_;
     size_t next_layout_;
@@ -186,7 +189,7 @@ class ProcrustesData : public wrapper<acmacs::chart::ProcrustesData>
  public:
     ProcrustesData(std::shared_ptr<acmacs::chart::ProcrustesData> src) : wrapper(src) {}
     double rms() const { return obj_->rms; }
-
+    const auto& transformation_raw() const { return obj_->transformation; }
     Rcpp::NumericMatrix transformation() const;
 };
 RCPP_EXPOSED_CLASS_NODECL(ProcrustesData);

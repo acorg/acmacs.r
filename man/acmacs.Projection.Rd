@@ -91,6 +91,14 @@ projection$stress
   "lbfgs"\cr\bold{rough} is boolean\cr method and rough are used in
   the first call only.}
 
+  \item{reorient(master_projection)}{reorients this projection to match
+  master_projection (of the same or different chart) orientation.}
+
+  \item{reorient(master_projection, "auto", "all")}{reorients this projection to match
+  master_projection (of the same or different chart) orientation. The
+  second argument is passage and serum_id matching ("auto", "strict",
+  "relaxed", "ignore"), the third argument is sibset ("all", "antigens", "sera")}
+
 }
 \examples{
   # load chart from file

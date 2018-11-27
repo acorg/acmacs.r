@@ -297,6 +297,9 @@ rms <- pc12$rms
 # result is a 3x3 matrix, where the third column is 1, and the third row
 # containts translation.
 transformation_matrix <- pc12$transformation
+# reorient projection using procrustes
+chart$projections[[1]]$reorient(chart2$projections[[1]])
+chart$projections[[1]]$reorient(chart2$projections[[1]], "auto", "all")
 }\cr
 \bold{# ========= Grid test =========}\cr
 \preformatted{
