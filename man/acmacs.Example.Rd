@@ -282,11 +282,14 @@ while(projection$relax_one_iteration()) { print(projection$stress); print(projec
 \bold{# ========= Procrustes =========}\cr
 \preformatted{
 # make procrustes between two projections of the same or different charts
-# 3rd argument is scaling (usually false)
-# 4th argument is passage and serum_id matching: "auto", "strict", "relaxed", "ignore"
+# 3rd argument (scaling) is scaling (usually false)
+# 4th argument (match) is passage and serum_id matching: "auto","strict", "relaxed", "ignore"
 #   (just the first letter is enough: "a", "s", "r", "i")
+# 5th argument (subset) is subset to use for matching: "all", "antigens", "sera"
 # function returns acmacs.ProcrustesData object
-pc12 <- acmacs.procrustes(chart$projections[[1]], chart$projections[[2]], FALSE, "auto")
+pc12 <- acmacs.procrustes(chart$projections[[1]], chart$projections[[2]])
+pc12 <- acmacs.procrustes(chart$projections[[1]], chart$projections[[2]], scaling=FALSE, match="auto")
+pc12 <- acmacs.procrustes(chart$projections[[1]], chart$projections[[2]], subset="antigens")
 # get RMS value (real) of the procrustes
 rms <- pc12$rms
 # get transformation matrix that rotates the second projection to be as

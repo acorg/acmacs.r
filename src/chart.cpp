@@ -155,7 +155,7 @@ RCPP_MODULE(acmacs_chart)
               // field<std::string> label_text;
             ;
 
-    function("acmacs.procrustes", &procrustes, List::create(_["projection_primary"], _["projection_secondary"], _["scaling"] = false, _["match"] = "a"));
+    function("acmacs.procrustes", &procrustes, List::create(_["projection_primary"], _["projection_secondary"], _["scaling"] = false, _["match"] = "a", _["subset"] = "a"));
 
     function("acmacs.merge", &merge, List::create(_["chart1"], _["chart2"], _["match"] = "a", _["merge"] = "n"));
     function("acmacs.merge_incremental", &merge_incremental, List::create(_["chart1"], _["chart2"], _["optimizations"] = 100, _["threads"] = 0));
@@ -453,7 +453,7 @@ Rcpp::NumericMatrix ProcrustesData::transformation() const
 
 // ----------------------------------------------------------------------
 
-ProcrustesData procrustes(Projection primary, Projection secondary, bool scaling, std::string match)
+ProcrustesData procrustes(Projection primary, Projection secondary, bool scaling, std::string match, std::string subset)
 {
     auto match_level{acmacs::chart::CommonAntigensSera::match_level_t::automatic};
     if (!match.empty()) {
@@ -468,7 +468,11 @@ ProcrustesData procrustes(Projection primary, Projection secondary, bool scaling
         }
     }
 
-    const acmacs::chart::CommonAntigensSera common(primary.obj_->chart(), secondary.obj_->chart(), match_level);
+    acmacs::chart::CommonAntigensSera common(primary.obj_->chart(), secondary.obj_->chart(), match_level);
+    if (subset == "antigens")
+        common.antigens_only();
+    else if (subset == "sera")
+        common.sera_only();
     return ProcrustesData(std::make_shared<acmacs::chart::ProcrustesData>(acmacs::chart::procrustes(*primary.obj_, *secondary.obj_, common.points(), scaling ? acmacs::chart::procrustes_scaling_t::yes : acmacs::chart::procrustes_scaling_t::no)));
 }
 
