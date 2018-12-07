@@ -1,4 +1,5 @@
 # -*- Makefile -*-
+# ----------------------------------------------------------------------
 
 PKG_NAME = acmacs.r
 
@@ -17,16 +18,18 @@ PKG_VERSION = $(shell awk '/^Version:/ {print $$2}' DESCRIPTION)
 PKG_FILE = $(PKG_DIR)/$(PKG_NAME)_$(PKG_VERSION).tar.gz
 INSTALLED_LIB = $(LIB_DIR)/$(PKG_NAME)/libs/acmacs.r.so
 
-ifeq ($(shell uname),Linux)
+UNAME = $(shell uname)
+
+ifeq ($(UNAME),Linux)
 LD_LIBRARY_PATH = "$(LIB_DIR)/acmacs.r/libs:$$LD_LIBRARY_PATH"
 else
 LD_LIBRARY_PATH = ""
 endif
 
-ifeq ($(shell uname),Darwin)
+ifeq ($(UNAME),Darwin)
   PKG_PLATFORM = macOS-$(shell /usr/bin/sw_vers -productVersion | /usr/bin/awk -F '.' '{print $$1"."$$2}')
 else
-  PKG_PLATFORM = $(shell uname)
+  PKG_PLATFORM = $(UNAME)
 endif
 
 all: bin
@@ -36,6 +39,7 @@ install: build | $(LIB_DIR)
 
 bin: build | $(LIB_DIR)
 	@echo '***** BIN'
+	mkdir -p $(LIB_DIR)/$(PKG_NAME)/libs
 	cd $(ROOT_DIR) && \
 	env LD_LIBRARY_PATH=$(LD_LIBRARY_PATH) R CMD INSTALL --build --clean --debug --built-timestamp=$(shell date +%Y-%m-%d) -l $(LIB_DIR) $(PKG_FILE) && \
 	if [ -f $(PKG_NAME)_$(PKG_VERSION).tgz ]; then mv $(PKG_NAME)_$(PKG_VERSION).tgz $(PKG_NAME)_$(PKG_VERSION)_R_$(PKG_PLATFORM).tgz; fi
@@ -72,3 +76,8 @@ $(LIB_DIR):
 
 $(PKG_DIR):
 	mkdir -p $(PKG_DIR)
+
+# ======================================================================
+### Local Variables:
+### eval: (if (fboundp 'eu-rename-buffer) (eu-rename-buffer))
+### End:

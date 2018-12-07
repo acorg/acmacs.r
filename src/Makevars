@@ -1,49 +1,43 @@
 # -*- Makefile -*-
 # ----------------------------------------------------------------------
 
-ACMACS_LIBS = \
-    $(ACMACSD_ROOT)/lib/libacmacschart$(SHLIB_SUFFIX_1).2$(SHLIB_SUFFIX_2)
-
-# ----------------------------------------------------------------------
-
-ifeq ($(ACMACSD_ROOT),)
-  $(error ACMACSD_ROOT not set)
-endif
-
-ifeq ($(shell uname),Darwin)
-  CXX_ROOT = /usr/local/opt/llvm
-  override CXX17 = gtime $(CXX_ROOT)/bin/clang++
-  override CXX = gtime -f 'Time: %E %C' $(CXX_ROOT)/bin/clang++
-  PKG_CXXFLAGS += -O3 -std=c++17
-  CXX_STD = CXX17
-  SHLIB_SUFFIX_1 =
-  SHLIB_SUFFIX_2 = .dylib
-  # -Wno-weak-vtables -Weverything -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-padded
-  PLATFORM_LIBS = -L$(CXX_ROOT)/lib -lc++experimental -lc++
-else ifeq ($(shell uname),Linux)
-  CXX_ROOT = /usr
-  override CXX17 = g++-7
-  override CXX14 = g++-7
-  override CXX = g++-7
-  PKG_CXXFLAGS += -O3 -std=c++17
-  CXX_STD = CXX17
-  PLATFORM_LIBS = -Wl,-rpath='$$ORIGIN'
-  SHLIB_SUFFIX_1 = .so
-  SHLIB_SUFFIX_2 =
-else
-  $(error Unsupported platform $(shell uname))
-endif
-
-PKG_CXXFLAGS += -I$(ACMACSD_ROOT)/include
-PKG_LIBS = -lz $(ACMACS_LIBS) $(PLATFORM_LIBS)
-
-# bug in R or Rcpp?
-override SHLIB_LIBADD =
-
-# ----------------------------------------------------------------------
-
 ifeq ($(findstring /devtools_install_,$(R_PACKAGE_DIR)),)
 # not using testthat
 all: $(SHLIB)
 	../install-shared-libs.$$(uname) "$(R_PACKAGE_DIR)" $(SHLIB)
 endif
+
+include $(ACMACSD_ROOT)/share/Makefile.config
+
+ACMACS_LIBS = \
+    $(ACMACSD_ROOT)/lib/libacmacschart$(SHLIB_SUFFIX_1).2$(SHLIB_SUFFIX_2)
+
+# ----------------------------------------------------------------------
+
+override CXX17 = $(CXX)
+override CXX14 = $(CXX)
+CXX_STD = CXX17
+
+PKG_CXXFLAGS += -O3 -std=c++17 -I$(ACMACSD_ROOT)/include
+PKG_LIBS = -lz $(ACMACS_LIBS) $(PLATFORM_LIBS)
+
+ifeq ($(PLATFORM),darwin)
+  SHLIB_SUFFIX_1 =
+  SHLIB_SUFFIX_2 = .dylib
+  # -Wno-weak-vtables -Weverything -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-padded
+  #PLATFORM_LIBS = -L$(CXX_ROOT)/lib -lc++experimental -lc++
+else ifeq ($(PLATFORM),linux)
+  SHLIB_SUFFIX_1 = .so
+  SHLIB_SUFFIX_2 =
+  PLATFORM_LIBS = -Wl,-rpath='$$ORIGIN'
+else
+  $(error Unsupported platform $(PLATFORM))
+endif
+
+# bug in R or Rcpp?
+override SHLIB_LIBADD =
+
+# ======================================================================
+### Local Variables:
+### eval: (if (fboundp 'eu-rename-buffer) (eu-rename-buffer))
+### End:
