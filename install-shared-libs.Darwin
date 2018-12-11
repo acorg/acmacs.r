@@ -5,6 +5,7 @@ import sys, os, subprocess, shutil
 # ----------------------------------------------------------------------
 
 def main(target_package_dir, *libraries):
+    print(sys.argv[0])
     to_process = set(libraries)
     processed = set()
     while to_process:
@@ -12,12 +13,22 @@ def main(target_package_dir, *libraries):
         processed.add(library)
         for linked_to in subprocess.check_output(["/usr/bin/otool", "-L", library]).strip().split("\n")[1:]:
             name = linked_to.split("(")[0].strip()
-            if os.path.basename(library) != os.path.basename(name) and name[:9] != "/usr/lib/" and name[:27] != "/System/Library/Frameworks/" and name[:32] != "/Library/Frameworks/R.framework/":
+            if os.path.basename(library) != os.path.basename(name) and not in_system(name):
                 subprocess.check_call(["/usr/bin/install_name_tool", "-change", name, "@loader_path/" + os.path.basename(name), library])
                 target_lib = os.path.join(target_package_dir, "libs", os.path.basename(name))
                 if target_lib not in processed and target_lib not in to_process:
                     shutil.copy(name, target_lib)
                     to_process.add(target_lib)
+
+# ----------------------------------------------------------------------
+
+system_lib_paths = ["/usr/lib/", "/System/", "/Library/"]
+
+def in_system(name):
+    for path in system_lib_paths:
+        if name.startswith(path):
+            return True
+    return False
 
 # ----------------------------------------------------------------------
 
