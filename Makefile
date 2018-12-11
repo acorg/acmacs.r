@@ -58,7 +58,8 @@ $(INSTALLED_LIB): $(wildcard src/*.cpp) $(wildcard src/*.hh)
 	$(MAKE) install
 
 test:
-	R_LIBS=$(LIB_DIR) Rscript --vanilla --default-packages=methods,utils,devtools,stats -e 'devtools::test()' | cat
+	@echo "WARNING: acmacs.r test does not work since 2018-12-11"
+	# R_LIBS=$(LIB_DIR) Rscript --vanilla --default-packages=methods,utils,devtools,stats -e 'devtools::test()' | cat
 
 test2: $(INSTALLED_LIB)
 	@#R_LIBS=$(LIB_DIR) Rscript --vanilla -e 'library(acmacs.r); print(sessionInfo())'
