@@ -180,12 +180,12 @@ Chart::Chart(std::shared_ptr<acmacs::chart::ChartModify> src)
 }
 
 Chart::Chart(std::string aFilename)
-    : wrapper(std::make_shared<acmacs::chart::ChartModify>(acmacs::chart::import_from_file(aFilename, acmacs::chart::Verify::None, report_time::No)))
+    : wrapper(std::make_shared<acmacs::chart::ChartModify>(acmacs::chart::import_from_file(aFilename, acmacs::chart::Verify::None, report_time::no)))
 {
 }
 
 Chart::Chart(Rcpp::RawVector aData)
-    : wrapper(std::make_shared<acmacs::chart::ChartModify>(acmacs::chart::import_from_data(std::string_view(reinterpret_cast<const char*>(aData.cbegin()), aData.size()), acmacs::chart::Verify::None, report_time::No)))
+    : wrapper(std::make_shared<acmacs::chart::ChartModify>(acmacs::chart::import_from_data(std::string_view(reinterpret_cast<const char*>(aData.cbegin()), aData.size()), acmacs::chart::Verify::None, report_time::no)))
 {
 }
 
@@ -198,8 +198,8 @@ Chart::Chart(int number_of_antigens, int number_of_sera)
 
 Chart Chart::clone() const
 {
-    const auto data = acmacs::chart::export_factory(*obj_, acmacs::chart::export_format::ace, "acmacs.r", report_time::No);
-    return std::make_shared<acmacs::chart::ChartModify>(acmacs::chart::import_from_data(data, acmacs::chart::Verify::None, report_time::No));
+    const auto data = acmacs::chart::export_factory(*obj_, acmacs::chart::export_format::ace, "acmacs.r", report_time::no);
+    return std::make_shared<acmacs::chart::ChartModify>(acmacs::chart::import_from_data(data, acmacs::chart::Verify::None, report_time::no));
 
 } // Chart::clone
 
@@ -231,7 +231,7 @@ void Chart::remove_sera(const Rcpp::NumericVector& aIndexes)
 
 void Chart::save(std::string aFilename)
 {
-    acmacs::chart::export_factory(*obj_, aFilename, "acmacs.r", report_time::No);
+    acmacs::chart::export_factory(*obj_, aFilename, "acmacs.r", report_time::no);
 }
 
 // ----------------------------------------------------------------------
