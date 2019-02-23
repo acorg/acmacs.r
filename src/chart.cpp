@@ -397,7 +397,7 @@ Rcpp::NumericMatrix Projection::layout_convert(std::shared_ptr<acmacs::Layout> l
     Rcpp::NumericMatrix result(layout->number_of_points(), layout->number_of_dimensions());
     for (size_t p_no = 0; p_no < layout->number_of_points(); ++p_no) {
         const auto coord = layout->get(p_no);
-        if (coord.not_nan()) {
+        if (coord.exists()) {
             for (size_t dim = 0; dim < layout->number_of_dimensions(); ++dim)
                 result(p_no, dim) = coord[dim];
         }
