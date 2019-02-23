@@ -174,7 +174,7 @@ class Projection : public wrapper<acmacs::chart::ProjectionModify>
     std::unique_ptr<acmacs::chart::IntermediateLayouts> intermediate_layouts_;
     size_t next_layout_;
 
-    Rcpp::NumericMatrix layout_convert(std::shared_ptr<acmacs::chart::Layout> layout) const;
+    Rcpp::NumericMatrix layout_convert(std::shared_ptr<acmacs::Layout> layout) const;
     acmacs::Layout layout_convert(const Rcpp::NumericMatrix& source) const;
     acmacs::Transformation transformation_convert(const Rcpp::NumericMatrix& source) const;
     acmacs::chart::optimization_method optimization_method(std::string method) const;
