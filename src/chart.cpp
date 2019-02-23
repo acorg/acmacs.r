@@ -332,7 +332,7 @@ void Projection::move_point(size_t aPointNo, const Rcpp::NumericVector& aCoordin
         throw std::invalid_argument("invalid point number");
     if (static_cast<size_t>(aCoordinates.size()) != obj_->number_of_dimensions())
         throw std::invalid_argument("invalid vector size (number of point coordinates)");
-    obj_->move_point(aPointNo - 1, acmacs::PointCoordinates(aCoordinates.begin(), aCoordinates.end()));
+    obj_->move_point(aPointNo - 1, acmacs::PointCoordinates(acmacs::PointCoordinates::reference, aCoordinates.begin(), aCoordinates.end()));
 }
 
 // ----------------------------------------------------------------------
@@ -416,7 +416,7 @@ acmacs::Layout Projection::layout_convert(const Rcpp::NumericMatrix& source) con
     acmacs::Layout result(source.nrow(), source.ncol());
     for (size_t point_no = 0; point_no < result.number_of_points(); ++point_no) {
         for (size_t dim_no = 0; dim_no < result.number_of_dimensions(); ++dim_no)
-            result.set(point_no, dim_no, source(point_no, dim_no));
+            result(point_no, dim_no) = source(point_no, dim_no);
     }
     return result;
 
