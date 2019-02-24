@@ -332,7 +332,7 @@ void Projection::move_point(size_t aPointNo, const Rcpp::NumericVector& aCoordin
         throw std::invalid_argument("invalid point number");
     if (static_cast<size_t>(aCoordinates.size()) != obj_->number_of_dimensions())
         throw std::invalid_argument("invalid vector size (number of point coordinates)");
-    obj_->move_point(aPointNo - 1, acmacs::PointCoordinates(acmacs::PointCoordinates::reference, aCoordinates.begin(), aCoordinates.end()));
+    obj_->move_point(aPointNo - 1, acmacs::PointCoordinates(aCoordinates.begin(), aCoordinates.end()));
 }
 
 // ----------------------------------------------------------------------
