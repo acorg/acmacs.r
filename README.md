@@ -35,8 +35,8 @@ install.packages("Rcpp")
 
 Installation
 ============
-
-R 3.5 is required, other versions are not supported!
+https://cran.r-project.org/web/packages/Rcpp/index.html
+R 3.6 is required, other versions are not supported!
 
 Package is supposed to be installed from a binary archive for the
 specific platform. Building package from sources is complicated and it
@@ -53,7 +53,7 @@ Required R libraries
 install.packages(c("Rcpp", "devtools", "testthat", "roxygen2"))
 ```
 
-macOS 10.12 and 10.13
+macOS 10.14
 ---------------------
 
 Installation size: ~5Mb
@@ -62,14 +62,14 @@ Please replace /tmp/R/library with your local directory for packages
 or remove lib="/tmp/R/library" argument.
 
 ```R
-install.packages("https://github.com/acorg/acmacs.r/releases/download/v2.3/acmacs.r_2.3.macOS-10.12.tgz", repos=NULL, lib="/tmp/R/library")
+install.packages("https://github.com/acorg/acmacs.r/releases/download/v3.0/acmacs.r_3.0.macOS-10.14.tgz", repos=NULL, lib="/tmp/R/library")
 ```
 
 Linux
 -----
 
 ```R
-install.packages("https://github.com/acorg/acmacs.r/releases/download/v2.3/acmacs.r_2.3_R_x86_64-pc-linux-gnu.tar.gz", repos=NULL, lib="/tmp/R/library")
+install.packages("https://github.com/acorg/acmacs.r/releases/download/v3.0/acmacs.r_3.0_R_x86_64-pc-linux-gnu.tar.gz", repos=NULL, lib="/tmp/R/library")
 ```
 
 Usage example
@@ -88,3 +88,8 @@ format_antigen <- function(a) {
 }
 cat("antigens:", length(ags), "\n ", paste(sapply(ags, format_antigen), collapse="\n  "), "\n")
 ```
+
+Docs
+=======
+
+[Rcpp](https://cran.r-project.org/web/packages/Rcpp/index.html)

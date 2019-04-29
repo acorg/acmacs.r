@@ -1,13 +1,13 @@
 Package: acmacs.r
 Type: Package
 Title: Read, modify, write data stored in the acmacs files, make maps
-Version: 2.12
-Date: 2018-11-28
+Version: 3.0
+Date: 2019-04-29
 Encoding: UTF-8
 Author: Eugene Skepner <eu@antigenic-cartography.org>
 Maintainer: Eugene Skepner <eu@antigenic-cartography.org>
 Description: This package provides R with ability to read, modify, save the data stored in acmacs and lispmds files.
 License: GPL (>= 2)
-Imports: methods, Rcpp (>= 0.12.14)
+Imports: methods, Rcpp (>= 1.0.1)
 LinkingTo: Rcpp
 Suggests: testthat
