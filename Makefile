@@ -59,8 +59,8 @@ $(INSTALLED_LIB): $(wildcard src/*.cpp) $(wildcard src/*.hh)
 
 test:
 	@#echo "WARNING: acmacs.r test does not work since 2018-12-11"
-	@R_LIBS=$(LIB_DIR) Rscript --vanilla --default-packages=methods,utils,devtools,stats -e 'devtools::test()' | cat
-	#$(MAKE) all
+	@#R_LIBS=$(LIB_DIR) Rscript --vanilla --default-packages=methods,utils,devtools,stats -e 'devtools::test()' | cat
+	R_LIBS=$(LIB_DIR) Rscript --vanilla --default-packages=methods,utils,devtools,stats -e 'library("acmacs.r"); testthat::test_dir("tests/testthat/")' | cat
 
 test2: $(INSTALLED_LIB)
 	@#R_LIBS=$(LIB_DIR) Rscript --vanilla -e 'library(acmacs.r); print(sessionInfo())'

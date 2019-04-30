@@ -1,4 +1,4 @@
-context("Test chart$projections relax")
+context("test-09-relax.R: Test chart$projections relax")
 
 test_relax_existing <- function(filename) {
     chart <- new(acmacs.Chart, filename)
@@ -11,7 +11,7 @@ test_relax_existing <- function(filename) {
 
 test_relax <- function(filename, num_optimizations, expected_stress) {
     chart <- new(acmacs.Chart, filename)
-    print(paste("initial projections:", chart$number_of_projections, "best:", chart$projections[[1]]$stress))
+    # cat("\ninitial projections:", chart$number_of_projections, "best:", chart$projections[[1]]$stress, "\n")
     chart$relax_many("1280", 2, num_optimizations, FALSE)
     ## for (p_no in 1:chart$number_of_projections) {
     ##     write(paste(p_no, chart$projections[[p_no]]$stress), file="")

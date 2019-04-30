@@ -1,4 +1,4 @@
-context("Test chart$projections")
+context("test-04-projections.R: Test chart$projections")
 
 test_chart <- function(filename, expected_num_projections, expected_stress, expected_minimum_column_basis) {
     # print(filename)
@@ -26,10 +26,11 @@ test_chart <- function(filename, expected_num_projections, expected_stress, expe
     tr1 <- prj1$transformation
     prj1$rotate_degrees(30)
     tr2 <- prj1$transformation
-    test_that("after rotation (degrees)", { expect_error(expect_equal(tr1, tr2), "4/4 mismatches") })
+    # cat("\n\ntr1: ", tr1, "\ntr2: ", tr2, "\n")
+    test_that("after rotation (degrees)", { expect_false(isTRUE(all.equal(tr1, tr2))); })
     prj1$rotate_degrees(-30)
     tr3 <- prj1$transformation
-    test_that("after rotation back (degrees)", { expect_error(expect_equal(tr2, tr3), "4/4 mismatches"); expect_equal(tr1, tr3) })
+    test_that("after rotation back (degrees)", { expect_false(isTRUE(all.equal(tr2, tr3))); expect_equal(tr1, tr3) })
     prj1$rotate_degrees(30)
     prj1$rotate_radians(-30 * pi /180)
     tr4 <- prj1$transformation

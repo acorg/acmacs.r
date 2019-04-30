@@ -1,7 +1,7 @@
 context("Test chart$sera")
 
 test_chart <- function(filename, expected_num_sera) {
-    ad_serum_list <- system(paste("ad chart-names", filename, " | grep '^SR'"), intern=TRUE)
+    ad_serum_list <- system(paste("chart-names", filename, " | grep '^SR'"), intern=TRUE)
                                         #write(antigen_list, stderr())
 
     chart <- new(acmacs.Chart, filename)

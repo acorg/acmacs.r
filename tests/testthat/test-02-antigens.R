@@ -1,7 +1,7 @@
 context("Test chart$antigens")
 
 test_chart <- function(filename, expected_num_antigens, test_passages) {
-    ad_antigen_list <- system(paste("ad chart-names", filename, " | grep '^AG'"), intern=TRUE)
+    ad_antigen_list <- system(paste("chart-names", filename, " | grep '^AG'"), intern=TRUE)
                                         #write(antigen_list, stderr())
 
     chart <- new(acmacs.Chart, filename)

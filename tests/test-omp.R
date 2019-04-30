@@ -1,7 +1,4 @@
-# KMP_DUPLICATE_LIB_OK=TRUE
-
-# library(acmacs.r)
-library(acmacs.r, lib.loc="~/R/library")
+library(acmacs.r)
 
 rs <- function() {
     rs_ <- rowSums(data.frame(a=c(3,3,3),b=c(4,4,4)))

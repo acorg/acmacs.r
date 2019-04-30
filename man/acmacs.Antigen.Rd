@@ -5,6 +5,9 @@
 \alias{acmacs.Passage}
 \alias{acmacs.Passage-class}
 \docType{package}
+\description{
+  Access to antigen fields.
+}
 \usage{
 antigen <- chart$antigens[[antigen_number]]
 antigen$name
