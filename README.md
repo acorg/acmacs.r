@@ -1,7 +1,7 @@
 acmacs.r package
 ================
 
-This package provides R 3.5 with ability to read, modify, save the data stored in acmacs and
+This package provides R 3.6 with ability to read, modify, save the data stored in acmacs and
 lispmds files.
 
 Supported platforms
@@ -29,6 +29,9 @@ Implemented
 
 Dependencies
 =============
+
+Rcpp 1.0.1 or later is required.
+
 ```R
 install.packages("Rcpp")
 ```
