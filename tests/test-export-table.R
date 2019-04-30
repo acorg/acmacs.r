@@ -1,5 +1,7 @@
 library(acmacs.r)
-chart_filename <- "tests/testthat/2004-3.ace"
+# print(getwd())
+# chart_filename <- "tests/testthat/2004-3.ace"
+chart_filename <- "testthat/2004-3.ace"
 chart <- new(acmacs.Chart, chart_filename)
 
 table <- chart$titers$all()
