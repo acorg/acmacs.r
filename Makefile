@@ -1,6 +1,9 @@
 # -*- Makefile -*-
 # ----------------------------------------------------------------------
 
+# for Linux and set -o pipefail
+SHELL = /bin/bash
+
 PKG_NAME = acmacs.r
 
 ROOT_DIR = $(HOME)/R
