@@ -1,4 +1,4 @@
-context("Test chart$titers")
+context("test-08-titers.R: test chart$titers")
 
 chart <- new(acmacs.Chart, "bv.acd1.xz")
 titers <- chart$titers
@@ -32,4 +32,15 @@ test_that("titer==all[ag,sr]", {
             expect_equal(titers$titer(ag, sr), all[ag, sr])
         }
     }
+})
+
+test_that("titer-set", {
+    titers$set_titer(1, 1, "640");
+    expect_equal(titers$titer(1, 1), "640");
+    expect_that(titers$set_titer(1, 1, "-40"), throws_error())
+    expect_that(titers$set_titer(1, 1, "?"), throws_error())
+    expect_that(titers$set_titer(1, 1, "*40"), throws_error())
+    expect_that(titers$set_titer(1, 1, "40.51"), throws_error())
+    expect_that(titers$set_titer(1, 1, "-40.51"), throws_error())
+    expect_equal(titers$titer(1, 1), "640");
 })

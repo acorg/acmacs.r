@@ -241,6 +241,10 @@ identical(sapply(1:chart$number_of_antigens, function(no) { chart$titers$titer(n
 # chart first. merging resulting (flattened) chart with other charts usually
 # gives wrong result.
 chart$remove_layers()
+
+# set titer
+chart$titers$set_titer(1, 1, "640")
+
 }\cr
 \bold{# ========= Making maps =========}\cr
 \preformatted{

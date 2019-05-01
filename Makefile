@@ -61,6 +61,9 @@ $(INSTALLED_LIB): $(wildcard src/*.cpp) $(wildcard src/*.hh)
 	$(MAKE) install
 
 test: bin
+	$(MAKE) test-only
+
+test-only:
 	@#R_LIBS=$(LIB_DIR) Rscript --vanilla --default-packages=methods,utils,devtools,stats -e 'devtools::test()' | cat
 	set -o pipefail; R_LIBS=$(LIB_DIR) Rscript --vanilla --default-packages=methods,utils,devtools,stats -e 'library("acmacs.r"); testthat::test_dir("tests/testthat/")' | cat
 
