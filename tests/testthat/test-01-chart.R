@@ -23,6 +23,8 @@ test_that("number of layers upon layers removal", { expect_equal(chart2$titers$n
 chart2_new_name = "chart2"
 chart2$name = chart2_new_name
 test_that("name", { expect_equal(chart2$name, chart2_new_name) })
+test_that("column bases (-2)", { expect_that(chart2$column_bases(-2), throws_error()) })
+test_that("column bases (1000)", { expect_that(chart2$column_bases(1000), throws_error()) })
 
 # cloning
 output_filename_ace <- "/tmp/acmacs.r.test01.ace"
