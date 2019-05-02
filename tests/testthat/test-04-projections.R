@@ -12,7 +12,7 @@ test_chart <- function(filename, expected_num_projections, expected_stress, expe
     test_that("number of projections", { expect_equal(chart$number_of_projections, expected_num_projections) })
     test_that("stress", { expect_equal(prj1$stress, expected_stress) })
     test_that("minimum_column_basis", { expect_equal(prj1$minimum_column_basis, expected_minimum_column_basis) })
-    # print("\n"); print(prj1$transformation)
+                                        # print("\n"); print(prj1$transformation)
     test_that("layout vs. transformed_layout vs. transformation", { expect_equal(prj1$layout %*% prj1$transformation, prj1$transformed_layout) })
 
     pr_new <- chart$new_projection(prj1$minimum_column_basis, prj1$number_of_dimensions);
@@ -26,7 +26,7 @@ test_chart <- function(filename, expected_num_projections, expected_stress, expe
     tr1 <- prj1$transformation
     prj1$rotate_degrees(30)
     tr2 <- prj1$transformation
-    # cat("\n\ntr1: ", tr1, "\ntr2: ", tr2, "\n")
+                                        # cat("\n\ntr1: ", tr1, "\ntr2: ", tr2, "\n")
     test_that("after rotation (degrees)", { expect_false(isTRUE(all.equal(tr1, tr2))); })
     prj1$rotate_degrees(-30)
     tr3 <- prj1$transformation
@@ -42,16 +42,23 @@ test_chart <- function(filename, expected_num_projections, expected_stress, expe
     tr5 <- prj1$transformation
     test_that("after flip_ns, flip_ew, rot180", { expect_equal(tr1, tr5) })
 
+    new_tr_2d <- matrix(c(0.5, 0.3, 0.7, 0.5), nrow=2, byrow=TRUE)
+
     point_no <- chart$number_of_points
     move_to <- c(1967.0, -2017.0)
     prj1$move_point(point_no, move_to)
     test_that("last point moved", { expect_equal(prj1$layout[point_no,], move_to) })
 
+    chart$projection(1)$set_transformation(new_tr_2d)
+    chart$projections[[1]]$set_transformation(new_tr_2d)
+    test_that("set transformation for projection 1", { expect_equal(chart$projection(1)$transformation, new_tr_2d) })
+
     pr_new_2d <- chart$new_projection("none", 2);
     tr_new_2d <- pr_new_2d$transformation
                                         # cat("\ntr_new_2d: ", nrow(tr_new_2d), " ", ncol(tr_new_2d), "\n")
-    test_that("transformation for the new 2D projection", { expect_equal(nrow(tr_new_2d), 2); expect_equal(ncol(tr_new_2d), 2) })
-    test_that("transformation for the new 2D projection", { expect_equal(tr_new_2d, matrix(ncol=2, c(1,0,0,1))) })
+    test_that("transformation for the new 2D projection", { expect_equal(nrow(tr_new_2d), 2); expect_equal(ncol(tr_new_2d), 2); expect_equal(tr_new_2d, matrix(ncol=2, c(1,0,0,1))) })
+    pr_new_2d$set_transformation(new_tr_2d)
+    test_that("set transformation for the 2D projection", { expect_equal(pr_new_2d$transformation, new_tr_2d) })
 
     pr_new_3d <- chart$new_projection("none", 3);
     tr_new_3d <- pr_new_3d$transformation

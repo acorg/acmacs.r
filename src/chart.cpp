@@ -47,6 +47,7 @@ RCPP_MODULE(acmacs_chart)
             .method("remove_antigens", &Chart::remove_antigens)
             .method("remove_sera", &Chart::remove_sera)
             .property<Rcpp::List>("projections", &Chart::getListViaAt<Projection, &acmacs::chart::ChartModify::projections_modify>)
+            .method("projection", &Chart::projection)
             .method("remove_all_projections_except", &Chart::remove_all_projections_except)
             .method("remove_all_projections", &Chart::remove_all_projections)
             .property<PlotSpec>("plot_spec", &Chart::plot_spec)
@@ -126,7 +127,8 @@ RCPP_MODULE(acmacs_chart)
             .property<std::string>("minimum_column_basis", &Projection::minimum_column_basis)
             .property("number_of_dimensions", &Projection::number_of_dimensions)
             .property("forced_column_bases", &Projection::forced_column_bases)
-            .property("transformation", &Projection::transformation, &Projection::set_transformation)
+            .property("transformation", &Projection::transformation)
+            .method("set_transformation", &Projection::set_transformation)
             .property("layout", &Projection::layout, &Projection::set_layout)
             .property("transformed_layout", &Projection::transformed_layout)
             .method("rotate_degrees", &Projection::rotate_degrees)
@@ -202,6 +204,13 @@ Chart Chart::clone() const
     return std::make_shared<acmacs::chart::ChartModify>(acmacs::chart::import_from_data(data, acmacs::chart::Verify::None, report_time::no));
 
 } // Chart::clone
+
+// ----------------------------------------------------------------------
+
+Projection Chart::projection(size_t projection_no)
+{
+    return obj_->projections_modify()->at(projection_no - 1);
+}
 
 // ----------------------------------------------------------------------
 

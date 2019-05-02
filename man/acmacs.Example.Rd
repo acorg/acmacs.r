@@ -99,7 +99,7 @@ sapply(1:chart$number_of_projections, function(no) { chart$projections[[no]]$inf
 
 # list with more detailed info about each projection
 get_projection <- function(no) \{
-  p <- chart$projections[[no]]
+  p <- chart$projection(no)
   list("stress"=p$stress, "comment"=p$comment, "number_of_dimensions"=p$number_of_dimensions,
        "minimum_column_basis"=p$minimum_column_basis,
        "forced_column_bases"=p$forced_column_bases, "transformation"=p$transformation,
@@ -109,15 +109,21 @@ sapply(1:chart$number_of_projections, get_projection)
 
 # transfomation matrix of the first projection (usually best, if chart loaded from acmacs file)
 chart$projections[[1]]$transformation
+# faster variant (does not build the R list of projections)
+chart$projection(1)$transformation
 
 # stored layout of the first projection
 chart$projections[[1]]$layout
+# faster variant (does not build the R list of projections)
+chart$projection(1)$layout
 
 # layout of the first projection with the transformation matrix applied
 chart$projections[[1]]$transformed_layout
+# faster variant (does not build the R list of projections)
+chart$projection(1)$transformed_layout
 
 # invariant
-identical(chart$projections[[1]]$transformed_layout, chart$projections[[1]]$layout \%*\% chart$projections[[1]]$transformation)
+identical(chart$projection(1)$transformed_layout, chart$projection(1)$layout \%*\% chart$projection(1)$transformation)
 
 # remove all projections
 chart$remove_all_projections()
@@ -130,53 +136,53 @@ chart$remove_all_projections_except(1)
 \preformatted{
 # transformation, layout, transformed_layout create copies on accessing
 # modifying them does not affect corresponding objects inside the chart
-save_transformation <- chart$projections[[1]]$transformation
-save_layout <- chart$projections[[1]]$layout
-save_transformed_layout <- chart$projections[[1]]$transformed_layout
+save_transformation <- chart$projection(1)$transformation
+save_layout <- chart$projection(1)$layout
+save_transformed_layout <- chart$projection(1)$transformed_layout
 
 # set transfomation matrix for 2D projection
-chart$projections[[1]]$transformation <- matrix(c(1, 0, 0, 1), nrow=2, byrow=TRUE)
+chart$projection(1)$set_transformation(matrix(c(1, 0, 0, 1), nrow=2, byrow=TRUE))
 
 # set transfomation matrix for 3D projection
-chart$projections[[1]]$transformation <- matrix(c(1, 0, 0, 0, 1, 0, 0, 0, 1), nrow=3, byrow=TRUE)
+chart$projection(1)$set_transformation(matrix(c(1, 0, 0, 0, 1, 0, 0, 0, 1), nrow=3, byrow=TRUE))
 
 # rotate the first projection 30 degrees counter-clockwise
-chart$projections[[1]]$rotate_degrees(30)
+chart$projection(1)$rotate_degrees(30)
 # transformed_layout changed
-identical(chart$projections[[1]]$transformed_layout, save_transformed_layout)
+identical(chart$projection(1)$transformed_layout, save_transformed_layout)
 # transformation matrix changed
-identical(chart$projections[[1]]$transformation, save_transformation)
+identical(chart$projection(1)$transformation, save_transformation)
 # stored layout is untouched
-identical(chart$projections[[1]]$layout, save_layout)
+identical(chart$projection(1)$layout, save_layout)
 
 # rotate 30 degrees converted to radians clockwise
-chart$projections[[1]]$rotate_radians(-30 * pi /180)
+chart$projection(1)$rotate_radians(-30 * pi /180)
 # now transformed layout and transformation are the same as saved
-identical(chart$projections[[1]]$transformed_layout, save_transformed_layout)
-identical(chart$projections[[1]]$transformation, save_transformation)
+identical(chart$projection(1)$transformed_layout, save_transformed_layout)
+identical(chart$projection(1)$transformation, save_transformation)
 # and stored layout is still untouched
-identical(chart$projections[[1]]$layout, save_layout)
+identical(chart$projection(1)$layout, save_layout)
 
 # flip twice and rotate 180 degrees
-chart$projections[[1]]$flip_north_south()
-chart$projections[[1]]$flip_east_west()
-chart$projections[[1]]$rotate_degrees(180)
+chart$projection(1)$flip_north_south()
+chart$projection(1)$flip_east_west()
+chart$projection(1)$rotate_degrees(180)
 # now transformed layout and transformation are (approximately) the same as saved
-all.equal(chart$projections[[1]]$transformed_layout, save_transformed_layout)
-all.equal(chart$projections[[1]]$transformation, save_transformation)
+all.equal(chart$projection(1)$transformed_layout, save_transformed_layout)
+all.equal(chart$projection(1)$transformation, save_transformation)
 
 # move the first antigen to some place far away
-chart$projections[[1]]$move_point(1, c(100, 100))
-chart$projections[[1]]$layout[1,]
+chart$projection(1)$move_point(1, c(100, 100))
+chart$projection(1)$layout[1,]
 # move the first serum to some place far away
-chart$projections[[1]]$move_point(chart$number_of_antigens + 1, c(100, 100))
+chart$projection(1)$move_point(chart$number_of_antigens + 1, c(100, 100))
 # move the last serum to some place far away
-chart$projections[[1]]$move_point(chart$number_of_antigens + chart$number_of_sera, c(100, 100))
+chart$projection(1)$move_point(chart$number_of_antigens + chart$number_of_sera, c(100, 100))
 # direct assignment to layout fails
-# does not work: chart$projections[[1]]$layout[1,] <- c(10, 10)
+# does not work: chart$projection(1)$layout[1,] <- c(10, 10)
 
 # set layout to matrix filled with 0
-chart$projections[[1]]$layout <- matrix(c(0), nrow=chart$number_of_points, ncol=chart$projections[[1]]$number_of_dimensions)
+chart$projection(1)$layout <- matrix(c(0), nrow=chart$number_of_points, ncol=chart$projection(1)$number_of_dimensions)
 
 # clone the best projection
 new_proj <- chart$clone_projection(1)
@@ -263,10 +269,10 @@ chart$relax_many("none", 2, 10, FALSE)
 # get all stresses
 sapply(chart$projections, function(p) {p$stress})
 # relax existing projection, e.g. upon moving the first antigen
-chart$projections[[1]]$move_point(1, c(100, 100))
-chart$projections[[1]]$stress
-chart$projections[[1]]$relax()
-chart$projections[[1]]$stress
+chart$projection(1)$move_point(1, c(100, 100))
+chart$projection(1)$stress
+chart$projection(1)$relax()
+chart$projection(1)$stress
 
 # create new projection in 2d without minimum column basis with random layout without optimisation (dimension annealing cannot be used)
 projection <- chart$new_projection("none", 2)
@@ -302,8 +308,8 @@ rms <- pc12$rms
 # containts translation.
 transformation_matrix <- pc12$transformation
 # reorient projection using procrustes
-chart$projections[[1]]$reorient(chart2$projections[[1]])
-chart$projections[[1]]$reorient(chart2$projections[[1]], "auto", "all")
+chart$projection(1)$reorient(chart2$projections[[1]])
+chart$projection(1)$reorient(chart2$projections[[1]], "auto", "all")
 }\cr
 \bold{# ========= Grid test =========}\cr
 \preformatted{

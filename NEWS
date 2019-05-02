@@ -1,6 +1,7 @@
 acmacs.r NEWS -- history of user-visible changes.
 
 * Changes in 3.0 (2019-05)
+** use projection$set_transformation(matrix(...)), projection$transformation <- matrix(...) does not work (bug in Rcpp?)
 
 * Changes in 2.99.1 (2019-04-30)
 ** Avoiding libomp double initialisation error by using libomp coming with R under macOS

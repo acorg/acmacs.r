@@ -121,6 +121,7 @@ class Chart : public wrapper<acmacs::chart::ChartModify>
     void remove_layers() { obj_->remove_layers(); }
     Chart clone() const;
     Projection clone_projection(size_t projection_no_based_one) const;
+    Projection projection(size_t projection_no);
 
 }; // class Chart
 

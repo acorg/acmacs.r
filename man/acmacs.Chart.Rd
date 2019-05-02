@@ -45,6 +45,8 @@ chart <- new(acmacs.Chart, raw_data)
 
   \item{projections}{List of \code{\link{acmacs.Projection}} objects.}
 
+  \item{projection(projection_no)}{Returns \code{\link{acmacs.Projection}} object.}
+
   \item{sort_projections()}{sorts projections by stress, in the result
     the first projection (\code{chart$projections[[1]]}) will be the
     bestone}
