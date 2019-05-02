@@ -134,6 +134,7 @@ RCPP_MODULE(acmacs_chart)
             .property("transformation", &Projection::transformation)
             .method("set_transformation", &Projection::set_transformation)
             .property("layout", &Projection::layout, &Projection::set_layout)
+            .method("set_layout", &Projection::set_layout)
             .property("transformed_layout", &Projection::transformed_layout)
             .method("rotate_degrees", &Projection::rotate_degrees)
             .method("rotate_radians", &Projection::rotate_radians)
@@ -174,6 +175,7 @@ RCPP_MODULE(acmacs_chart)
     class_<ProcrustesData>("acmacs.ProcrustesData")
             .property("rms", &ProcrustesData::rms, nullptr)
             .property("transformation", &ProcrustesData::transformation, nullptr)
+            .method("apply", &ProcrustesData::apply, "transform and translate layout according to the procrustes")
             ;
 
 }
@@ -452,7 +454,7 @@ void Projection::randomize_layout(std::string randomization_method, double diame
 
 // ----------------------------------------------------------------------
 
-Rcpp::NumericMatrix Projection::layout_convert(std::shared_ptr<acmacs::Layout> layout) const
+Rcpp::NumericMatrix Projection::layout_convert(std::shared_ptr<acmacs::Layout> layout)
 {
     Rcpp::NumericMatrix result(layout->number_of_points(), layout->number_of_dimensions());
     for (size_t p_no = 0; p_no < layout->number_of_points(); ++p_no) {
@@ -471,7 +473,7 @@ Rcpp::NumericMatrix Projection::layout_convert(std::shared_ptr<acmacs::Layout> l
 
 // ----------------------------------------------------------------------
 
-acmacs::Layout Projection::layout_convert(const Rcpp::NumericMatrix& source) const
+acmacs::Layout Projection::layout_convert(const Rcpp::NumericMatrix& source)
 {
     acmacs::Layout result(source.nrow(), source.ncol());
     for (size_t point_no = 0; point_no < result.number_of_points(); ++point_no) {
@@ -547,6 +549,16 @@ ProcrustesData procrustes(Projection primary, Projection secondary, bool scaling
         common.sera_only();
     return ProcrustesData(std::make_shared<acmacs::chart::ProcrustesData>(acmacs::chart::procrustes(*primary.obj_, *secondary.obj_, common.points(), scaling ? acmacs::chart::procrustes_scaling_t::yes : acmacs::chart::procrustes_scaling_t::no)));
 }
+
+// ----------------------------------------------------------------------
+
+Rcpp::NumericMatrix ProcrustesData::apply(const Rcpp::NumericMatrix& source_layout) const
+{
+    const auto layout = Projection::layout_convert(source_layout);
+    auto resulting_layout = obj_->apply(layout);
+    return Projection::layout_convert(resulting_layout);
+
+} // ProcrustesData::apply
 
 // ----------------------------------------------------------------------
 

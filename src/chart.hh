@@ -175,12 +175,13 @@ class Projection : public wrapper<acmacs::chart::ProjectionModify>
     void reorient(const Projection& master, std::string match, std::string subset);
     void reorient_default(const Projection& master) { reorient(master, "auto", "all"); }
 
+    static acmacs::Layout layout_convert(const Rcpp::NumericMatrix& source);
+    static Rcpp::NumericMatrix layout_convert(std::shared_ptr<acmacs::Layout> layout);
+
  private:
     std::unique_ptr<acmacs::chart::IntermediateLayouts> intermediate_layouts_;
     size_t next_layout_;
 
-    Rcpp::NumericMatrix layout_convert(std::shared_ptr<acmacs::Layout> layout) const;
-    acmacs::Layout layout_convert(const Rcpp::NumericMatrix& source) const;
     acmacs::Transformation transformation_convert(const Rcpp::NumericMatrix& source) const;
     acmacs::chart::optimization_method optimization_method(std::string method) const;
 
@@ -196,6 +197,7 @@ class ProcrustesData : public wrapper<acmacs::chart::ProcrustesData>
     double rms() const { return obj_->rms; }
     const auto& transformation_raw() const { return obj_->transformation; }
     Rcpp::NumericMatrix transformation() const;
+    Rcpp::NumericMatrix apply(const Rcpp::NumericMatrix& source_layout) const;
 };
 RCPP_EXPOSED_CLASS_NODECL(ProcrustesData);
 

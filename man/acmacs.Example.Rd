@@ -192,7 +192,7 @@ chart$projection(1)$move_point(chart$number_of_antigens + chart$number_of_sera, 
 # does not work: chart$projection(1)$layout[1,] <- c(10, 10)
 
 # set layout to matrix filled with 0
-chart$projection(1)$layout <- matrix(c(0), nrow=chart$number_of_points, ncol=chart$projection(1)$number_of_dimensions)
+chart$projection(1)$set_layout(matrix(c(0), nrow=chart$number_of_points, ncol=chart$projection(1)$number_of_dimensions))
 
 # set (forced) column bases for all sera
 chart$projection(1)$set_column_bases(c(7,8,9,10,9,8,7))
@@ -325,6 +325,8 @@ transformation_matrix <- pc12$transformation
 # reorient projection using procrustes
 chart$projection(1)$reorient(chart2$projections[[1]])
 chart$projection(1)$reorient(chart2$projections[[1]], "auto", "all")
+# apply procrustes (transformation and translation) to layout (R matrix)
+transformed_translated <- pc12$apply(matrix(ncol=2, c(...)))
 }\cr
 \bold{# ========= Grid test =========}\cr
 \preformatted{
