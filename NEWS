@@ -7,6 +7,7 @@ acmacs.r NEWS -- history of user-visible changes.
 ** chart$column_bases() method takes a 1-based projection number
 ** use projection$set_transformation(matrix(...)), projection$transformation <- matrix(...) does not work (bug in Rcpp?)
 ** error message about locationdb absence suppressed
+** set the column basis for each serum individually
 
 * Changes in 2.99.1 (2019-04-30)
 ** Avoiding libomp double initialisation error by using libomp coming with R under macOS
