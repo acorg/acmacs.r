@@ -57,6 +57,8 @@ RCPP_MODULE(acmacs_chart)
             .method("column_bases", &Chart::column_bases_1, "either forced or calculated column bases, i.e. the ones used for stress calculation and optimization")
             // .method("column_bases", &Chart::column_bases_1s, "either forced or calculated column bases with the provided minimum_column_basis")
             .method("column_bases", &Chart::column_bases_0, "either forced or calculated column bases, i.e. the ones used for stress calculation and optimization")
+            .method("set_column_bases", &Chart::set_column_bases, "set forced column bases for the chart and all its projections")
+            .method("set_column_basis", &Chart::set_column_basis, "set forced column basis for a serum in the chart and all its projections")
             .method("save", &Chart::save)
             .method("new_projection", &Chart::new_projection)
             .method("relax", &Chart::relax2)
@@ -127,6 +129,8 @@ RCPP_MODULE(acmacs_chart)
             .property<std::string>("minimum_column_basis", &Projection::minimum_column_basis)
             .property("number_of_dimensions", &Projection::number_of_dimensions)
             .property("forced_column_bases", &Projection::forced_column_bases)
+            .method("set_column_bases", &Projection::set_column_bases, "set forced column bases for the projections")
+            .method("set_column_basis", &Projection::set_column_basis, "set forced column basis for a serum in the chart in the projection")
             .property("transformation", &Projection::transformation)
             .method("set_transformation", &Projection::set_transformation)
             .property("layout", &Projection::layout, &Projection::set_layout)
@@ -273,6 +277,20 @@ Rcpp::NumericVector Chart::column_bases_2(size_t aProjectionNo, std::string aMin
 
 // ----------------------------------------------------------------------
 
+void Chart::set_column_bases(const Rcpp::NumericVector& data)
+{
+
+} // Chart::set_column_bases
+
+// ----------------------------------------------------------------------
+
+void Chart::set_column_basis(size_t serum_no, double column_basis)
+{
+
+} // Chart::set_column_basis
+
+// ----------------------------------------------------------------------
+
 Projection Chart::new_projection(std::string minimum_column_basis, size_t number_of_dimensions)
 {
     auto projection = obj_->projections_modify()->new_from_scratch(number_of_dimensions, minimum_column_basis);
@@ -334,6 +352,28 @@ Rcpp::NumericVector Projection::forced_column_bases() const
         return Rcpp::NumericVector::create(NA_REAL);
     }
 }
+
+// ----------------------------------------------------------------------
+
+void Projection::set_column_bases(const Rcpp::NumericVector& data)
+{
+    if (obj_->chart().number_of_sera() != data.size())
+        throw std::invalid_argument("invalid number of entries in column bases vector");
+    auto col_bases = std::make_shared<acmacs::chart::ColumnBasesData>(data.size(), obj_->minimum_column_basis());
+    std::copy(data.begin(), data.end(), col_bases->data().begin());
+    obj_->set_forced_column_bases(col_bases);
+
+} // Projection::set_column_bases
+
+// ----------------------------------------------------------------------
+
+void Projection::set_column_basis(size_t serum_no, double column_basis)
+{
+    if (serum_no == 0 || obj_->chart().number_of_sera() < serum_no)
+        throw std::invalid_argument("invalid serum_no");
+    obj_->set_forced_column_basis(serum_no - 1, column_basis);
+
+} // Projection::set_column_basis
 
 // ----------------------------------------------------------------------
 

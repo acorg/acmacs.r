@@ -53,6 +53,17 @@ test_chart <- function(filename, expected_num_projections, expected_stress, expe
     chart$projections[[1]]$set_transformation(new_tr_2d)
     test_that("set transformation for projection 1", { expect_equal(chart$projection(1)$transformation, new_tr_2d) })
 
+                                        # cat("\n forced_column_bases: ", chart$projection(1)$forced_column_bases, " ", typeof(chart$projection(1)$forced_column_bases), "\n")
+    test_that("original forced column bases", { expect_equal(chart$projection(1)$forced_column_bases, as.double(c(NA))) })
+    orig_col_bases <- chart$column_bases();
+    new_col_bases <- sapply(orig_col_bases, function(val) (val + 1));
+    chart$projection(1)$set_column_bases(new_col_bases);
+    test_that("new forced column bases", { expect_equal(chart$projection(1)$forced_column_bases, new_col_bases) })
+                                        # cat("\n orig_col_bases ", orig_col_bases, " new:", new_col_basese, "\n");
+    new_col_bases[[2]] = 11.11
+    chart$projection(1)$set_column_basis(2, new_col_bases[[2]])
+    test_that("new and updated forced column bases", { expect_equal(chart$projection(1)$forced_column_bases, new_col_bases) })
+
     pr_new_2d <- chart$new_projection("none", 2);
     tr_new_2d <- pr_new_2d$transformation
                                         # cat("\ntr_new_2d: ", nrow(tr_new_2d), " ", ncol(tr_new_2d), "\n")

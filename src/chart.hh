@@ -94,6 +94,8 @@ class Chart : public wrapper<acmacs::chart::ChartModify>
     Rcpp::NumericVector column_bases_1(size_t aProjectionNo) const { return column_bases_2(aProjectionNo, "none"); }
     Rcpp::NumericVector column_bases_1s(std::string aMinimumColumnBasis) const { return column_bases_2(1, aMinimumColumnBasis); }
     Rcpp::NumericVector column_bases_0() const { return column_bases_2(1, "none"); }
+    void set_column_bases(const Rcpp::NumericVector& data);
+    void set_column_basis(size_t serum_no, double column_basis);
     PlotSpec plot_spec();
     Titers titers();
     static Rcpp::StringVector as_character(Chart* aChart) { return {aChart->name()}; }
@@ -143,6 +145,8 @@ class Projection : public wrapper<acmacs::chart::ProjectionModify>
     Rcpp::NumericMatrix transformation() const;
     void set_transformation(Rcpp::NumericMatrix src) { obj_->transformation(transformation_convert(src)); }
     Rcpp::NumericVector forced_column_bases() const;
+    void set_column_bases(const Rcpp::NumericVector& data);
+    void set_column_basis(size_t serum_no, double column_basis);
     Rcpp::NumericMatrix layout() const { return layout_convert(obj_->layout()); }
     void set_layout(Rcpp::NumericMatrix src) { obj_->set_layout(layout_convert(src)); }
     Rcpp::NumericMatrix transformed_layout() const { return layout_convert(obj_->transformed_layout()); }

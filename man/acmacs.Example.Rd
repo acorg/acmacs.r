@@ -125,6 +125,13 @@ chart$projection(1)$transformed_layout
 # invariant
 identical(chart$projection(1)$transformed_layout, chart$projection(1)$layout \%*\% chart$projection(1)$transformation)
 
+# forced column bases
+chart$projection(1)$forced_column_bases()
+# set (forced) column bases for all sera
+chart$projection(1)$set_column_bases(c(7,8,9,10,9,8,7))
+# set (forced) column basis for a single serum
+chart$projection(1)$set_column_basis(1, 11)
+
 # remove all projections
 chart$remove_all_projections()
 

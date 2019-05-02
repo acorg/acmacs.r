@@ -27,6 +27,11 @@ projection$stress
   (by user or after merge of tables having more-than titers), otherwise
   NA.}
 
+  \item{set_column_bases(vector)}{force column bases}
+
+  \item{set_column_basis(serum_no, column_basis)}{force column basis for
+  a serum}
+
   \item{transformation}{transformation matrix of the projection (matrix
     2x2 for 2D projection, matrix 3x3 for 3D projection)}
 
