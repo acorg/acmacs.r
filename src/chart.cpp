@@ -279,6 +279,11 @@ Rcpp::NumericVector Chart::column_bases_2(size_t aProjectionNo, std::string aMin
 
 void Chart::set_column_bases(const Rcpp::NumericVector& data)
 {
+    if (obj_->number_of_sera() != data.size())
+        throw std::invalid_argument("invalid number of entries in column bases vector");
+    acmacs::chart::ColumnBasesData col_bases(data.size(), 0.0);
+    std::copy(data.begin(), data.end(), col_bases.data().begin());
+    obj_->forced_column_bases_modify(col_bases);
 
 } // Chart::set_column_bases
 
@@ -286,6 +291,10 @@ void Chart::set_column_bases(const Rcpp::NumericVector& data)
 
 void Chart::set_column_basis(size_t serum_no, double column_basis)
 {
+    if (serum_no == 0 || obj_->number_of_sera() < serum_no)
+        throw std::invalid_argument("invalid serum_no");
+    auto cb = obj_->forced_column_bases_modify(0.0);
+    cb->set(serum_no - 1, column_basis);
 
 } // Chart::set_column_basis
 

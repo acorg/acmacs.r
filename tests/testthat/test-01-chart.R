@@ -10,6 +10,12 @@ test_that("number of layers", { expect_equal(chart1$titers$number_of_layers, 0) 
 chart1$remove_layers()
 test_that("number of layers upon layers removal", { expect_equal(chart1$titers$number_of_layers, 0) })
 
+test_that("column bases", { expect_equal(chart1$column_bases(), c(7,8,8,8,8,8)) })
+chart1$set_column_bases(c(10,10,10,10,10,10))
+test_that("column bases after enforcing", { expect_equal(chart1$column_bases(), c(10,10,10,10,10,10)) })
+chart1$set_column_basis(2, 11)
+test_that("column bases after enforcing and updating", { expect_equal(chart1$column_bases(), c(10,11,10,10,10,10)) })
+
 chart2 <- new(acmacs.Chart, "cdc-h1pdm-2009.acd1.bz2")
 test_that("name", { expect_equal(chart2$name, "") })
 test_that("number of antigens", { expect_equal(chart2$number_of_antigens, 303) })

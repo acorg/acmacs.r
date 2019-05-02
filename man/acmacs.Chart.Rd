@@ -36,6 +36,8 @@ chart <- new(acmacs.Chart, raw_data)
   \item{number_of_projections}{number of projections (relaxed maps) in the chart.}
 
   \item{column_bases(...)}{see below.}
+  \item{set_column_bases(...)}{see below.}
+  \item{set_column_basis(...)}{see below.}
 
   \item{lineage}{for influenza B chart only, \code{"VICTORIA"} or \code{"YAMAGATA"}.}
 
@@ -124,6 +126,11 @@ chart <- new(acmacs.Chart, raw_data)
 
   \code{column_bases(-1, "1280")} - Returns either forced or
   recalculated (with minimum column basis = "1280") column bases.
+
+  \code{set_column_bases(vector)} - sets forced column bases.
+
+  \code{set_column_basis(serum_no, column_basis)} - sets forced column
+  basis for a serum.
 
 }
 \section{Adding/removing antigens/sera}{

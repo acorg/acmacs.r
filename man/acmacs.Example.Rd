@@ -89,6 +89,13 @@ get_sr <- function(sr_no) \{
 \}
 sapply(1:chart$number_of_sera, get_sr)
 }\cr
+\bold{# ============ Column bases ============}\cr
+\preformatted{
+chart$column_bases() # get column bases (either calculated or forced)
+chart$set_column_bases(c(7,8,9,10)) # set forced column bases
+chart$set_column_basis(2, 11) # update forced column basis for serum 2
+  
+}\cr
 \bold{# ===== Projections (maps) =====}\cr
 \preformatted{
 cat(paste("number of projections (maps):", chart$number_of_projections, "\n"))
@@ -127,10 +134,6 @@ identical(chart$projection(1)$transformed_layout, chart$projection(1)$layout \%*
 
 # forced column bases
 chart$projection(1)$forced_column_bases()
-# set (forced) column bases for all sera
-chart$projection(1)$set_column_bases(c(7,8,9,10,9,8,7))
-# set (forced) column basis for a single serum
-chart$projection(1)$set_column_basis(1, 11)
 
 # remove all projections
 chart$remove_all_projections()
@@ -190,6 +193,11 @@ chart$projection(1)$move_point(chart$number_of_antigens + chart$number_of_sera, 
 
 # set layout to matrix filled with 0
 chart$projection(1)$layout <- matrix(c(0), nrow=chart$number_of_points, ncol=chart$projection(1)$number_of_dimensions)
+
+# set (forced) column bases for all sera
+chart$projection(1)$set_column_bases(c(7,8,9,10,9,8,7))
+# set (forced) column basis for a single serum
+chart$projection(1)$set_column_basis(1, 11)
 
 # clone the best projection
 new_proj <- chart$clone_projection(1)
