@@ -47,6 +47,18 @@ test_chart <- function(filename, expected_num_projections, expected_stress, expe
     prj1$move_point(point_no, move_to)
     test_that("last point moved", { expect_equal(prj1$layout[point_no,], move_to) })
 
+    pr_new_2d <- chart$new_projection("none", 2);
+    tr_new_2d <- pr_new_2d$transformation
+                                        # cat("\ntr_new_2d: ", nrow(tr_new_2d), " ", ncol(tr_new_2d), "\n")
+    test_that("transformation for the new 2D projection", { expect_equal(nrow(tr_new_2d), 2); expect_equal(ncol(tr_new_2d), 2) })
+    test_that("transformation for the new 2D projection", { expect_equal(tr_new_2d, matrix(ncol=2, c(1,0,0,1))) })
+
+    pr_new_3d <- chart$new_projection("none", 3);
+    tr_new_3d <- pr_new_3d$transformation
+                                        # cat("\ntr_new_3d: ", nrow(tr_new_3d), " ", ncol(tr_new_3d), "\n")
+    test_that("transformation for the new 3D projection", { expect_equal(nrow(tr_new_3d), 3); expect_equal(ncol(tr_new_3d), 3) })
+    test_that("transformation for the new 3D projection", { expect_equal(tr_new_3d, matrix(ncol=3, c(1,0,0,0,1,0,0,0,1))) })
+
     # remove all projections (must be the last test)
     chart$remove_all_projections()
     test_that("number of projections upon removal all ones", { expect_equal(chart$number_of_projections, 0) })
