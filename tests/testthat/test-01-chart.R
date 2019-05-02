@@ -1,6 +1,7 @@
-context("Test chart")
+context("test-01-chart.R: test chart")
 
 chart1 <- new(acmacs.Chart, "2004-3.ace")
+test_that("name", { expect_equal(chart1$name, "Labels") })
 test_that("number of antigens", { expect_equal(chart1$number_of_antigens, 22) })
 test_that("number of sera", { expect_equal(chart1$number_of_sera, 6) })
 test_that("number of points", { expect_equal(chart1$number_of_points, chart1$number_of_antigens + chart1$number_of_sera) })
@@ -10,6 +11,7 @@ chart1$remove_layers()
 test_that("number of layers upon layers removal", { expect_equal(chart1$titers$number_of_layers, 0) })
 
 chart2 <- new(acmacs.Chart, "cdc-h1pdm-2009.acd1.bz2")
+test_that("name", { expect_equal(chart2$name, "") })
 test_that("number of antigens", { expect_equal(chart2$number_of_antigens, 303) })
 test_that("number of sera", { expect_equal(chart2$number_of_sera, 31) })
 test_that("number of points", { expect_equal(chart2$number_of_points, chart2$number_of_antigens + chart2$number_of_sera) })
@@ -18,6 +20,9 @@ test_that("column bases", { expect_equal(chart2$column_bases(), c(7.333602628268
 test_that("number of layers", { expect_equal(chart2$titers$number_of_layers, 6) })
 chart2$remove_layers()
 test_that("number of layers upon layers removal", { expect_equal(chart2$titers$number_of_layers, 0) })
+chart2_new_name = "chart2"
+chart2$name = chart2_new_name
+test_that("name", { expect_equal(chart2$name, chart2_new_name) })
 
 # cloning
 output_filename_ace <- "/tmp/acmacs.r.test01.ace"

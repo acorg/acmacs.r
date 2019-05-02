@@ -83,7 +83,7 @@ class Chart : public wrapper<acmacs::chart::ChartModify>
     Chart(Rcpp::RawVector aData);
     Chart(int number_of_antigens, int number_of_sera);
     Chart(std::shared_ptr<acmacs::chart::ChartModify> src);
-    std::string name() const { return obj_->make_name(); }
+    std::string name() const { return obj_->info()->name(); }
     std::string info() const { return obj_->make_info(); }
     std::string lineage() const { return obj_->lineage(); }
     size_t number_of_antigens() const { return obj_->number_of_antigens(); }
