@@ -1,5 +1,7 @@
 #include <Rcpp.h>
 
+#include "locationdb/locdb.hh"
+
 // #include <limits>
 // #include "chart.hh"
 
@@ -22,6 +24,7 @@
 
 static inline void init_cout_cerr()
 {
+    get_locdb(locdb_suppress_error::yes); // to avoid error message if locdb is requested later and locationdb.json.xz is not available
     std::cout.rdbuf(Rcpp::Rcout.rdbuf());
     std::cerr.rdbuf(Rcpp::Rcerr.rdbuf());
 }
