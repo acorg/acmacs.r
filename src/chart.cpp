@@ -238,11 +238,13 @@ void Chart::save(std::string aFilename)
 
 Rcpp::NumericVector Chart::column_bases_2(size_t aProjectionNo, std::string aMinimumColumnBasis) const
 {
+    auto projections = obj_->projections();
+    if (aProjectionNo < 1 || (projections && !projections->empty() && aProjectionNo > projections->size()))
+        throw std::invalid_argument("invalid projection number: " + std::to_string(aProjectionNo) + " number-of-projections: " + std::to_string(projections->size()));
     std::shared_ptr<acmacs::chart::ColumnBases> cb;
     acmacs::chart::MinimumColumnBasis mcb(aMinimumColumnBasis);
-    auto projections = obj_->projections();
-    if (projections && aProjectionNo < projections->size()) {
-        if (auto p = (*projections)[aProjectionNo]; p) {
+    if (projections && aProjectionNo <= projections->size()) {
+        if (auto p = (*projections)[aProjectionNo - 1]; p) {
             cb = p->forced_column_bases();
             mcb = p->minimum_column_basis();
         }

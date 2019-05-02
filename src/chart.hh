@@ -92,8 +92,8 @@ class Chart : public wrapper<acmacs::chart::ChartModify>
     size_t number_of_projections() const { return obj_->number_of_projections(); }
     Rcpp::NumericVector column_bases_2(size_t aProjectionNo, std::string aMinimumColumnBasis) const;
     Rcpp::NumericVector column_bases_1(size_t aProjectionNo) const { return column_bases_2(aProjectionNo, "none"); }
-    Rcpp::NumericVector column_bases_1s(std::string aMinimumColumnBasis) const { return column_bases_2(std::numeric_limits<size_t>::max(), aMinimumColumnBasis); }
-    Rcpp::NumericVector column_bases_0() const { return column_bases_2(0, "none"); }
+    Rcpp::NumericVector column_bases_1s(std::string aMinimumColumnBasis) const { return column_bases_2(1, aMinimumColumnBasis); }
+    Rcpp::NumericVector column_bases_0() const { return column_bases_2(1, "none"); }
     PlotSpec plot_spec();
     Titers titers();
     static Rcpp::StringVector as_character(Chart* aChart) { return {aChart->name()}; }
