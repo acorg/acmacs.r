@@ -94,7 +94,7 @@ sapply(1:chart$number_of_sera, get_sr)
 chart$column_bases() # get column bases (either calculated or forced)
 chart$set_column_bases(c(7,8,9,10)) # set forced column bases
 chart$set_column_basis(2, 11) # update forced column basis for serum 2
-  
+
 }\cr
 \bold{# ===== Projections (maps) =====}\cr
 \preformatted{
@@ -264,6 +264,7 @@ identical(sapply(1:chart$number_of_antigens, function(no) { chart$titers$titer(n
 chart$remove_layers()
 
 # set titer
+# IMPORTANT: modifying titer for a chart having projections leads to undefined behaviour!
 chart$titers$set_titer(antigen_no, serum_no, "640")
 
 # layers

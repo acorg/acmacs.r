@@ -25,6 +25,8 @@ print_table(chart)
 }
 \bold{# == Set/modify titers ==}
 \preformatted{
+# IMPORTANT: modifying titer for a chart having projections leads to undefined behaviour!
+
 # Set titers at random
 titer_variants <- c("<10", "20", "40", "80", "160", "320", "640", "1280", "2560", ">2560");
 for (ag in 1:chart$number_of_antigens) {

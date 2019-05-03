@@ -15,7 +15,9 @@ ps <- chart$titers
 
   \item{set_titer(antigen_no, serum_no, titer)}{Set titer for antigen
   and serum. If a chart has layers, setting merged titer is not
-  possible, use chart$remove_layers() to flatten the chart and be able to modify titers.}
+  possible, use chart$remove_layers() to flatten the chart and be able
+  to modify titers. IMPORTANT: modifying titer for a chart having
+  projections leads to undefined behaviour!  }
 
   \item{set_dontcare_for_antigen(antigen_no)}{Set all titers for antigen
     to *.}
