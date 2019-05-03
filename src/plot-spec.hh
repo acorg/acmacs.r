@@ -26,6 +26,7 @@ class PlotSpec : public wrapper<acmacs::chart::PlotSpecModify>
 };
 
 RCPP_EXPOSED_CLASS_NODECL(PlotSpec);
+RCPP_EXPOSED_CLASS_NODECL(acmacs::PointStyle);
 
 // ----------------------------------------------------------------------
 /// Local Variables:

@@ -42,10 +42,9 @@ install: build | $(LIB_DIR)
 
 bin: build | $(LIB_DIR)
 	@echo '***** BIN'
-	mkdir -p $(LIB_DIR)/$(PKG_NAME)/libs
-	cd $(ROOT_DIR) && \
-	env LD_LIBRARY_PATH=$(LD_LIBRARY_PATH) R CMD INSTALL --build --clean --debug --built-timestamp=$(shell date +%Y-%m-%d) -l $(LIB_DIR) $(PKG_FILE) && \
-	if [ -f $(PKG_NAME)_$(PKG_VERSION).tgz ]; then mv $(PKG_NAME)_$(PKG_VERSION).tgz $(PKG_NAME)_$(PKG_VERSION)_R_$(PKG_PLATFORM).tgz; fi
+	# env LD_LIBRARY_PATH=$(LD_LIBRARY_PATH) R CMD INSTALL --build --clean --debug --built-timestamp=$(shell date +%Y-%m-%d) --library=$(LIB_DIR) $(PKG_FILE)
+	env LD_LIBRARY_PATH=$(LD_LIBRARY_PATH) R CMD INSTALL --debug --built-timestamp=$(shell date +%Y-%m-%d) --library=$(LIB_DIR) $(PKG_FILE)
+	if [ -f $(ROOT_DIR)/$(PKG_NAME)_$(PKG_VERSION).tgz ]; then mv $(ROOT_DIR)/$(PKG_NAME)_$(PKG_VERSION).tgz $(ROOT_DIR)/$(PKG_NAME)_$(PKG_VERSION)_R_$(PKG_PLATFORM).tgz; fi
 
 build: compile-attributes | $(PKG_DIR)
 	@echo '***** BUILD'

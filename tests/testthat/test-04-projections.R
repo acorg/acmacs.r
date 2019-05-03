@@ -1,7 +1,8 @@
 context("test-04-projections.R: Test chart$projections")
 
 test_chart <- function(filename, expected_num_projections, expected_stress, expected_minimum_column_basis) {
-    # print(filename)
+    gc() # to avoid strange messages: Error in x$.self$finalize() : attempt to apply non-function
+                                        # cat("\n test_chart ", filename)
     chart <- new(acmacs.Chart, filename)
     prj1 <- chart$projections[[1]]
     layout <- prj1$layout

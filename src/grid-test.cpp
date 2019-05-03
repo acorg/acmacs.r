@@ -4,20 +4,6 @@
 
 // ----------------------------------------------------------------------
 
-RCPP_MODULE(acmacs_grid_test)
-{
-    using namespace Rcpp;
-
-    class_<GridTest>("acmacs.GridTest")
-            .constructor<Chart&, size_t>()
-            .constructor<Chart&>()
-            .method("test", &GridTest::test_parallel)
-            .method("test_single_thread", &GridTest::test_single_thread)
-            .method("results", &GridTest::results)
-            .method("make_new_projection_and_relax", &GridTest::make_new_projection_and_relax)
-            ;
-}
-
 GridTest::GridTest(Chart& chart, size_t projection_no, double grid_step) :
     grid_test_(new acmacs::chart::GridTest(*chart.obj_, projection_no, grid_step))
 {

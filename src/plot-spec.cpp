@@ -1,25 +1,5 @@
 #include "plot-spec.hh"
 
-RCPP_EXPOSED_CLASS_NODECL(acmacs::PointStyle);
-
-RCPP_MODULE(acmacs_plot_spec)
-{
-    using namespace Rcpp;
-
-    class_<PlotSpec>("acmacs.PlotSpec")
-            .property("styles", &PlotSpec::styles)
-            .property("drawing_order", &PlotSpec::drawing_order)
-            .method("raise", &PlotSpec::drawing_order_raise)
-            .method("lower", &PlotSpec::drawing_order_lower)
-            .method("raise_sera", &PlotSpec::drawing_order_raise_sera)
-            .method("lower_sera", &PlotSpec::drawing_order_lower_sera)
-            .method("set_size", &PlotSpec::set_style_size)
-            .method("set_fill", &PlotSpec::set_style_fill)
-            .method("set_outline", &PlotSpec::set_style_outline)
-            ;
-
-}
-
 // ----------------------------------------------------------------------
 
 Rcpp::List PlotSpec::styles() const
