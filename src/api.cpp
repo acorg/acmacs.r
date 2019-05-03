@@ -200,13 +200,20 @@ RCPP_MODULE(acmacs)
             .property("number_of_layers", &Titers::number_of_layers)
             ;
 
-    function("acmacs.procrustes", &procrustes, List::create(_["projection_primary"], _["projection_secondary"], _["scaling"] = false, _["match"] = "a", _["subset"] = "a"));
+    function("acmacs.match_antigens_sera", &match_antigens_sera, List::create(_["chart1"], _["chart2"], _["match"] = "a"));
+
+    // class_<MatchData>("acmacs.MatchData")
+    //         .field("antigens", &MatchData::antigens, "vector of indexes of antigens of chart2 (or NA) for each antigen of chart1")
+    //         .field("sera", &MatchData::sera, "vector of indexes of sera of chart2 (or NA) for each serum of chart1")
+    //         ;
 
     function("acmacs.merge", &merge, List::create(_["chart1"], _["chart2"], _["match"] = "a", _["merge"] = "n"));
     function("acmacs.merge_incremental", &merge_incremental, List::create(_["chart1"], _["chart2"], _["optimizations"] = 100, _["threads"] = 0));
     function("acmacs.merge_frozen", &merge_frozen, List::create(_["chart1"], _["chart2"]));
     function("acmacs.merge_overlay", &merge_overlay, List::create(_["chart1"], _["chart2"]));
     function("acmacs.merge_report", &merge_report, List::create(_["chart1"], _["chart2"], _["match"] = "a"));
+
+    function("acmacs.procrustes", &procrustes, List::create(_["projection_primary"], _["projection_secondary"], _["scaling"] = false, _["match"] = "a", _["subset"] = "a"));
 
     class_<ProcrustesData>("acmacs.ProcrustesData")
             .property("rms", &ProcrustesData::rms, nullptr)

@@ -33,3 +33,8 @@ chart2$projection(1)$reorient(chart3$projection(1))
 test_that("transformation after orienting", { expect_equal(chart2$projection(1)$transformation, matrix(c(-0.1906027, -0.9816673, 0.9816673, -0.1906027), nrow=2, byrow=TRUE), tolerance=1e-7) })
 
 # ======================================================================
+
+chart4 <- new(acmacs.Chart, "2004-02.ace")
+chart5 <- new(acmacs.Chart, "2004-01.ace")
+match_data <- acmacs.match_antigens_sera(chart4, chart5)
+test_that("match_antigens_sera", { expect_equal(match_data, list(antigens=c(NA, NA, NA, NA, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA), sera=c(1, 2, 3, 4, 5, NA))) })

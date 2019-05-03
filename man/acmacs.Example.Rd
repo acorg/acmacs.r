@@ -331,6 +331,12 @@ chart$projection(1)$reorient(chart2$projections[[1]], "auto", "all")
 # apply procrustes (transformation and translation) to layout (R matrix)
 transformed_translated <- pc12$apply(matrix(ncol=2, c(...)))
 }\cr
+\bold{# ========= Matching antigens and sera in two charts =========}\cr
+\preformatted{
+match_data <- acmacs.match_antigens_sera(chart1, chart2)
+# match_data is a named list of two vectors (antigens and sera),
+# each vector provides mapping between antigen or serum index in chart1 to index in chart2.
+}\cr
 \bold{# ========= Grid test =========}\cr
 \preformatted{
 # Grid test is similar to hemi/local/grid test of acmacs-web

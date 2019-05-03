@@ -190,6 +190,19 @@ RCPP_EXPOSED_CLASS_NODECL(Projection);
 
 // ----------------------------------------------------------------------
 
+acmacs::chart::CommonAntigensSera::match_level_t convert_match_level(std::string source);
+
+// class MatchData
+// {
+//   public:
+//     MatchData(size_t number_of_antigens, size_t number_of_sera) : antigens(number_of_antigens), sera(number_of_sera) {}
+//     Rcpp::IntegerVector antigens;
+//     Rcpp::IntegerVector sera;
+// };
+// RCPP_EXPOSED_CLASS_NODECL(MatchData);
+
+Rcpp::List match_antigens_sera(Chart chart1, Chart chart2, std::string match);
+
 class ProcrustesData : public wrapper<acmacs::chart::ProcrustesData>
 {
  public:
