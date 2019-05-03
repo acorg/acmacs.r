@@ -13,7 +13,9 @@ ps <- chart$titers
 
   \item{titer(antigen_no, serum_no)}{Single titer for antigen and serum.}
 
-  \item{set_titer(antigen_no, serum_no, titer)}{Set titer for antigen and serum.}
+  \item{set_titer(antigen_no, serum_no, titer)}{Set titer for antigen
+  and serum. If a chart has layers, setting merged titer is not
+  possible, use chart$remove_layers() to flatten the chart and be able to modify titers.}
 
   \item{set_dontcare_for_antigen(antigen_no)}{Set all titers for antigen
     to *.}
@@ -30,6 +32,9 @@ ps <- chart$titers
   \item{number_of_layers}{If chart is a merge, it has layers. In that
     case titers cannot be modified. Use chart$remove_layers() to get rid
     of them and be able to modify titers.}
+
+  \item{titer_of_layer(layer_no, antigen_no, serum_no)}{Single titer for
+  antigen and serum for the specified layer.}
 
 }
 \keyword{ package }

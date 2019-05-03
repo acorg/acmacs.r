@@ -248,7 +248,7 @@ chart$plot_spec$set_fill(test_indexes, "#C0C0C0")
 \bold{# ========= Titers =========}\cr
 \preformatted{
 # extract the first titer in the table
-chart$titers$titer(1, 1)
+chart$titers$titer(antigen_no, serum_no)
 # extract the last titer in the table
 chart$titers$titer(chart$number_of_antigens, chart$number_of_sera)
 # extract all titers into a matrix (it's a function, not property!)
@@ -264,8 +264,11 @@ identical(sapply(1:chart$number_of_antigens, function(no) { chart$titers$titer(n
 chart$remove_layers()
 
 # set titer
-chart$titers$set_titer(1, 1, "640")
+chart$titers$set_titer(antigen_no, serum_no, "640")
 
+# layers
+chart$number_of_layers
+chart$titer_of_layer(layer_no, antigen_no, serum_no)
 }\cr
 \bold{# ========= Making maps =========}\cr
 \preformatted{
