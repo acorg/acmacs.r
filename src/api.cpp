@@ -191,13 +191,15 @@ RCPP_MODULE(acmacs)
     class_<Titers>("acmacs.Titers")
             .method("all", &Titers::all)
             .method("titer", &Titers::titer)
-            .method("titer_of_layer", &Titers::titer_of_layer)
             .method("set_titer", &Titers::set_titer, "modifying titer for a chart having projections leads to undefined behaviour")
             .method("set_dontcare_for_antigen", &Titers::set_dontcare_for_antigen)
             .method("set_dontcare_for_serum", &Titers::set_dontcare_for_serum)
             .method("multiply_by_for_antigen", &Titers::multiply_by_for_antigen)
             .method("multiply_by_for_serum", &Titers::multiply_by_for_serum)
             .property("number_of_layers", &Titers::number_of_layers)
+            .method("titer_of_layer", &Titers::titer_of_layer)
+            .method("titers_for_all_layers", &Titers::titers_for_all_layers)
+            .method("all_layers", &Titers::all_layers)
             ;
 
     function("acmacs.match_antigens_sera", &match_antigens_sera, List::create(_["chart1"], _["chart2"], _["match"] = "a"));
