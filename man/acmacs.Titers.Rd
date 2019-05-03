@@ -38,6 +38,11 @@ ps <- chart$titers
   \item{titer_of_layer(layer_no, antigen_no, serum_no)}{Single titer for
   antigen and serum for the specified layer.}
 
+  \item{titers_for_all_layers(antigen_no, serum_no)}{Vector of titers in
+  layers for antigen and serum, including dont-care titers.}
+
+  \item{all_layers()}{List of dense matrice with all titers in layers including dont-care titers.}
+
 }
 \keyword{ package }
 \examples{

@@ -269,7 +269,9 @@ chart$titers$set_titer(antigen_no, serum_no, "640")
 
 # layers
 chart$number_of_layers
-chart$titer_of_layer(layer_no, antigen_no, serum_no)
+single_titer <- chart$titers$titer_of_layer(layer_no, antigen_no, serum_no)
+vector_if_titers <- chart$titers$titers_for_all_layers(antigen_no, serum_no)
+list_of_dense_matrice <- chart$titers$all_layers()
 }\cr
 \bold{# ========= Making maps =========}\cr
 \preformatted{
