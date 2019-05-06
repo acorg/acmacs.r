@@ -355,6 +355,31 @@ acmacs::chart::Stress stress_from_distances(const Rcpp::NumericMatrix& distances
 
 // ----------------------------------------------------------------------
 
+double stress_value(acmacs::chart::Stress* stress, const Rcpp::NumericMatrix& layout)
+{
+    if (layout.ncol() != stress->number_of_dimensions())
+        throw std::invalid_argument("Invalid number of columns in the layout matrix");
+    return stress->value(Projection::layout_convert(layout));
+}
+
+double stress_contribution(acmacs::chart::Stress* stress, size_t point_no, const Rcpp::NumericMatrix& layout)
+{
+    if (layout.ncol() != stress->number_of_dimensions())
+        throw std::invalid_argument("Invalid number of columns in the layout matrix");
+    if (point_no < 1 || point_no > layout.nrow())
+        throw std::invalid_argument("Invalid point_no");
+    return stress->contribution(point_no - 1, Projection::layout_convert(layout));
+}
+
+std::vector<double> stress_gradient(acmacs::chart::Stress* stress, const Rcpp::NumericMatrix& layout)
+{
+    if (layout.ncol() != stress->number_of_dimensions())
+        throw std::invalid_argument("Invalid number of columns in the layout matrix");
+    return stress->gradient(Projection::layout_convert(layout));
+}
+
+// ----------------------------------------------------------------------
+
 Rcpp::NumericMatrix ProcrustesData::transformation() const
 {
     const auto& a_tr = obj_->transformation;

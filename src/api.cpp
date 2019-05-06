@@ -235,6 +235,11 @@ RCPP_MODULE(acmacs)
 
     function("acmacs.stress_from_distances", &stress_from_distances, List::create(_["distance_matrix"]));
     class_<acmacs::chart::Stress>("acmacs.Stress")
+            .method("value", &stress_value)
+            .method("contribution", &stress_contribution)
+            .method("gradient", &stress_gradient)
+            .method("number_of_dimensions", &stress_number_of_dimensions)
+            .method("change_number_of_dimensions", &stress_change_number_of_dimensions)
             ;
 }
 

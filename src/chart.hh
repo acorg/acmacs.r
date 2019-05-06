@@ -193,15 +193,11 @@ RCPP_EXPOSED_CLASS_NODECL(Projection);
 // ----------------------------------------------------------------------
 
 acmacs::chart::Stress stress_from_distances(const Rcpp::NumericMatrix& distances, size_t number_of_dimensions);
-
-// class Stress : public wrapper<acmacs::chart::Stress>
-// {
-//   public:
-//     Stress(acmacs::chart::Stress projection) : wrapper(projection) {}
-
-// }; // class Stress
-
-// RCPP_EXPOSED_CLASS_NODECL(Stress);
+double stress_value(acmacs::chart::Stress* stress, const Rcpp::NumericMatrix& layout);
+double stress_contribution(acmacs::chart::Stress* stress, size_t point_no, const Rcpp::NumericMatrix& layout);
+std::vector<double> stress_gradient(acmacs::chart::Stress* stress, const Rcpp::NumericMatrix& layout);
+inline size_t stress_number_of_dimensions(acmacs::chart::Stress* stress) { return stress->number_of_dimensions(); }
+inline void stress_change_number_of_dimensions(acmacs::chart::Stress* stress, size_t number_of_dimensions) { stress->change_number_of_dimensions(number_of_dimensions); }
 
 // ----------------------------------------------------------------------
 

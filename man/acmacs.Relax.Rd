@@ -50,6 +50,16 @@
   creating stress object for given distance matrix (regular distances only)\cr
   \bold{stress <- acmacs.stress_from_distances(matrix(...), number_of_dimensions)}
 
+  calculating stress value for given layout
+  \bold{value <- stress$value(matrix(...))}
+
+  calculating stress contibution for a point, point_no is either
+  antigen_no or (serum_no + number_of_antigens)
+  \bold{value <- stress$contribution(point_no, matrix(...))}
+
+  calculating stress gradient for given layout
+  \bold{gradient_vector <- stress$gradient(matrix(...))}
+
 }
 \keyword{ package }
 \seealso{
