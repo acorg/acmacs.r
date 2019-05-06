@@ -11,6 +11,7 @@ acmacs.r NEWS -- history of user-visible changes.
 ** applying procrustes (transformation and translation) to layout (R matrix)
 ** getting titers of layers
 ** matching antigens and sera in two charts
+** stress object access for making custom optimisers
 
 * Changes in 2.99.1 (2019-04-30)
 ** Avoiding libomp double initialisation error by using libomp coming with R under macOS
