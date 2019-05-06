@@ -34,9 +34,11 @@
   \bold{chart$projection(1)$relax()}
 
   create new projection in 2d without minimum column basis with random layout without optimisation (dimension annealing cannot be used)\cr
-  \bold{projection <- chart$new_projection("none", 2)}\cr
+  \bold{projection <- chart$new_projection("none", 2)}
+
   randomize layout in the projection using "table-max-distance" method\cr
-  \bold{projection$randomize_layout()}\cr
+  \bold{projection$randomize_layout()}
+
   perform optimization step by step\cr
   \bold{while(projection$relax_one_iteration()) { print(projection$stress); print(projection$layout); }}
 }
@@ -50,14 +52,14 @@
   creating stress object for given distance matrix (regular distances only)\cr
   \bold{stress <- acmacs.stress_from_distances(matrix(...), number_of_dimensions)}
 
-  calculating stress value for given layout
+  calculating stress value for given layout\cr
   \bold{value <- stress$value(matrix(...))}
 
   calculating stress contibution for a point, point_no is either
-  antigen_no or (serum_no + number_of_antigens)
+  antigen_no or (serum_no + number_of_antigens)\cr
   \bold{value <- stress$contribution(point_no, matrix(...))}
 
-  calculating stress gradient for given layout
+  calculating stress gradient for given layout\cr
   \bold{gradient_vector <- stress$gradient(matrix(...))}
 
 }

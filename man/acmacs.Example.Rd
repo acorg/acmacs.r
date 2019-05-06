@@ -310,6 +310,15 @@ projection$randomize_layout("current-layout-area", 2.0)
 # perform optimization step by step
 while(projection$relax_one_iteration()) { print(projection$stress); print(projection$layout); }
 
+# stress object for custom optimiser
+stress <- chart$stress_evaluator(number_of_dimensions, minimum_column_basis)
+# calculating stress value for given layout
+stress_value <- stress$value(matrix(...))
+# calculating stress contibution for a point, point_no is either antigen_no or (serum_no + number_of_antigens)
+contibution <- stress$contribution(1, matrix(...))
+#  calculating stress gradient for given layout
+stress_gradient_vector <- stress$gradient(matrix(...))
+
 }\cr
 \bold{# ========= Procrustes =========}\cr
 \preformatted{
