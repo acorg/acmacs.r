@@ -164,6 +164,13 @@ void Chart::relax_many(std::string minimum_column_basis, size_t number_of_dimens
 
 // ----------------------------------------------------------------------
 
+acmacs::chart::Stress Chart::stress_evaluator(size_t number_of_dimensions, std::string minimum_column_basis)
+{
+    return acmacs::chart::stress_factory(*obj_, number_of_dimensions, minimum_column_basis, acmacs::chart::multiply_antigen_titer_until_column_adjust::yes, acmacs::chart::dodgy_titer_is_regular::no);
+}
+
+// ----------------------------------------------------------------------
+
 Rcpp::NumericMatrix Projection::transformation() const
 {
     const auto a_tr = obj_->transformation();
@@ -333,6 +340,18 @@ void Projection::reorient(const Projection& master, std::string match, std::stri
     obj_->transformation(transformation_raw);
 
 } // Projection::reorient
+
+// ----------------------------------------------------------------------
+
+acmacs::chart::Stress stress_from_distances(const Rcpp::NumericMatrix& distances, size_t number_of_dimensions)
+{
+    acmacs::chart::Stress stress(number_of_dimensions, distances.nrow() + distances.ncol(), acmacs::chart::multiply_antigen_titer_until_column_adjust::yes, acmacs::chart::dodgy_titer_is_regular::no);
+    auto& td = stress.table_distances();
+    for (size_t ag_no = 0; ag_no < distances.nrow(); ++ag_no)
+        for (size_t sr_no = 0; sr_no < distances.ncol(); ++sr_no)
+            td.add_value(acmacs::chart::Titer::Regular, ag_no, sr_no + distances.nrow(), distances(ag_no, sr_no));
+    return stress;
+}
 
 // ----------------------------------------------------------------------
 

@@ -76,6 +76,7 @@ RCPP_MODULE(acmacs)
             .method("relax", &Chart::relax2)
             .method("relax", &Chart::relax3)
             .method("relax_many", &Chart::relax_many, "generate maps multiple times from random starts\n\targuments:\n\tminimum column basis, e.g. \"none\", \"1280\"\n\tnumber of dimensions, e.g. 2\n\tnumber of optimizations, e.g. 10\n\tuse rough optimization (30% faster): TRUE or FALSE\n")
+            .method("stress_evaluator", &Chart::stress_evaluator, "returns stress evaluator object for the distances constructed from the titers of this chart")
             .method("sort_projections", &Chart::sort_projections)
             .method("clone", &Chart::clone)
             .method("clone_projection", &Chart::clone_projection)
@@ -230,6 +231,10 @@ RCPP_MODULE(acmacs)
             .method("test_single_thread", &GridTest::test_single_thread)
             .method("results", &GridTest::results)
             .method("make_new_projection_and_relax", &GridTest::make_new_projection_and_relax)
+            ;
+
+    function("acmacs.stress_from_distances", &stress_from_distances, List::create(_["distance_matrix"]));
+    class_<acmacs::chart::Stress>("acmacs.Stress")
             ;
 }
 

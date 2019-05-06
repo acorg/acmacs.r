@@ -274,6 +274,7 @@ vector_if_titers <- chart$titers$titers_for_all_layers(antigen_no, serum_no)
 list_of_dense_matrice <- chart$titers$all_layers()
 }\cr
 \bold{# ========= Making maps =========}\cr
+See \code{\link{acmacs.Relax}} for more details.\cr
 \preformatted{
 # make new projection in 2d without minimum column basis with random layout and relax it
 new_projection <- chart$relax("none", 2)
@@ -384,6 +385,7 @@ cat(report)
   \code{\link{acmacs.Chart}}\cr
   \code{\link{acmacs.Chart.from.scratch}}\cr
   \code{\link{acmacs.Chart.from.text.file}}\cr
+  \code{\link{acmacs.Relax}}\cr
   \code{\link{acmacs.Antigen}}\cr
   \code{\link{acmacs.Serum}}\cr
   \code{\link{acmacs.Projection}}\cr

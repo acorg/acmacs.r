@@ -27,6 +27,7 @@ new_result <- grid_test$test()
   \code{\link{acmacs.Chart}}\cr
   \code{\link{acmacs.Chart.from.scratch}}\cr
   \code{\link{acmacs.Chart.from.text.file}}\cr
+  \code{\link{acmacs.Relax}}\cr
   \code{\link{acmacs.Antigen}}\cr
   \code{\link{acmacs.Serum}}\cr
   \code{\link{acmacs.Projection}}\cr

@@ -51,6 +51,7 @@ cat(chart$info)
   \code{\link{acmacs.r-package}}\cr
   \code{\link{acmacs.Chart}}\cr
   \code{\link{acmacs.Chart.from.scratch}}\cr
+  \code{\link{acmacs.Relax}}\cr
   \code{\link{acmacs.Example}}\cr
   \code{\link{acmacs.Antigen}}\cr
   \code{\link{acmacs.Serum}}\cr

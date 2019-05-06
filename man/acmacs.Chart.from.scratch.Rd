@@ -113,6 +113,7 @@ print_table(chart)
   \code{\link{acmacs.r-package}}\cr
   \code{\link{acmacs.Chart}}\cr
   \code{\link{acmacs.Chart.from.text.file}}\cr
+  \code{\link{acmacs.Relax}}\cr
   \code{\link{acmacs.Example}}\cr
   \code{\link{acmacs.Antigen}}\cr
   \code{\link{acmacs.Serum}}\cr

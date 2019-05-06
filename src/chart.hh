@@ -12,6 +12,7 @@
 // ----------------------------------------------------------------------
 
 RCPP_EXPOSED_CLASS_NODECL(acmacs::chart::Passage);
+RCPP_EXPOSED_CLASS_NODECL(acmacs::chart::Stress);
 
 class PlotSpec;
 class Titers;
@@ -117,6 +118,7 @@ class Chart : public wrapper<acmacs::chart::ChartModify>
     Projection relax2(std::string minimum_column_basis, size_t number_of_dimensions);
     Projection relax3(std::string minimum_column_basis, size_t number_of_dimensions, bool rough);
     void relax_many(std::string minimum_column_basis, size_t number_of_dimensions, size_t number_of_optimizations, bool rough);
+    acmacs::chart::Stress stress_evaluator(size_t number_of_dimensions, std::string minimum_column_basis);
     void sort_projections() { obj_->projections_modify()->sort(); }
     void remove_all_projections() { obj_->projections_modify()->remove_all(); }
     void remove_all_projections_except(size_t projection_no_based_one) { obj_->projections_modify()->remove_all_except(projection_no_based_one - 1); }
@@ -187,6 +189,19 @@ class Projection : public wrapper<acmacs::chart::ProjectionModify>
 
 }; // class Projection
 RCPP_EXPOSED_CLASS_NODECL(Projection);
+
+// ----------------------------------------------------------------------
+
+acmacs::chart::Stress stress_from_distances(const Rcpp::NumericMatrix& distances, size_t number_of_dimensions);
+
+// class Stress : public wrapper<acmacs::chart::Stress>
+// {
+//   public:
+//     Stress(acmacs::chart::Stress projection) : wrapper(projection) {}
+
+// }; // class Stress
+
+// RCPP_EXPOSED_CLASS_NODECL(Stress);
 
 // ----------------------------------------------------------------------
 
