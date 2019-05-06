@@ -141,7 +141,7 @@ Projection Chart::new_projection(std::string minimum_column_basis, size_t number
 
 Projection Chart::relax2(std::string minimum_column_basis, size_t number_of_dimensions)
 {
-    auto [status, projection] = obj_->relax(minimum_column_basis, number_of_dimensions, true,
+    auto [status, projection] = obj_->relax(minimum_column_basis, number_of_dimensions, acmacs::chart::use_dimension_annealing::yes,
                                             acmacs::chart::optimization_options(acmacs::chart::optimization_method::alglib_cg_pca, acmacs::chart::optimization_precision::fine, 1.0));
       // obj_->projections_modify()->sort();
     return projection;
@@ -149,7 +149,7 @@ Projection Chart::relax2(std::string minimum_column_basis, size_t number_of_dime
 
 Projection Chart::relax3(std::string minimum_column_basis, size_t number_of_dimensions, bool rough)
 {
-    auto [status, projection] = obj_->relax(minimum_column_basis, number_of_dimensions, true,
+    auto [status, projection] = obj_->relax(minimum_column_basis, number_of_dimensions, acmacs::chart::use_dimension_annealing::yes,
                                             acmacs::chart::optimization_options(acmacs::chart::optimization_method::alglib_cg_pca, rough ? acmacs::chart::optimization_precision::rough : acmacs::chart::optimization_precision::fine, 1.0));
       // obj_->projections_modify()->sort();
     return projection;
@@ -158,7 +158,7 @@ Projection Chart::relax3(std::string minimum_column_basis, size_t number_of_dime
 void Chart::relax_many(std::string minimum_column_basis, size_t number_of_dimensions, size_t number_of_optimizations, bool rough)
 {
     acmacs::chart::optimization_options options(acmacs::chart::optimization_method::alglib_cg_pca, rough ? acmacs::chart::optimization_precision::rough : acmacs::chart::optimization_precision::fine, 1.0);
-    obj_->relax(number_of_optimizations, minimum_column_basis, number_of_dimensions, true, options, false, acmacs::chart::PointIndexList{});
+    obj_->relax(number_of_optimizations, minimum_column_basis, number_of_dimensions, acmacs::chart::use_dimension_annealing::yes, options, acmacs::chart::report_stresses::no, acmacs::chart::PointIndexList{});
     obj_->projections_modify()->sort();
 }
 
