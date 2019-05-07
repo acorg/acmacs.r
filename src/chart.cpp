@@ -130,7 +130,7 @@ void Chart::set_column_basis(size_t serum_no, double column_basis)
 
 Projection Chart::new_projection(std::string minimum_column_basis, size_t number_of_dimensions)
 {
-    auto projection = obj_->projections_modify()->new_from_scratch(number_of_dimensions, minimum_column_basis);
+    auto projection = obj_->projections_modify()->new_from_scratch(acmacs::number_of_dimensions_t{number_of_dimensions}, minimum_column_basis);
     acmacs::chart::optimization_options options;
     projection->randomize_layout(acmacs::chart::ProjectionModify::randomizer::plain_from_sample_optimization, options.randomization_diameter_multiplier);
     return static_cast<std::shared_ptr<acmacs::chart::ProjectionModify>>(projection);
@@ -141,7 +141,7 @@ Projection Chart::new_projection(std::string minimum_column_basis, size_t number
 
 Projection Chart::relax2(std::string minimum_column_basis, size_t number_of_dimensions)
 {
-    auto [status, projection] = obj_->relax(minimum_column_basis, number_of_dimensions, acmacs::chart::use_dimension_annealing::yes,
+    auto [status, projection] = obj_->relax(minimum_column_basis, acmacs::number_of_dimensions_t{number_of_dimensions}, acmacs::chart::use_dimension_annealing::yes,
                                             acmacs::chart::optimization_options(acmacs::chart::optimization_method::alglib_cg_pca, acmacs::chart::optimization_precision::fine, 1.0));
       // obj_->projections_modify()->sort();
     return projection;
@@ -149,7 +149,7 @@ Projection Chart::relax2(std::string minimum_column_basis, size_t number_of_dime
 
 Projection Chart::relax3(std::string minimum_column_basis, size_t number_of_dimensions, bool rough)
 {
-    auto [status, projection] = obj_->relax(minimum_column_basis, number_of_dimensions, acmacs::chart::use_dimension_annealing::yes,
+    auto [status, projection] = obj_->relax(minimum_column_basis, acmacs::number_of_dimensions_t{number_of_dimensions}, acmacs::chart::use_dimension_annealing::yes,
                                             acmacs::chart::optimization_options(acmacs::chart::optimization_method::alglib_cg_pca, rough ? acmacs::chart::optimization_precision::rough : acmacs::chart::optimization_precision::fine, 1.0));
       // obj_->projections_modify()->sort();
     return projection;
@@ -158,7 +158,7 @@ Projection Chart::relax3(std::string minimum_column_basis, size_t number_of_dime
 void Chart::relax_many(std::string minimum_column_basis, size_t number_of_dimensions, size_t number_of_optimizations, bool rough)
 {
     acmacs::chart::optimization_options options(acmacs::chart::optimization_method::alglib_cg_pca, rough ? acmacs::chart::optimization_precision::rough : acmacs::chart::optimization_precision::fine, 1.0);
-    obj_->relax(number_of_optimizations, minimum_column_basis, number_of_dimensions, acmacs::chart::use_dimension_annealing::yes, options, acmacs::chart::report_stresses::no, acmacs::chart::PointIndexList{});
+    obj_->relax(acmacs::chart::number_of_optimizations_t{number_of_optimizations}, minimum_column_basis, acmacs::number_of_dimensions_t{number_of_dimensions}, acmacs::chart::use_dimension_annealing::yes, options, acmacs::chart::report_stresses::no, acmacs::chart::PointIndexList{});
     obj_->projections_modify()->sort();
 }
 
@@ -166,7 +166,7 @@ void Chart::relax_many(std::string minimum_column_basis, size_t number_of_dimens
 
 acmacs::chart::Stress Chart::stress_evaluator(size_t number_of_dimensions, std::string minimum_column_basis)
 {
-    return acmacs::chart::stress_factory(*obj_, number_of_dimensions, minimum_column_basis, acmacs::chart::multiply_antigen_titer_until_column_adjust::yes, acmacs::chart::dodgy_titer_is_regular::no);
+    return acmacs::chart::stress_factory(*obj_, acmacs::number_of_dimensions_t{number_of_dimensions}, minimum_column_basis, acmacs::chart::multiply_antigen_titer_until_column_adjust::yes, acmacs::chart::dodgy_titer_is_regular::no);
 }
 
 // ----------------------------------------------------------------------
@@ -174,10 +174,10 @@ acmacs::chart::Stress Chart::stress_evaluator(size_t number_of_dimensions, std::
 Rcpp::NumericMatrix Projection::transformation() const
 {
     const auto a_tr = obj_->transformation();
-    Rcpp::NumericMatrix transformation(a_tr.number_of_dimensions, a_tr.number_of_dimensions);
-    for (size_t row = 0; row < a_tr.number_of_dimensions; ++row)
-        for (size_t column = 0; column < a_tr.number_of_dimensions; ++column)
-            transformation(row, column) = a_tr._x(row, column);
+    Rcpp::NumericMatrix transformation(*a_tr.number_of_dimensions, *a_tr.number_of_dimensions);
+    for (auto row : acmacs::range(a_tr.number_of_dimensions))
+        for (auto column : acmacs::range(a_tr.number_of_dimensions))
+            transformation(*row, *column) = a_tr._x(*row, *column);
     return transformation;
 }
 
@@ -225,7 +225,7 @@ void Projection::move_point(size_t aPointNo, const Rcpp::NumericVector& aCoordin
 {
     if (aPointNo < 1 || aPointNo > obj_->number_of_points())
         throw std::invalid_argument("invalid point number");
-    if (static_cast<size_t>(aCoordinates.size()) != obj_->number_of_dimensions())
+    if (acmacs::number_of_dimensions_t{static_cast<size_t>(aCoordinates.size())} != obj_->number_of_dimensions())
         throw std::invalid_argument("invalid vector size (number of point coordinates)");
     obj_->move_point(aPointNo - 1, acmacs::PointCoordinates(aCoordinates.begin(), aCoordinates.end()));
 }
@@ -289,16 +289,16 @@ void Projection::randomize_layout(std::string randomization_method, double diame
 
 Rcpp::NumericMatrix Projection::layout_convert(std::shared_ptr<acmacs::Layout> layout)
 {
-    Rcpp::NumericMatrix result(layout->number_of_points(), layout->number_of_dimensions());
+    Rcpp::NumericMatrix result(layout->number_of_points(), *layout->number_of_dimensions());
     for (size_t p_no = 0; p_no < layout->number_of_points(); ++p_no) {
         const auto coord = layout->get(p_no);
         if (coord.exists()) {
-            for (size_t dim = 0; dim < layout->number_of_dimensions(); ++dim)
-                result(p_no, dim) = coord[dim];
+            for (auto dim : acmacs::range(layout->number_of_dimensions()))
+                result(p_no, *dim) = coord[dim];
         }
         else {
-            for (size_t dim = 0; dim < layout->number_of_dimensions(); ++dim)
-                result(p_no, dim) = Rcpp::NumericMatrix::get_na();
+            for (auto dim : acmacs::range(layout->number_of_dimensions()))
+                result(p_no, *dim) = Rcpp::NumericMatrix::get_na();
         }
     }
     return result;
@@ -308,10 +308,10 @@ Rcpp::NumericMatrix Projection::layout_convert(std::shared_ptr<acmacs::Layout> l
 
 acmacs::Layout Projection::layout_convert(const Rcpp::NumericMatrix& source)
 {
-    acmacs::Layout result(source.nrow(), source.ncol());
+    acmacs::Layout result(source.nrow(), acmacs::number_of_dimensions_t{static_cast<size_t>(source.ncol())});
     for (size_t point_no = 0; point_no < result.number_of_points(); ++point_no) {
-        for (size_t dim_no = 0; dim_no < result.number_of_dimensions(); ++dim_no)
-            result(point_no, dim_no) = source(point_no, dim_no);
+        for (auto dim_no : acmacs::range(static_cast<size_t>(source.ncol())))
+            result(point_no, acmacs::number_of_dimensions_t{dim_no}) = source(point_no, dim_no);
     }
     return result;
 
@@ -323,9 +323,9 @@ acmacs::Transformation Projection::transformation_convert(const Rcpp::NumericMat
 {
     if (source.nrow() != source.ncol() || static_cast<size_t>(source.nrow()) != number_of_dimensions())
         throw std::invalid_argument{"invalid transfromation matrix size"};
-    acmacs::Transformation result(number_of_dimensions());
-    for (size_t row = 0; row < number_of_dimensions(); ++row)
-        for (size_t column = 0; column < number_of_dimensions(); ++column)
+    acmacs::Transformation result(acmacs::number_of_dimensions_t{number_of_dimensions()});
+    for (auto row : acmacs::range(number_of_dimensions()))
+        for (auto column : acmacs::range(number_of_dimensions()))
             result(row, column) = source(row, column);
     return result;
 
@@ -345,7 +345,7 @@ void Projection::reorient(const Projection& master, std::string match, std::stri
 
 acmacs::chart::Stress stress_from_distances(const Rcpp::NumericMatrix& distances, size_t number_of_dimensions)
 {
-    acmacs::chart::Stress stress(number_of_dimensions, distances.nrow() + distances.ncol(), acmacs::chart::multiply_antigen_titer_until_column_adjust::yes, acmacs::chart::dodgy_titer_is_regular::no);
+    acmacs::chart::Stress stress(acmacs::number_of_dimensions_t{number_of_dimensions}, distances.nrow() + distances.ncol(), acmacs::chart::multiply_antigen_titer_until_column_adjust::yes, acmacs::chart::dodgy_titer_is_regular::no);
     auto& td = stress.table_distances();
     for (size_t ag_no = 0; ag_no < distances.nrow(); ++ag_no)
         for (size_t sr_no = 0; sr_no < distances.ncol(); ++sr_no)
@@ -357,14 +357,14 @@ acmacs::chart::Stress stress_from_distances(const Rcpp::NumericMatrix& distances
 
 double stress_value(acmacs::chart::Stress* stress, const Rcpp::NumericMatrix& layout)
 {
-    if (layout.ncol() != stress->number_of_dimensions())
+    if (acmacs::number_of_dimensions_t{static_cast<size_t>(layout.ncol())} != stress->number_of_dimensions())
         throw std::invalid_argument("Invalid number of columns in the layout matrix");
     return stress->value(Projection::layout_convert(layout));
 }
 
 double stress_contribution(acmacs::chart::Stress* stress, size_t point_no, const Rcpp::NumericMatrix& layout)
 {
-    if (layout.ncol() != stress->number_of_dimensions())
+    if (acmacs::number_of_dimensions_t{static_cast<size_t>(layout.ncol())} != stress->number_of_dimensions())
         throw std::invalid_argument("Invalid number of columns in the layout matrix");
     if (point_no < 1 || point_no > layout.nrow())
         throw std::invalid_argument("Invalid point_no");
@@ -373,7 +373,7 @@ double stress_contribution(acmacs::chart::Stress* stress, size_t point_no, const
 
 std::vector<double> stress_gradient(acmacs::chart::Stress* stress, const Rcpp::NumericMatrix& layout)
 {
-    if (layout.ncol() != stress->number_of_dimensions())
+    if (acmacs::number_of_dimensions_t{static_cast<size_t>(layout.ncol())} != stress->number_of_dimensions())
         throw std::invalid_argument("Invalid number of columns in the layout matrix");
     return stress->gradient(Projection::layout_convert(layout));
 }
@@ -383,15 +383,15 @@ std::vector<double> stress_gradient(acmacs::chart::Stress* stress, const Rcpp::N
 Rcpp::NumericMatrix ProcrustesData::transformation() const
 {
     const auto& a_tr = obj_->transformation;
-    Rcpp::NumericMatrix transformation(a_tr.number_of_dimensions + 1, a_tr.number_of_dimensions + 1);
-    for (size_t row = 0; row < a_tr.number_of_dimensions; ++row) {
-        for (size_t col = 0; col < a_tr.number_of_dimensions; ++col)
-            transformation(row, col) = a_tr(row, col);
-        transformation(row, a_tr.number_of_dimensions) = 1.0;
+    Rcpp::NumericMatrix transformation(*a_tr.number_of_dimensions + 1, *a_tr.number_of_dimensions + 1);
+    for (auto row : acmacs::range(a_tr.number_of_dimensions)) {
+        for (auto col : acmacs::range(a_tr.number_of_dimensions))
+            transformation(*row, *col) = a_tr(row, col);
+        transformation(*row, *a_tr.number_of_dimensions) = 1.0;
     }
-    for (size_t col = 0; col < a_tr.number_of_dimensions; ++col)
-        transformation(a_tr.number_of_dimensions, col) = a_tr.translation(col);
-    transformation(a_tr.number_of_dimensions, a_tr.number_of_dimensions) = 1.0;
+    for (auto col : acmacs::range(a_tr.number_of_dimensions))
+        transformation(*a_tr.number_of_dimensions, *col) = a_tr.translation(col);
+    transformation(*a_tr.number_of_dimensions, *a_tr.number_of_dimensions) = 1.0;
     return transformation;
 }
 
@@ -508,7 +508,7 @@ Chart merge_incremental(Chart chart1, Chart chart2, size_t number_of_optimizatio
     auto result = merge(chart1, chart2, "a", "i");
     acmacs::chart::optimization_options options(acmacs::chart::optimization_method::alglib_cg_pca, acmacs::chart::optimization_precision::fine, 2.0);
     options.num_threads = num_threads;
-    result.obj_->relax_incremetal(0, number_of_optimizations, options);
+    result.obj_->relax_incremetal(0, acmacs::chart::number_of_optimizations_t{number_of_optimizations}, options);
     return result;
 }
 

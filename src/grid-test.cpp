@@ -61,16 +61,16 @@ Rcpp::DataFrame GridTest::results()
             if (result) {
                 v_point_no[index] = result.point_no + 1;
                 v_diagnosis[index] = result.diagnosis_str();
-                v_pos_x[index] = result.pos[0];
-                v_pos_y[index] = result.pos[1];
-                if (num_dims > 2)
-                    v_pos_z[index] = result.pos[2];
+                v_pos_x[index] = result.pos.x();
+                v_pos_y[index] = result.pos.y();
+                if (num_dims > acmacs::number_of_dimensions_t{2})
+                    v_pos_z[index] = result.pos.z();
                 v_distance[index] = result.distance;
                 // v_contribution_diff[index] = result.contribution_diff;
                 ++index;
             }
         }
-        switch (num_dims) {
+        switch (*num_dims) {
             case 0:
                 return Rcpp::DataFrame::create(Rcpp::Named("point_no") = v_point_no);
             case 1:

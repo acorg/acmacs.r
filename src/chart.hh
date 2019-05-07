@@ -142,7 +142,7 @@ class Projection : public wrapper<acmacs::chart::ProjectionModify>
 
     std::string make_info() const { return obj_->make_info(); }
     std::string comment() const { return obj_->comment(); }
-    size_t number_of_dimensions() const { return obj_->number_of_dimensions(); }
+    size_t number_of_dimensions() const { return *obj_->number_of_dimensions(); }
 
     Rcpp::NumericMatrix transformation() const;
     void set_transformation(Rcpp::NumericMatrix src) { obj_->transformation(transformation_convert(src)); }
@@ -196,8 +196,8 @@ acmacs::chart::Stress stress_from_distances(const Rcpp::NumericMatrix& distances
 double stress_value(acmacs::chart::Stress* stress, const Rcpp::NumericMatrix& layout);
 double stress_contribution(acmacs::chart::Stress* stress, size_t point_no, const Rcpp::NumericMatrix& layout);
 std::vector<double> stress_gradient(acmacs::chart::Stress* stress, const Rcpp::NumericMatrix& layout);
-inline size_t stress_number_of_dimensions(acmacs::chart::Stress* stress) { return stress->number_of_dimensions(); }
-inline void stress_change_number_of_dimensions(acmacs::chart::Stress* stress, size_t number_of_dimensions) { stress->change_number_of_dimensions(number_of_dimensions); }
+inline size_t stress_number_of_dimensions(acmacs::chart::Stress* stress) { return *stress->number_of_dimensions(); }
+inline void stress_change_number_of_dimensions(acmacs::chart::Stress* stress, size_t number_of_dimensions) { stress->change_number_of_dimensions(acmacs::number_of_dimensions_t{number_of_dimensions}); }
 
 // ----------------------------------------------------------------------
 
