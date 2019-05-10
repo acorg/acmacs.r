@@ -530,8 +530,17 @@ Rcpp::DataFrame map_resolution_test(Chart chart, const Rcpp::IntegerVector& numb
     using namespace Rcpp;
 
     acmacs::chart::map_resolution_test_data::Parameters parameters;
+    parameters.number_of_dimensions.resize(number_of_dimensions.size(), acmacs::number_of_dimensions_t{1});
+    std::transform(std::begin(number_of_dimensions), std::end(number_of_dimensions), std::begin(parameters.number_of_dimensions), [](size_t val) { return acmacs::number_of_dimensions_t{val}; });
+    parameters.proportions_to_dont_care.resize(proportions_to_dont_care.size(), 0.1);
+    std::copy(std::begin(proportions_to_dont_care), std::end(proportions_to_dont_care), std::begin(parameters.proportions_to_dont_care));
+    parameters.minimum_column_basis = minimum_column_basis;
+    parameters.column_bases_from_master = column_bases_from_master ? acmacs::chart::map_resolution_test_data::column_bases_from_master::yes : acmacs::chart::map_resolution_test_data::column_bases_from_master::no;
+    parameters.relax_from_full_table = relax_from_full_table ? acmacs::chart::map_resolution_test_data::relax_from_full_table::yes : acmacs::chart::map_resolution_test_data::relax_from_full_table::no;
+
     const auto results = acmacs::chart::map_resolution_test(*chart.obj_, parameters);
     const auto& predictions = results.predictions();
+
     auto df = DataFrame::create(_["number_of_dimensions"] = IntegerVector(predictions.size()), _["proportion_to_dont_care"] = NumericVector(predictions.size()),
                                 _["av_abs_error"] = NumericVector(predictions.size()), _["av_abs_error_sd"] = NumericVector(predictions.size()), _["sd_error"] = NumericVector(predictions.size()),
                                 _["sd_error_sd"] = NumericVector(predictions.size()), _["correlation"] = NumericVector(predictions.size()), _["correlation_sd"] = NumericVector(predictions.size()),
