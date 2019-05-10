@@ -1,7 +1,9 @@
 #include <limits>
 
+#include "acmacs-base/enumerate.hh"
 #include "acmacs-chart-2/randomizer.hh"
 #include "acmacs-chart-2/merge.hh"
+#include "acmacs-chart-2/map-resolution-test.hh"
 #include "chart.hh"
 #include "titers.hh"
 #include "plot-spec.hh"
@@ -519,6 +521,48 @@ std::string merge_report(Chart chart1, Chart chart2, std::string match_level)
     auto [result, diagnostics] = acmacs::chart::merge(*chart1.obj_, *chart2.obj_, merge_settinsg(match_level, "none"));
     return diagnostics.titer_merge_report(*result);
 }
+
+// ----------------------------------------------------------------------
+
+Rcpp::DataFrame map_resolution_test(Chart chart, const Rcpp::IntegerVector& number_of_dimensions, const Rcpp::NumericVector& proportions_to_dont_care, std::string minimum_column_basis,
+                                    bool column_bases_from_master, bool relax_from_full_table)
+{
+    using namespace Rcpp;
+
+    acmacs::chart::map_resolution_test_data::Parameters parameters;
+    const auto results = acmacs::chart::map_resolution_test(*chart.obj_, parameters);
+    const auto& predictions = results.predictions();
+    auto df = DataFrame::create(_["number_of_dimensions"] = IntegerVector(predictions.size()), _["proportion_to_dont_care"] = NumericVector(predictions.size()),
+                                _["av_abs_error"] = NumericVector(predictions.size()), _["av_abs_error_sd"] = NumericVector(predictions.size()), _["sd_error"] = NumericVector(predictions.size()),
+                                _["sd_error_sd"] = NumericVector(predictions.size()), _["correlation"] = NumericVector(predictions.size()), _["correlation_sd"] = NumericVector(predictions.size()),
+                                _["r2"] = NumericVector(predictions.size()), _["r2_sd"] = NumericVector(predictions.size()), _["number_of_samples"] = IntegerVector(predictions.size()));
+    IntegerVector df_number_of_dimensions = df["number_of_dimensions"];
+    NumericVector df_proportion_to_dont_care = df["proportion_to_dont_care"];
+    NumericVector df_av_abs_error = df["av_abs_error"];
+    NumericVector df_av_abs_error_sd = df["av_abs_error_sd"];
+    NumericVector df_sd_error = df["sd_error"];
+    NumericVector df_sd_error_sd = df["sd_error_sd"];
+    NumericVector df_correlation = df["correlation"];
+    NumericVector df_correlation_sd = df["correlation_sd"];
+    NumericVector df_r2 = df["r2"];
+    NumericVector df_r2_sd = df["r2_sd"];
+    IntegerVector df_number_of_samples = df["number_of_samples"];
+    for (auto [index, entry] : acmacs::enumerate(predictions)) {
+        df_number_of_dimensions[index] = *entry.number_of_dimensions;
+        df_proportion_to_dont_care[index] = entry.proportion_to_dont_care;
+        df_av_abs_error[index] = entry.av_abs_error.mean();
+        df_av_abs_error_sd[index] = entry.av_abs_error.population_sd();
+        df_sd_error[index] = entry.sd_error.mean();
+        df_sd_error_sd[index] = entry.sd_error.population_sd();
+        df_correlation[index] = entry.correlations.mean();
+        df_correlation_sd[index] = entry.correlations.population_sd();
+        df_r2[index] = entry.r2.mean();
+        df_r2_sd[index] = entry.r2.population_sd();
+        df_number_of_samples[index] = entry.number_of_samples;
+    }
+    return df;
+
+} // map_resolution_test
 
 // ----------------------------------------------------------------------
 /// Local Variables:
