@@ -155,6 +155,23 @@ chart <- new(acmacs.Chart, raw_data)
   three sera.
 
 }
+\section{Map resolution test}{
+  Map resolution test (dimension test, map resolution determination by
+  computational titer prediction)
+
+  \code{acmacs.map_resolution_test(chart, number_of_dimensions=1:5,
+    proportions_to_dont_care=c(0.1, 0.2 0.3),
+    minimum_column_basis="none", column_bases_from_master=TRUE,
+    relax_from_full_table=FALSE)}
+
+  column_bases_from_master: converting titers to dont-care may change
+  column bases, force master chart column bases
+
+  relax_from_full_table: additional projection in each replicate, first
+  full table is relaxed, then titers dont-cared and the best projection
+  relaxed again from already found starting coordinates.
+  
+}
 \keyword{ package }
 \examples{
   # load chart from file
