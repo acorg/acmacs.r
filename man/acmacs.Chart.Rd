@@ -164,13 +164,15 @@ chart <- new(acmacs.Chart, raw_data)
     minimum_column_basis="none", column_bases_from_master=TRUE,
     relax_from_full_table=FALSE)}
 
+  Function returns data frame with the results.
+
   column_bases_from_master: converting titers to dont-care may change
   column bases, force master chart column bases
 
   relax_from_full_table: additional projection in each replicate, first
   full table is relaxed, then titers dont-cared and the best projection
   relaxed again from already found starting coordinates.
-  
+
 }
 \keyword{ package }
 \examples{
