@@ -65,7 +65,9 @@ Please replace /tmp/R/library with your local directory for packages
 or remove lib="/tmp/R/library" argument.
 
 ```R
-install.packages("https://github.com/acorg/acmacs.r/releases/download/v3.0/acmacs.r_3.0.macOS-10.14.tgz", repos=NULL, lib="/tmp/R/library")
+install.packages("Rcpp")
+install.packages("https://github.com/acorg/acmacs.r/releases/download/v3.0/acmacs.r_3.0_R_macOS-10.14.tgz", repos=NULL, lib="/tmp/R/library")
+library(acmacs.r, lib.loc="/tmp/R/library")
 ```
 
 Linux

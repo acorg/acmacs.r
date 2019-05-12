@@ -7,6 +7,12 @@ import sys, os, subprocess, shutil
 def main(target_package_dir, *libraries):
     print(" ".join(sys.argv))
     to_process = set(libraries)
+    target_dir = os.path.join(target_package_dir, "libs")
+    chart_info_bin = os.path.join(os.environ["ACMACSD_ROOT"], "bin", "chart-info")
+    print(chart_info_bin, target_dir)
+    if os.path.exists(chart_info_bin):
+        shutil.copy(chart_info_bin, target_dir)
+        to_process.add(os.path.join(target_dir, "chart-info"))
     processed = set()
     libomp = None
     while to_process:
@@ -24,7 +30,7 @@ def main(target_package_dir, *libraries):
                 install_name_tool(name, libomp, library)
             elif os.path.basename(library) != os.path.basename(name) and not in_system(name):
                 install_name_tool(name, "@loader_path/" + os.path.basename(name), library)
-                target_lib = os.path.join(target_package_dir, "libs", os.path.basename(name))
+                target_lib = os.path.join(target_dir, os.path.basename(name))
                 if target_lib not in processed and target_lib not in to_process:
                     print("copy", name, target_lib)
                     shutil.copy(name, target_lib)
