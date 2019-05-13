@@ -191,6 +191,90 @@ void PlotSpec::set_style_outline_width(const Rcpp::IntegerVector& aIndexes, doub
         obj_->outline_width(index - 1, Pixels(aOutlineWidth));
 }
 
+void PlotSpec::set_style_shown(const Rcpp::IntegerVector& aIndexes, bool shown)
+{
+    for (auto index : aIndexes)
+        obj_->shown(index - 1, shown);
+}
+
+void PlotSpec::set_style_rotation(const Rcpp::IntegerVector& aIndexes, double rotation)
+{
+    for (auto index : aIndexes)
+        obj_->rotation(index - 1, Rotation{rotation});
+}
+
+void PlotSpec::set_style_aspect(const Rcpp::IntegerVector& aIndexes, double aspect)
+{
+    for (auto index : aIndexes)
+        obj_->aspect(index - 1, Aspect{aspect});
+}
+
+void PlotSpec::set_style_shape(const Rcpp::IntegerVector& aIndexes, std::string shape)
+{
+    for (auto index : aIndexes)
+        obj_->shape(index - 1, acmacs::PointShape(shape));
+}
+
+void PlotSpec::set_style_label_shown(const Rcpp::IntegerVector& aIndexes, bool shown)
+{
+    for (auto index : aIndexes)
+        obj_->label_shown(index - 1, shown);
+}
+
+void PlotSpec::set_style_label_offset_x(const Rcpp::IntegerVector& aIndexes, double label_offset_x)
+{
+    for (auto index : aIndexes)
+        obj_->label_offset_x(index - 1, label_offset_x);
+}
+
+void PlotSpec::set_style_label_offset_y(const Rcpp::IntegerVector& aIndexes, double label_offset_y)
+{
+    for (auto index : aIndexes)
+        obj_->label_offset_y(index - 1, label_offset_y);
+}
+
+void PlotSpec::set_style_label_size(const Rcpp::IntegerVector& aIndexes, double label_size)
+{
+    for (auto index : aIndexes)
+        obj_->label_size(index - 1, Pixels{label_size});
+}
+
+void PlotSpec::set_style_label_color(const Rcpp::IntegerVector& aIndexes, std::string label_color)
+{
+    for (auto index : aIndexes)
+        obj_->label_color(index - 1, Color{label_color});
+}
+
+void PlotSpec::set_style_label_rotation(const Rcpp::IntegerVector& aIndexes, double rotation)
+{
+    for (auto index : aIndexes)
+        obj_->label_rotation(index - 1, Rotation{rotation});
+}
+
+void PlotSpec::set_style_label_slant(const Rcpp::IntegerVector& aIndexes, std::string label_slant)
+{
+    for (auto index : aIndexes)
+        obj_->label_slant(index - 1, acmacs::FontSlant(label_slant));
+}
+
+void PlotSpec::set_style_label_weight(const Rcpp::IntegerVector& aIndexes, std::string label_weight)
+{
+    for (auto index : aIndexes)
+        obj_->label_weight(index - 1, label_weight);
+}
+
+void PlotSpec::set_style_label_font_family(const Rcpp::IntegerVector& aIndexes, std::string font_family)
+{
+    for (auto index : aIndexes)
+        obj_->label_font_family(index - 1, font_family);
+}
+
+void PlotSpec::set_style_label_text(const Rcpp::IntegerVector& aIndexes, std::string label_text)
+{
+    for (auto index : aIndexes)
+        obj_->label_text(index - 1, label_text);
+}
+
 // ----------------------------------------------------------------------
 /// Local Variables:
 /// eval: (if (fboundp 'eu-rename-buffer) (eu-rename-buffer))

@@ -3,7 +3,7 @@ acmacs.r NEWS -- history of user-visible changes.
 * Changes in 3.1 (2019-05-13)
 ** chart$plot_spec$styles_as_data_frame()
 ** chart$plot_spec$set_styles(<data-frame returned by styles_as_data_frame())
-** chart$plot_spec$set_outline_width()
+** chart$plot_spec$set_outline_width(), set_shown(), set_rotation(), set_aspect(), set_shape(), set_label_shown(), set_label_offset_x(), set_label_offset_y(), set_label_size(), set_label_color(), set_label_rotation(), set_label_slant(), set_label_weight(), set_label_font_family(), set_label_text()
 
 * Changes in 3.0 (2019-05-10)
 ** Workaround for libomp mutliple initialiation issue and corresponding crash
