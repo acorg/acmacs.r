@@ -97,9 +97,11 @@ void PlotSpec::set_styles(const Rcpp::DataFrame& new_styles)
         obj_->outline(index, Color{outline[index]});
         obj_->outline_width(index, Pixels{outline_width[index]});
         obj_->size(index, Pixels{size[index]});
-        // obj_->rotation(index, [index]);
-        // obj_->aspect(index, [index]);
-        // obj_->shape(index, [index]);
+        obj_->rotation(index, Rotation{rotation[index]});
+        obj_->aspect(index, Aspect{aspect[index]});
+        const std::string_view s_shape(shape[index]);
+        
+        obj_->shape(index, acmacs::PointShape(shape[index]));
         // obj_->label_shown(index, [index]);
         // obj_->label_offset_x(index, [index]);
         // obj_->label_offset_y(index, [index]);
