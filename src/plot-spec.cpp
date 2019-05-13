@@ -99,19 +99,17 @@ void PlotSpec::set_styles(const Rcpp::DataFrame& new_styles)
         obj_->size(index, Pixels{size[index]});
         obj_->rotation(index, Rotation{rotation[index]});
         obj_->aspect(index, Aspect{aspect[index]});
-        const std::string_view s_shape(shape[index]);
-        
         obj_->shape(index, acmacs::PointShape(shape[index]));
-        // obj_->label_shown(index, [index]);
-        // obj_->label_offset_x(index, [index]);
-        // obj_->label_offset_y(index, [index]);
-        // obj_->label_size(index, [index]);
-        // obj_->label_color(index, [index]);
-        // obj_->label_rotation(index, [index]);
-        // obj_->label_slant(index, [index]);
-        // obj_->label_weight(index, [index]);
-        // obj_->label_font_family(index, [index]);
-        // obj_->label_text(index, [index]);
+        obj_->label_shown(index, label_shown[index]);
+        obj_->label_offset_x(index, label_offset_x[index]);
+        obj_->label_offset_y(index, label_offset_y[index]);
+        obj_->label_size(index, Pixels{label_size[index]});
+        obj_->label_color(index, Color{label_color[index]});
+        obj_->label_rotation(index, Rotation{label_rotation[index]});
+        obj_->label_slant(index, acmacs::FontSlant{label_slant[index]});
+        obj_->label_weight(index, acmacs::FontWeight{label_weight[index]});
+        obj_->label_font_family(index, static_cast<const char*>(label_font_family[index]));
+        obj_->label_text(index, static_cast<const char*>(label_text[index]));
     }
 
 } // PlotSpec::set_styles
