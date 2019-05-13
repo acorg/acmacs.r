@@ -221,6 +221,15 @@ get_style <- function(no) \{
 sapply(1:chart$number_of_points, get_style)
 # modifying resulting list does not affect plot style stored in the chart
 
+# get styles for each point as a data frame
+styles <- chart$plot_spec$styles_as_data_frame()
+# set fill color of the 3rd antigens
+styles$fill[[3]] <- "orange"
+chart$plot_spec$set_styles(styles) # send modified styles to acmacs
+# color returned by styles_as_data_frame() is always in "#RRGGBB" or
+# "#TTRRGGBB" format, where TT is transparency (00 - opaque, FF - transparent)
+chart$plot_spec$styles_as_data_frame()$fill[[3]] == "#ffa500"
+
 # drawing order: point indexes in the order of drawing,
 # last indexes in the list are drawn on top of others
 chart$plot_spec$drawing_order
@@ -244,6 +253,25 @@ chart$plot_spec$set_size(test_indexes, 3)
 chart$plot_spec$set_fill(test_indexes, "pink")
 # change outline color of test antigens
 chart$plot_spec$set_fill(test_indexes, "#C0C0C0")
+
+# change other point style attributes
+chart$plot_spec$set_shown(point_indexes, FALSE)
+chart$plot_spec$set_outline(point_indexes, "red")
+chart$plot_spec$set_outline_width(point_indexes, 5)
+chart$plot_spec$set_rotation(point_indexes, 0.3)
+chart$plot_spec$set_aspect(point_indexes, 0.2)
+chart$plot_spec$set_shape(point_indexes, "triangle")
+chart$plot_spec$set_label_shown(point_indexes, TRUE)
+chart$plot_spec$set_label_offset_x(point_indexes, 1)
+chart$plot_spec$set_label_offset_y(point_indexes, 1)
+chart$plot_spec$set_label_size(point_indexes, 10)
+chart$plot_spec$set_label_color(point_indexes, "red")
+chart$plot_spec$set_label_rotation(point_indexes, 0.3)
+chart$plot_spec$set_label_slant(point_indexes, "italic")
+chart$plot_spec$set_label_weight(point_indexes, "bold")
+chart$plot_spec$set_label_font_family(point_indexes, "monospace")
+chart$plot_spec$set_label_text(point_indexes, "display name")
+
 }\cr
 \bold{# ========= Titers =========}\cr
 \preformatted{

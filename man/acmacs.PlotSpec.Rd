@@ -11,6 +11,11 @@ ps <- chart$plot_spec
 
   \item{styles}{List of point styles (see below).}
 
+  \item{styles_as_data_frame()}{Returns all point styles as a data frame.}
+
+  \item{set_styles(data_frame)}{Sets all point styles from data frame
+  returned by styles_as_data_frame() and possibly modified by a user.}
+
   \item{drawing_order}{Vector of point indexes in the order of
   drawing. Points with indexes that are last in the vector appear on top of other points.}
 
@@ -22,11 +27,44 @@ ps <- chart$plot_spec
 
   \item{lower_sera(serum_indexes)}{Lower sera by their indexes.}
 
+  \item{set_shown(point_indexes, shown)}{Shows/hides points.}
+
   \item{set_size(point_indexes, size)}{Resize points.}
 
   \item{set_fill(point_indexes, fill)}{Change fill color for points.}
 
   \item{set_outline(point_indexes, outline)}{Change outline color for points.}
+
+  \item{set_outline_width(point_indexes, outline_width)}{Change outline width for points.}
+
+  \item{set_rotation(point_indexes, rotation)}{}
+
+  \item{set_aspect(point_indexes, aspect)}{}
+
+  \item{set_shape(point_indexes, shape)}{Change point shape,
+  supported shapes: "circle", "egg", "triangle", "box", "uglyegg",
+  invalid values are ignored.}
+
+  \item{set_label_shown(point_indexes, shown)}{}
+
+  \item{set_label_offset_x(point_indexes, label_offset_x)}{}
+
+  \item{set_label_offset_y(point_indexes, label_offset_y)}{}
+
+  \item{set_label_size(point_indexes, label_size)}{}
+
+  \item{set_label_color(point_indexes, label_color)}{}
+
+  \item{set_label_rotation(point_indexes, rotation)}{}
+
+  \item{set_label_slant(point_indexes, label_slant)}{"normal" or "italic"}
+
+  \item{set_label_weight(point_indexes, label_weight)}{"normal" or
+  "bold"}
+
+  \item{set_label_font_family(point_indexes, font_family)}{}
+
+  \item{set_label_text(point_indexes, label_text)}{}
 
 }
 \section{PointStyle}{
