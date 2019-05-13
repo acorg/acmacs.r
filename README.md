@@ -7,7 +7,7 @@ lispmds files.
 Supported platforms
 ===================
 
- - macOS 10.12 and 10.13
+ - macOS 10.11 - 10.14
 
  - Linux
 
@@ -66,15 +66,15 @@ or remove lib="/tmp/R/library" argument.
 
 ```R
 install.packages("Rcpp")
-install.packages("https://github.com/acorg/acmacs.r/releases/download/v3.0/acmacs.r_3.0_R_macOS-10.14.tgz", repos=NULL, lib="/tmp/R/library")
-library(acmacs.r, lib.loc="/tmp/R/library")
+install.packages("https://github.com/acorg/acmacs.r/releases/download/v3.1/acmacs.r_3.1_R_macOS-10.14.tgz", repos=NULL)
+library(acmacs.r)
 ```
 
 Linux
 -----
 
 ```R
-install.packages("https://github.com/acorg/acmacs.r/releases/download/v3.0/acmacs.r_3.0_R_x86_64-pc-linux-gnu.tar.gz", repos=NULL, lib="/tmp/R/library")
+install.packages("https://github.com/acorg/acmacs.r/releases/download/v3.1/acmacs.r_3.1_R_x86_64-pc-linux-gnu.tar.gz", repos=NULL)
 ```
 
 Usage example
