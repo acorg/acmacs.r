@@ -1,6 +1,9 @@
 acmacs.r NEWS -- history of user-visible changes.
 
 * Changes in 3.1 (2019-05-13)
+** chart$plot_spec$styles_as_data_frame()
+** chart$plot_spec$set_styles(<data-frame returned by styles_as_data_frame())
+** chart$plot_spec$set_outline_width()
 
 * Changes in 3.0 (2019-05-10)
 ** Workaround for libomp mutliple initialiation issue and corresponding crash

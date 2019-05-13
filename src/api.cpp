@@ -179,6 +179,8 @@ RCPP_MODULE(acmacs)
 
     class_<PlotSpec>("acmacs.PlotSpec")
             .property("styles", &PlotSpec::styles)
+            .method("styles_as_data_frame", &PlotSpec::styles_as_data_frame)
+            .method("set_styles", &PlotSpec::set_styles)
             .property("drawing_order", &PlotSpec::drawing_order)
             .method("raise", &PlotSpec::drawing_order_raise)
             .method("lower", &PlotSpec::drawing_order_lower)
@@ -187,6 +189,7 @@ RCPP_MODULE(acmacs)
             .method("set_size", &PlotSpec::set_style_size)
             .method("set_fill", &PlotSpec::set_style_fill)
             .method("set_outline", &PlotSpec::set_style_outline)
+            .method("set_outline_width", &PlotSpec::set_style_outline_width)
             ;
 
     class_<Titers>("acmacs.Titers")

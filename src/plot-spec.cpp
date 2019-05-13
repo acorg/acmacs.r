@@ -10,6 +10,112 @@ Rcpp::List PlotSpec::styles() const
 
 // ----------------------------------------------------------------------
 
+Rcpp::DataFrame PlotSpec::styles_as_data_frame() const
+{
+    using namespace Rcpp;
+
+    const auto styles = obj_->all_styles();
+    LogicalVector shown(styles.size());
+    StringVector fill(styles.size());
+    StringVector outline(styles.size());
+    NumericVector outline_width(styles.size());
+    NumericVector size(styles.size());
+    NumericVector rotation(styles.size());
+    NumericVector aspect(styles.size());
+    StringVector shape(styles.size());
+    LogicalVector label_shown(styles.size());
+    NumericVector label_offset_x(styles.size());
+    NumericVector label_offset_y(styles.size());
+    NumericVector label_size(styles.size());
+    StringVector label_color(styles.size());
+    NumericVector label_rotation(styles.size());
+    StringVector label_slant(styles.size());
+    StringVector label_weight(styles.size());
+    StringVector label_font_family(styles.size());
+    StringVector label_text(styles.size());
+
+    for (auto [index, entry] : acmacs::enumerate(styles)) {
+        shown[index] = entry.shown;
+        fill[index] = String(entry.fill->to_hex_string());
+        outline[index] = entry.outline->to_hex_string();
+        outline_width[index] = entry.outline_width->value();
+        size[index] = entry.size->value();
+        rotation[index] = entry.rotation->value();
+        aspect[index] = entry.aspect->value();
+        shape[index] = static_cast<std::string>(*entry.shape);
+
+        label_shown[index] = entry.label.shown;
+        label_offset_x[index] = entry.label.offset->x();
+        label_offset_y[index] = entry.label.offset->y();
+        label_size[index] = entry.label.size->value();
+        label_color[index] = entry.label.color->to_hex_string();
+        label_rotation[index] = entry.label.rotation->value();
+        label_slant[index] = static_cast<std::string>(*entry.label.style.slant);
+        label_weight[index] = static_cast<std::string>(*entry.label.style.weight);
+        label_font_family[index] = *entry.label.style.font_family;
+
+        label_text[index] = static_cast<std::string>(*entry.label_text);
+    }
+
+    return DataFrame::create(_["shown"] = shown, _["fill"] = fill, _["outline"] = outline, _["outline_width"] = outline_width, _["size"] = size, _["rotation"] = rotation, _["aspect"] = aspect,
+                             _["shape"] = shape, _["label_shown"] = label_shown, _["label_offset_x"] = label_offset_x, _["label_offset_y"] = label_offset_y, _["label_size"] = label_size,
+                             _["label_color"] = label_color, _["label_rotation"] = label_rotation, _["label_slant"] = label_slant, _["label_weight"] = label_weight,
+                             _["label_font_family"] = label_font_family, _["label_text"] = label_text, _["stringsAsFactors"] = false);
+
+} // PlotSpec::styles_as_data_frame
+
+// ----------------------------------------------------------------------
+
+// df["shown"][[1]][[2]]=FALSE
+
+void PlotSpec::set_styles(const Rcpp::DataFrame& new_styles)
+{
+    using namespace Rcpp;
+
+    LogicalVector shown = new_styles["shown"];
+    StringVector fill = new_styles["fill"];
+    StringVector outline = new_styles["outline"];
+    NumericVector outline_width = new_styles["outline_width"];
+    NumericVector size = new_styles["size"];
+    NumericVector rotation = new_styles["rotation"];
+    NumericVector aspect = new_styles["aspect"];
+    StringVector shape = new_styles["shape"];
+    LogicalVector label_shown = new_styles["label_shown"];
+    NumericVector label_offset_x = new_styles["label_offset_x"];
+    NumericVector label_offset_y = new_styles["label_offset_y"];
+    NumericVector label_size = new_styles["label_size"];
+    StringVector label_color = new_styles["label_color"];
+    NumericVector label_rotation = new_styles["label_rotation"];
+    StringVector label_slant = new_styles["label_slant"];
+    StringVector label_weight = new_styles["label_weight"];
+    StringVector label_font_family = new_styles["label_font_family"];
+    StringVector label_text = new_styles["label_text"];
+
+    for (auto index : acmacs::range(obj_->number_of_points())) {
+        obj_->shown(index, shown[index] == TRUE);
+        obj_->fill(index, Color{fill[index]});
+        obj_->outline(index, Color{outline[index]});
+        obj_->outline_width(index, Pixels{outline_width[index]});
+        obj_->size(index, Pixels{size[index]});
+        // obj_->rotation(index, [index]);
+        // obj_->aspect(index, [index]);
+        // obj_->shape(index, [index]);
+        // obj_->label_shown(index, [index]);
+        // obj_->label_offset_x(index, [index]);
+        // obj_->label_offset_y(index, [index]);
+        // obj_->label_size(index, [index]);
+        // obj_->label_color(index, [index]);
+        // obj_->label_rotation(index, [index]);
+        // obj_->label_slant(index, [index]);
+        // obj_->label_weight(index, [index]);
+        // obj_->label_font_family(index, [index]);
+        // obj_->label_text(index, [index]);
+    }
+
+} // PlotSpec::set_styles
+
+// ----------------------------------------------------------------------
+
 Rcpp::IntegerVector PlotSpec::drawing_order() const
 {
     const auto drawing_order = obj_->drawing_order();
@@ -77,6 +183,12 @@ void PlotSpec::set_style_outline(const Rcpp::IntegerVector& aIndexes, std::strin
 {
     for (auto index : aIndexes)
         obj_->outline(index - 1, Color(aOutline));
+}
+
+void PlotSpec::set_style_outline_width(const Rcpp::IntegerVector& aIndexes, double aOutlineWidth)
+{
+    for (auto index : aIndexes)
+        obj_->outline_width(index - 1, Pixels(aOutlineWidth));
 }
 
 // ----------------------------------------------------------------------
