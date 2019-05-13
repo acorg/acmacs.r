@@ -8,23 +8,21 @@ def main(target_package_dir, *libraries):
     print(" ".join(sys.argv))
     to_process = set(libraries)
     target_dir = os.path.join(target_package_dir, "libs")
-    chart_info_bin = os.path.join(os.environ["ACMACSD_ROOT"], "bin", "chart-info")
-    print(chart_info_bin, target_dir)
-    if os.path.exists(chart_info_bin):
-        shutil.copy(chart_info_bin, target_dir)
-        to_process.add(os.path.join(target_dir, "chart-info"))
+
+    # binaries
+    for bin_name in ["chart-info", "chart-relax"]:
+        chart_info_bin = os.path.join(os.environ["ACMACSD_ROOT"], "bin", bin_name)
+        print(chart_info_bin, target_dir)
+        if os.path.exists(chart_info_bin):
+            shutil.copy(chart_info_bin, target_dir)
+            to_process.add(os.path.join(target_dir, bin_name))
+
     processed = set()
-    libomp = None
+    libomp = find_libomp()
     while to_process:
         library = to_process.pop()
         processed.add(library)
-        linked_to_libs = [lib.split("(")[0].strip() for lib in otool(library)]
-        if not libomp:
-            for lib in linked_to_libs:
-                if "libomp.dylib" in lib:
-                    libomp = lib
-                    break
-        for name in linked_to_libs:
+        for name in linked_to(library):
             if libomp and "libomp.dylib" in name and name != libomp:
                 # use libomp that comes with R instead one from llvm to avoid double initialization conflict
                 install_name_tool(name, libomp, library)
@@ -55,10 +53,19 @@ def otool(library):
     print("   ", "\n    ".join(result))
     return result
 
+def linked_to(library):
+    return [lib.split("(")[0].strip() for lib in otool(library)]
+
 def install_name_tool(name, new_name, library):
     cmd = ["/usr/bin/install_name_tool", "-change", name, new_name, library]
     print(" ".join(cmd))
     subprocess.check_call(cmd)
+
+def find_libomp():
+    for lib in linked_to("acmacs.r.so"):
+        if "libomp.dylib" in lib:
+            return lib
+    return None
 
 # ----------------------------------------------------------------------
 

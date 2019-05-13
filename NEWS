@@ -1,5 +1,7 @@
 acmacs.r NEWS -- history of user-visible changes.
 
+* Changes in 3.1 (2019-05-13)
+
 * Changes in 3.0 (2019-05-10)
 ** Workaround for libomp mutliple initialiation issue and corresponding crash
 ** Checking titer value when it is set (negative and non-integer titers forbidden)
