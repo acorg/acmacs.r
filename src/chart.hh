@@ -110,6 +110,7 @@ class Chart : public wrapper<acmacs::chart::ChartModify>
 
     void set_name(std::string name) { return obj_->info_modify()->name(name); }
     void save(std::string aFilename);
+    std::string save_to_string();
 
       // https://stackoverflow.com/questions/42579207/rcpp-modules-validator-function-for-exposed-constructors-with-same-number-of-pa
     template <typename T> static inline bool validate_constructor(SEXP* args, int nargs) { return nargs == 1 && Rcpp::is<T>(args[0]); }

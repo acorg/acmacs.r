@@ -66,6 +66,9 @@ chart <- new(acmacs.Chart, raw_data)
   format is determined by filename suffix: .ace, .save,
   .save.xz. Please use path.expand() to expand ~ in filenames}
 
+  \item{save()}{Save (modified) chart into a string in ace format,
+  returns that string}
+
   \item{relax(minimum_column_basis, number_of_dimensions)}{creates new
   projection with random layout and optimizes it.\cr \bold{minimum_column_basis}
   is a string, e.g. "none" or "1280".\cr \bold{number_of_dimensions} is a number,

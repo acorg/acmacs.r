@@ -209,6 +209,8 @@ chart$save("/tmp/chart.ace")
 chart$save("/tmp/chart.save")
 # save can be compressed
 chart$save("/tmp/chart.save.xz")
+# write chart into a string in the ace format (https://github.com/acorg/acmacs-chart-2/blob/master/doc/ace-format.json)
+ace_format_data <- chart$save()
 }\cr
 \bold{# ========= Plot spec =========}\cr
 \preformatted{

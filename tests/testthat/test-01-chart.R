@@ -13,6 +13,7 @@ test_that("number of layers upon layers removal", { expect_equal(chart1$titers$n
 test_that("column bases", { expect_equal(chart1$column_bases(), c(7,8,8,8,8,8)) })
 chart1$set_column_bases(c(10,10,10,10,10,10))
 test_that("column bases after enforcing", { expect_equal(chart1$column_bases(), c(10,10,10,10,10,10)) })
+# chart1$save("2004-3.forced-cb.ace")
 chart1$set_column_basis(2, 11)
 test_that("column bases after enforcing and updating", { expect_equal(chart1$column_bases(), c(10,11,10,10,10,10)) })
 

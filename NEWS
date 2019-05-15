@@ -1,5 +1,8 @@
 acmacs.r NEWS -- history of user-visible changes.
 
+* Changes in 3.2 (2019-05-15)
+** chart$save() returns string with chart saved in ace format (uncompressed)
+
 * Changes in 3.1 (2019-05-13)
 ** chart$plot_spec$styles_as_data_frame()
 ** chart$plot_spec$set_styles(<data-frame returned by styles_as_data_frame())

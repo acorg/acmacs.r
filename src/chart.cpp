@@ -79,6 +79,14 @@ void Chart::save(std::string aFilename)
 
 // ----------------------------------------------------------------------
 
+std::string Chart::save_to_string()
+{
+    return acmacs::chart::export_factory(*obj_, acmacs::chart::export_format::ace, "acmacs.r", report_time::no);
+
+} // Chart::save_to_string
+
+// ----------------------------------------------------------------------
+
 Rcpp::NumericVector Chart::column_bases_2(size_t aProjectionNo, std::string aMinimumColumnBasis) const
 {
     auto projections = obj_->projections();
