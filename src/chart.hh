@@ -11,7 +11,7 @@
 
 // ----------------------------------------------------------------------
 
-RCPP_EXPOSED_CLASS_NODECL(acmacs::chart::Passage);
+RCPP_EXPOSED_CLASS_NODECL(acmacs::virus::Passage);
 RCPP_EXPOSED_CLASS_NODECL(acmacs::chart::Stress);
 
 class PlotSpec;
@@ -34,8 +34,8 @@ class Antigen : public wrapper<acmacs::chart::AntigenModify>
     void set_lineage(std::string lineage) { obj_->lineage(lineage); }
     std::string get_reassortant() const { return obj_->reassortant(); }
     void set_reassortant(std::string reassortant) { obj_->reassortant(acmacs::virus::Reassortant{reassortant}); }
-    acmacs::chart::Passage get_passage() const { return obj_->passage(); }
-    void set_passage(std::string passage) { return obj_->passage(acmacs::chart::Passage{passage}); }
+    acmacs::virus::Passage get_passage() const { return obj_->passage(); }
+    void set_passage(std::string passage) { return obj_->passage(acmacs::virus::Passage{passage}); }
     bool get_reference() const { return obj_->reference(); }
     void set_reference(bool reference) { obj_->reference(reference); }
     Rcpp::StringVector get_lab_ids() const { return getStringVector(obj_->lab_ids()); }
@@ -61,8 +61,8 @@ class Serum : public wrapper<acmacs::chart::SerumModify>
     void set_lineage(std::string lineage) { obj_->lineage(lineage); }
     std::string get_reassortant() const { return obj_->reassortant(); }
     void set_reassortant(std::string reassortant) { obj_->reassortant(acmacs::virus::Reassortant{reassortant}); }
-    acmacs::chart::Passage get_passage() const { return obj_->passage(); }
-    void set_passage(std::string passage) { return obj_->passage(acmacs::chart::Passage{passage}); }
+    acmacs::virus::Passage get_passage() const { return obj_->passage(); }
+    void set_passage(std::string passage) { return obj_->passage(acmacs::virus::Passage{passage}); }
     std::string get_serum_id() const { return obj_->serum_id(); }
     void set_serum_id(std::string serum_id) { obj_->serum_id(serum_id); }
     std::string get_serum_species() const { return obj_->serum_species(); }

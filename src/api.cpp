@@ -7,7 +7,7 @@
 
 // ----------------------------------------------------------------------
 
-inline Rcpp::StringVector passage_as_character(acmacs::chart::Passage* aPassage) { return {*aPassage}; }
+inline Rcpp::StringVector passage_as_character(acmacs::virus::Passage* aPassage) { return {*aPassage}; }
 inline Rcpp::List Chart::get_antigens() const { return getList<Antigen>(obj_->antigens_modify()); }
 inline Rcpp::List Chart::get_sera() const { return getList<Serum>(obj_->sera_modify()); }
 
@@ -91,7 +91,7 @@ RCPP_MODULE(acmacs)
             .property("abbreviated_name", &Antigen::get_abbreviated_name)
             .property("date", &Antigen::get_date, &Antigen::set_date)
             .method("set_date", &Antigen::set_date)
-            .property<acmacs::chart::Passage>("passage", &Antigen::get_passage)
+            .property<acmacs::virus::Passage>("passage", &Antigen::get_passage)
             .method("set_passage", &Antigen::set_passage)
             .property("lineage", &Antigen::get_lineage, &Antigen::set_lineage)
             .method("set_lineage", &Antigen::set_lineage)
@@ -127,11 +127,11 @@ RCPP_MODULE(acmacs)
             ;
     function("as.character.Rcpp_acmacs.Serum", &Serum::as_character);
 
-    class_<acmacs::chart::Passage>("acmacs.Passage")
-            .method("is_egg", &acmacs::chart::Passage::is_egg)
-            .method("is_cell", &acmacs::chart::Passage::is_cell)
-            .method("without_date", &acmacs::chart::Passage::without_date)
-            .method("type", &acmacs::chart::Passage::passage_type)
+    class_<acmacs::virus::Passage>("acmacs.Passage")
+            .method("is_egg", &acmacs::virus::Passage::is_egg)
+            .method("is_cell", &acmacs::virus::Passage::is_cell)
+            .method("without_date", &acmacs::virus::Passage::without_date)
+            .method("type", &acmacs::virus::Passage::passage_type)
             ;
     function("as.character.Rcpp_acmacs.Passage", &passage_as_character);
 
