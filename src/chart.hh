@@ -33,7 +33,7 @@ class Antigen : public wrapper<acmacs::chart::AntigenModify>
     std::string get_lineage() const { return obj_->lineage(); }
     void set_lineage(std::string lineage) { obj_->lineage(lineage); }
     std::string get_reassortant() const { return obj_->reassortant(); }
-    void set_reassortant(std::string reassortant) { obj_->reassortant(acmacs::chart::Reassortant{reassortant}); }
+    void set_reassortant(std::string reassortant) { obj_->reassortant(acmacs::virus::Reassortant{reassortant}); }
     acmacs::chart::Passage get_passage() const { return obj_->passage(); }
     void set_passage(std::string passage) { return obj_->passage(acmacs::chart::Passage{passage}); }
     bool get_reference() const { return obj_->reference(); }
@@ -60,7 +60,7 @@ class Serum : public wrapper<acmacs::chart::SerumModify>
     std::string get_lineage() const { return obj_->lineage(); }
     void set_lineage(std::string lineage) { obj_->lineage(lineage); }
     std::string get_reassortant() const { return obj_->reassortant(); }
-    void set_reassortant(std::string reassortant) { obj_->reassortant(acmacs::chart::Reassortant{reassortant}); }
+    void set_reassortant(std::string reassortant) { obj_->reassortant(acmacs::virus::Reassortant{reassortant}); }
     acmacs::chart::Passage get_passage() const { return obj_->passage(); }
     void set_passage(std::string passage) { return obj_->passage(acmacs::chart::Passage{passage}); }
     std::string get_serum_id() const { return obj_->serum_id(); }
