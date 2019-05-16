@@ -10,7 +10,8 @@ endif
 include $(ACMACSD_ROOT)/share/Makefile.config
 
 ACMACS_LIBS = \
-    $(ACMACSD_ROOT)/lib/libacmacschart$(SHLIB_SUFFIX_1).2$(SHLIB_SUFFIX_2)
+  $(ACMACSD_ROOT)/lib/libacmacsvirus$(SHLIB_SUFFIX_1).1$(SHLIB_SUFFIX_2) \
+  $(ACMACSD_ROOT)/lib/libacmacschart$(SHLIB_SUFFIX_1).2$(SHLIB_SUFFIX_2)
 
 # ----------------------------------------------------------------------
 
