@@ -1,6 +1,6 @@
 acmacs.r NEWS -- history of user-visible changes.
 
-* Changes in 3.2 (2019-05-15)
+* Changes in 3.2 (2019-05-24)
 ** chart$save() returns string with chart saved in ace format (uncompressed)
 ** trying to relax projection when chart has no titers leads to an exception (randomizer_plain_from_sample_optimization_internal: diameter is 0)
 
