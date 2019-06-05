@@ -422,6 +422,17 @@ results <- acmacs.map_resolution_test(chart, number_of_dimensions=1:5, proportio
 # column_bases_from_master: converting titers to dont-care may change column bases, force master chart column bases
 # relax_from_full_table: additional projection in each replicate, first full table is relaxed, then titers dont-cared and the best projection relaxed again from already found starting coordinates.
 }
+\bold{# ========= Extension fields =========}\cr\cr
+Chart (ace format only) can keep user's data in JSON format, e.g. GUI
+specific data\cr
+\preformatted{
+# returns NA_character_ if chart has no specified extension field stored
+ext.data <- fromJSON(chart$extension_field("my-key"))
+# reports an error, if passed data is not a valid json
+chart5$set_extension_field("mydata", "{\"aa\": 13}")
+my.data <- data.frame(no=c(15:19), name=c("Fridrich", "Wilhelm", "Barbarossa", "Sonnenkoenig", "Oedipa"))
+chart5$set_extension_field("my.data", toJSON(my.data))
+}
 }
 \docType{package}
 \keyword{ package }

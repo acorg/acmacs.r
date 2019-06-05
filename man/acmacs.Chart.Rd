@@ -105,6 +105,14 @@ chart <- new(acmacs.Chart, raw_data)
   \item{new_proj <- clone_projection(projection_no)}{clones the specified
     projection, adds it to the same chart.}
 
+  \item{extension_field(field_name)}{gets extension field data,
+    e.g. data for GUI, returns string which could be parsed using
+    fromJSON into data.frame.}
+
+  \item{set_extension_field(field_name, value)}{sets extension field data,
+    e.g. data for GUI, value must be a valid JSON, e.g. create using
+    toJSON().}
+
 }
 \section{Column bases}{
   Column bases is a propery of a projection. Formally, chart may contain
