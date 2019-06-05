@@ -81,6 +81,8 @@ RCPP_MODULE(acmacs)
             .method("sort_projections", &Chart::sort_projections)
             .method("clone", &Chart::clone)
             .method("clone_projection", &Chart::clone_projection)
+            .method("extension_field", &Chart::extension_field)
+            .method("set_extension_field", &Chart::set_extension_field)
             ;
     function("as.character.Rcpp_acmacs.Chart", &Chart::as_character, "as.character.Rcpp_acmacs.Chart(chart) - shows brief info about passed chart");
 

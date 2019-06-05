@@ -128,6 +128,9 @@ class Chart : public wrapper<acmacs::chart::ChartModify>
     Projection clone_projection(size_t projection_no_based_one) const;
     Projection projection(size_t projection_no);
 
+    Rcpp::StringVector extension_field(std::string field_name) const;
+    void set_extension_field(std::string field_name, std::string value) const;
+
 }; // class Chart
 
 RCPP_EXPOSED_CLASS_NODECL(Chart);

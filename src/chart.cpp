@@ -1,6 +1,7 @@
 #include <limits>
 
 #include "acmacs-base/enumerate.hh"
+#include "acmacs-base/rjson.hh"
 #include "acmacs-chart-2/randomizer.hh"
 #include "acmacs-chart-2/merge.hh"
 #include "acmacs-chart-2/map-resolution-test.hh"
@@ -178,6 +179,25 @@ acmacs::chart::Stress Chart::stress_evaluator(size_t number_of_dimensions, std::
 {
     return acmacs::chart::stress_factory(*obj_, acmacs::number_of_dimensions_t{number_of_dimensions}, minimum_column_basis, acmacs::chart::multiply_antigen_titer_until_column_adjust::yes, acmacs::chart::dodgy_titer_is_regular::no);
 }
+
+// ----------------------------------------------------------------------
+
+Rcpp::StringVector Chart::extension_field(std::string field_name) const
+{
+    if (const auto& ext = obj_->extension_field(field_name); !ext.is_null())
+        return rjson::to_string(ext);
+    else
+        return NA_STRING;
+
+} // Chart::extension_field
+
+// ----------------------------------------------------------------------
+
+void Chart::set_extension_field(std::string field_name, std::string value) const
+{
+    obj_->extension_field_modify(field_name, rjson::parse_string(value));
+
+} // Chart::set_extension_field
 
 // ----------------------------------------------------------------------
 
