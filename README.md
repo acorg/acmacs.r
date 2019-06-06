@@ -38,6 +38,7 @@ install.packages("Rcpp")
 
 Installation
 ============
+
 https://cran.r-project.org/web/packages/Rcpp/index.html
 R 3.6 is required, other versions are not supported!
 
@@ -66,7 +67,7 @@ or remove lib="/tmp/R/library" argument.
 
 ```R
 install.packages("Rcpp")
-install.packages("https://github.com/acorg/acmacs.r/releases/download/v3.1/acmacs.r_3.1_R_macOS-10.14.tgz", repos=NULL)
+install.packages("https://github.com/acorg/acmacs.r/releases/download/v3.3/acmacs.r_3.3_R_macOS-10.14.tgz", repos=NULL)
 library(acmacs.r)
 ```
 
@@ -74,7 +75,7 @@ Linux
 -----
 
 ```R
-install.packages("https://github.com/acorg/acmacs.r/releases/download/v3.1/acmacs.r_3.1_R_x86_64-pc-linux-gnu.tar.gz", repos=NULL)
+install.packages("https://github.com/acorg/acmacs.r/releases/download/v3.3/acmacs.r_3.3_R_x86_64-pc-linux-gnu.tar.gz", repos=NULL)
 ```
 
 Usage example
