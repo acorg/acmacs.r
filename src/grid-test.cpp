@@ -1,3 +1,4 @@
+#include "acmacs-base/fmt.hh"
 #include "acmacs-chart-2/grid-test.hh"
 
 #include "grid-test.hh"

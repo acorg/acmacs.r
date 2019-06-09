@@ -1,7 +1,8 @@
 acmacs.r NEWS -- history of user-visible changes.
 
 * Changes in 3.4 (2019-06-09)
-** bug fix (restting transformation upon relaxing a projection)
+** bug fix (resetting transformation upon relaxing a projection)
+** bug fix, avoid running grid test for points having no titers at all
 
 * Changes in 3.3 (2019-06-05)
 ** chart$extension_field() and chart$set_extension_field()
