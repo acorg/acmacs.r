@@ -11,22 +11,6 @@ Supported platforms
 
  - Linux
 
-Features
-========
-
-To Do
------
-- Merging two tables
-- Merging a table into an optimised map, freezing that map and only optimised the data added
-- Overlay merge of two maps. Layouts are oriented using procrustes, merged, then relaxed from the merging state. (not used very often)
-
-Implemented
------------
-- [2.1] Grid test to find trapped and hemisphering points on a map, using multiple threads to perform optimization in parallel
-- [2.0] Creating chart (table) from scratch, modifying antigen and serum fields, inserting and removing antigens/sera
-- [1.0] Reading .ace, .acd1, .save, writing .ace, .save, modifying plot spec
-
-
 Dependencies
 =============
 
