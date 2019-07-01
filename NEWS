@@ -1,5 +1,8 @@
 acmacs.r NEWS -- history of user-visible changes.
 
+* Changes in 3.5 (2019-07-01)
+** bug fix in merging titers for multi-layered source charts
+
 * Changes in 3.4 (2019-06-09)
 ** bug fix (resetting transformation upon relaxing a projection)
 ** bug fix, avoid running grid test for points having no titers at all
