@@ -51,7 +51,7 @@ or remove lib="/tmp/R/library" argument.
 
 ```R
 install.packages("Rcpp")
-install.packages("https://github.com/acorg/acmacs.r/releases/download/v3.5/acmacs.r_3.5_R_macOS-10.14.tgz", repos=NULL)
+install.packages("https://github.com/acorg/acmacs.r/releases/download/v3.6/acmacs.r_3.6_R_macOS-10.14.tgz", repos=NULL)
 library(acmacs.r)
 ```
 
@@ -59,7 +59,7 @@ Linux
 -----
 
 ```R
-install.packages("https://github.com/acorg/acmacs.r/releases/download/v3.5/acmacs.r_3.5_R_x86_64-pc-linux-gnu.tar.gz", repos=NULL)
+install.packages("https://github.com/acorg/acmacs.r/releases/download/v3.6/acmacs.r_3.6_R_x86_64-pc-linux-gnu.tar.gz", repos=NULL)
 ```
 
 Usage example
