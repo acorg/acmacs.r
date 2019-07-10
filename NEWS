@@ -1,5 +1,8 @@
 acmacs.r NEWS -- history of user-visible changes.
 
+* Changes in 3.6 (2019-07-10)
+** bug fix in procrustes for layouts with common disconnected points
+
 * Changes in 3.5 (2019-07-01)
 ** bug fix in merging titers for multi-layered source charts
 
