@@ -48,6 +48,9 @@ bin: build | $(LIB_DIR)
 	elif [ -f $(PKG_NAME)_$(PKG_VERSION).tgz ]; then \
 	  mv $(PKG_NAME)_$(PKG_VERSION).tgz $(ROOT_DIR)/$(PKG_NAME)_$(PKG_VERSION)_R_$(PKG_PLATFORM).tgz; \
 	fi
+	if [ -f $(PKG_NAME)_$(PKG_VERSION)_R_x86_64-pc-linux-gnu.tar.gz ]; then \
+	  mv $(PKG_NAME)_$(PKG_VERSION)_R_x86_64-pc-linux-gnu.tar.gz $(ROOT_DIR); \
+	fi
 
 build: compile-attributes | $(PKG_DIR)
 	@echo '***** BUILD'
