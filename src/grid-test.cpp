@@ -14,7 +14,7 @@ GridTest::GridTest(Chart& chart, size_t projection_no, double grid_step) :
 
 Rcpp::DataFrame GridTest::test_parallel()
 {
-    results_ = std::make_shared<acmacs::chart::GridTest::Results>(grid_test_->test_all_parallel());
+    results_ = std::make_shared<acmacs::chart::GridTest::Results>(grid_test_->test_all());
     return results();
 }
 
@@ -22,7 +22,7 @@ Rcpp::DataFrame GridTest::test_parallel()
 
 Rcpp::DataFrame GridTest::test_single_thread()
 {
-    results_ = std::make_shared<acmacs::chart::GridTest::Results>(grid_test_->test_all());
+    results_ = std::make_shared<acmacs::chart::GridTest::Results>(grid_test_->test_all(1));
     return results();
 }
 
