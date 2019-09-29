@@ -24,15 +24,15 @@ class Antigen : public wrapper<acmacs::chart::AntigenModify>
 {
  public:
     Antigen(acmacs::chart::AntigenModifyP antigen) : wrapper(antigen) {}
-    std::string get_name() { return obj_->name(); }
+    std::string get_name() { return *obj_->name(); }
     void set_name(std::string name) { obj_->name(name); }
     std::string get_full_name() const { return obj_->full_name(); }
     std::string get_abbreviated_name() const { return obj_->abbreviated_name(); }
-    std::string get_date() const { return obj_->date(); }
+    std::string get_date() const { return *obj_->date(); }
     void set_date(std::string date) { obj_->date(date); }
     std::string get_lineage() const { return obj_->lineage(); }
     void set_lineage(std::string lineage) { obj_->lineage(lineage); }
-    std::string get_reassortant() const { return obj_->reassortant(); }
+    std::string get_reassortant() const { return *obj_->reassortant(); }
     void set_reassortant(std::string reassortant) { obj_->reassortant(acmacs::virus::Reassortant{reassortant}); }
     acmacs::virus::Passage get_passage() const { return obj_->passage(); }
     void set_passage(std::string passage) { return obj_->passage(acmacs::virus::Passage{passage}); }
@@ -53,20 +53,20 @@ class Serum : public wrapper<acmacs::chart::SerumModify>
 {
  public:
     Serum(acmacs::chart::SerumModifyP serum) : wrapper(serum) {}
-    std::string get_name() { return obj_->name(); }
+    std::string get_name() { return *obj_->name(); }
     void set_name(std::string name) { obj_->name(name); }
     std::string get_full_name() const { return obj_->full_name(); }
     std::string get_abbreviated_name() const { return obj_->abbreviated_name(); }
     std::string get_lineage() const { return obj_->lineage(); }
     void set_lineage(std::string lineage) { obj_->lineage(lineage); }
-    std::string get_reassortant() const { return obj_->reassortant(); }
+    std::string get_reassortant() const { return *obj_->reassortant(); }
     void set_reassortant(std::string reassortant) { obj_->reassortant(acmacs::virus::Reassortant{reassortant}); }
     acmacs::virus::Passage get_passage() const { return obj_->passage(); }
     void set_passage(std::string passage) { return obj_->passage(acmacs::virus::Passage{passage}); }
-    std::string get_serum_id() const { return obj_->serum_id(); }
-    void set_serum_id(std::string serum_id) { obj_->serum_id(serum_id); }
-    std::string get_serum_species() const { return obj_->serum_species(); }
-    void set_serum_species(std::string serum_species) { obj_->serum_species(serum_species); }
+    std::string get_serum_id() const { return *obj_->serum_id(); }
+    void set_serum_id(std::string serum_id) { obj_->serum_id(acmacs::chart::SerumId{serum_id}); }
+    std::string get_serum_species() const { return *obj_->serum_species(); }
+    void set_serum_species(std::string serum_species) { obj_->serum_species(acmacs::chart::SerumSpecies{serum_species}); }
     Rcpp::StringVector get_annotations() const { return getStringVector(obj_->annotations()); }
     void add_annotation(std::string annotation) { obj_->add_annotation(annotation); }
     void remove_annotation(std::string annotation) { obj_->remove_annotation(annotation); }

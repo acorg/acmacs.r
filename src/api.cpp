@@ -7,7 +7,7 @@
 
 // ----------------------------------------------------------------------
 
-inline Rcpp::StringVector passage_as_character(acmacs::virus::Passage* aPassage) { return {*aPassage}; }
+inline Rcpp::StringVector passage_as_character(acmacs::virus::Passage* aPassage) { return {**aPassage}; }
 inline Rcpp::List Chart::get_antigens() const { return getList<Antigen>(obj_->antigens_modify()); }
 inline Rcpp::List Chart::get_sera() const { return getList<Serum>(obj_->sera_modify()); }
 
