@@ -30,7 +30,7 @@ class Antigen : public wrapper<acmacs::chart::AntigenModify>
     std::string get_abbreviated_name() const { return obj_->abbreviated_name(); }
     std::string get_date() const { return *obj_->date(); }
     void set_date(std::string date) { obj_->date(date); }
-    std::string get_lineage() const { return obj_->lineage(); }
+    std::string get_lineage() const { return obj_->lineage().to_string(); }
     void set_lineage(std::string lineage) { obj_->lineage(lineage); }
     std::string get_reassortant() const { return *obj_->reassortant(); }
     void set_reassortant(std::string reassortant) { obj_->reassortant(acmacs::virus::Reassortant{reassortant}); }
@@ -57,7 +57,7 @@ class Serum : public wrapper<acmacs::chart::SerumModify>
     void set_name(std::string name) { obj_->name(name); }
     std::string get_full_name() const { return obj_->full_name(); }
     std::string get_abbreviated_name() const { return obj_->abbreviated_name(); }
-    std::string get_lineage() const { return obj_->lineage(); }
+    std::string get_lineage() const { return obj_->lineage().to_string(); }
     void set_lineage(std::string lineage) { obj_->lineage(lineage); }
     std::string get_reassortant() const { return *obj_->reassortant(); }
     void set_reassortant(std::string reassortant) { obj_->reassortant(acmacs::virus::Reassortant{reassortant}); }
@@ -86,7 +86,7 @@ class Chart : public wrapper<acmacs::chart::ChartModify>
     Chart(std::shared_ptr<acmacs::chart::ChartModify> src);
     std::string name() const { return obj_->info()->name(); }
     std::string info() const { return obj_->make_info(); }
-    std::string lineage() const { return obj_->lineage(); }
+    std::string lineage() const { return std::string{*obj_->lineage()}; }
     size_t number_of_antigens() const { return obj_->number_of_antigens(); }
     size_t number_of_sera() const { return obj_->number_of_sera(); }
     size_t number_of_points() const { return obj_->number_of_points(); }
