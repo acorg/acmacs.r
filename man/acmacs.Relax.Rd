@@ -36,6 +36,9 @@
   create new projection in 2d without minimum column basis with random layout without optimisation (dimension annealing cannot be used)\cr
   \bold{projection <- chart$new_projection("none", 2)}
 
+  create new projection in 2d without minimum column basis and with some layout (dimension annealing cannot be used)\cr
+  \bold{projection <- chart$new_projection_with_layout("none", matrix(1:((chart$number_of_antigens + chart$number_of_sera)*2), ncol=2, byrow=TRUE))}
+
   randomize layout in the projection using "table-max-distance" method\cr
   \bold{projection$randomize_layout()}
 

@@ -314,7 +314,7 @@ new_projection$stress
 new_projection <- chart$relax("none", 2, TRUE)
 new_projection$stress
 # make new projection in 2d without minimum column basis and with the specified layout
-new_projection <- chart$new_projection_with_layout("none", matrix(c(0.0), nrow=chart$number_of_antigens + chart$number_of_sera, byrow=TRUE))
+new_projection <- chart$new_projection_with_layout("none", matrix(c(0.0), ncol=2, nrow=chart$number_of_antigens + chart$number_of_sera, byrow=TRUE))
 new_projection$stress
 # sort all projections of the chart by stress
 chart$sort_projections()
