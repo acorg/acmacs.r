@@ -517,6 +517,9 @@ acmacs::chart::MergeSettings merge_settinsg(std::string match_level, size_t proj
 {
     acmacs::chart::MergeSettings settings(convert_match_level(match_level));
     switch (projection_merge) {
+        case 1:
+            settings.projection_merge = acmacs::chart::projection_merge_t::type1;
+            break;
         case 2:
             settings.projection_merge = acmacs::chart::projection_merge_t::type2;
             break;
