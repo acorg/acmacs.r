@@ -511,27 +511,33 @@ Rcpp::NumericMatrix ProcrustesData::apply(const Rcpp::NumericMatrix& source_layo
 
 // ----------------------------------------------------------------------
 
-static acmacs::chart::MergeSettings merge_settinsg(std::string match_level, std::string projection_merge);
+static acmacs::chart::MergeSettings merge_settinsg(std::string match_level, size_t projection_merge);
 
-acmacs::chart::MergeSettings merge_settinsg(std::string match_level, std::string projection_merge)
+acmacs::chart::MergeSettings merge_settinsg(std::string match_level, size_t projection_merge)
 {
     acmacs::chart::MergeSettings settings(convert_match_level(match_level));
-    if (!projection_merge.empty()) {
-        switch (std::tolower(projection_merge[0])) {
-          case 'i':
-              settings.projection_merge = acmacs::chart::projection_merge_t::incremental;
-              break;
-          case 'o':
-              settings.projection_merge = acmacs::chart::projection_merge_t::overlay;
-              break;
-        }
+    switch (projection_merge) {
+        case 2:
+            settings.projection_merge = acmacs::chart::projection_merge_t::type2;
+            break;
+        case 3:
+            settings.projection_merge = acmacs::chart::projection_merge_t::type3;
+            break;
+        case 4:
+            settings.projection_merge = acmacs::chart::projection_merge_t::type4;
+            break;
+        case 5:
+            settings.projection_merge = acmacs::chart::projection_merge_t::type5;
+            break;
+        default:
+            throw std::invalid_argument(std::string{"Unrecognized projection merge type "} + std::to_string(projection_merge) + " (1..5 expected)");
     }
     return settings;
 }
 
 // ----------------------------------------------------------------------
 
-Chart merge(Chart chart1, Chart chart2, std::string match_level, std::string projection_merge)
+Chart merge(Chart chart1, Chart chart2, std::string match_level, size_t projection_merge)
 {
     auto [result, diagnostics] = acmacs::chart::merge(*chart1.obj_, *chart2.obj_, merge_settinsg(match_level, projection_merge));
     return result;
@@ -541,7 +547,8 @@ Chart merge(Chart chart1, Chart chart2, std::string match_level, std::string pro
 
 Chart merge_overlay(Chart chart1, Chart chart2)
 {
-    auto result = merge(chart1, chart2, "a", "o");
+    Rprintf("acmacs.merge_incremental deprecated! use acmacs.merge.3\n");
+    auto result = merge(chart1, chart2, "a", 3);
       // std::cout << "overlay 1 " << result.obj_->projection(0)->stress() << '\n';
     result.obj_->projection_modify(0)->relax(acmacs::chart::optimization_options{});
       // std::cout << "overlay 2 " << result.obj_->projection(0)->stress() << '\n';
@@ -552,7 +559,8 @@ Chart merge_overlay(Chart chart1, Chart chart2)
 
 Chart merge_frozen(Chart chart1, Chart chart2)
 {
-    auto result = merge(chart1, chart2, "a", "o");
+    Rprintf("acmacs.merge_incremental deprecated! use acmacs.merge.4\n");
+    auto result = merge(chart1, chart2, "a", 4);
       // std::cout << "frozen " << result.obj_->projection(0)->stress() << '\n';
     return result;
 }
@@ -561,7 +569,8 @@ Chart merge_frozen(Chart chart1, Chart chart2)
 
 Chart merge_incremental(Chart chart1, Chart chart2, size_t number_of_optimizations, size_t num_threads)
 {
-    auto result = merge(chart1, chart2, "a", "i");
+    Rprintf("acmacs.merge_incremental deprecated! use acmacs.merge.2\n");
+    auto result = merge(chart1, chart2, "a", 2);
     acmacs::chart::optimization_options options(acmacs::chart::optimization_method::alglib_cg_pca, acmacs::chart::optimization_precision::fine, 2.0);
     options.num_threads = num_threads;
     result.obj_->relax_incremetal(0, acmacs::chart::number_of_optimizations_t{number_of_optimizations}, options);
@@ -572,7 +581,7 @@ Chart merge_incremental(Chart chart1, Chart chart2, size_t number_of_optimizatio
 
 std::string merge_report(Chart chart1, Chart chart2, std::string match_level)
 {
-    auto [result, diagnostics] = acmacs::chart::merge(*chart1.obj_, *chart2.obj_, merge_settinsg(match_level, "none"));
+    auto [result, diagnostics] = acmacs::chart::merge(*chart1.obj_, *chart2.obj_, merge_settinsg(match_level, 1));
     return diagnostics.titer_merge_report(*result);
 }
 

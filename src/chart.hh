@@ -236,7 +236,7 @@ RCPP_EXPOSED_CLASS_NODECL(ProcrustesData);
 
 ProcrustesData procrustes(Projection primary, Projection secondary, bool scaling, std::string match, std::string subset);
 
-Chart merge(Chart chart1, Chart chart2, std::string match_level, std::string projection_merge);
+Chart merge(Chart chart1, Chart chart2, std::string match_level, size_t projection_merge);
 Chart merge_incremental(Chart chart1, Chart chart2, size_t number_of_optimizations, size_t num_threads = 0);
 Chart merge_overlay(Chart chart1, Chart chart2);
 Chart merge_frozen(Chart chart1, Chart chart2);

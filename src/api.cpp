@@ -233,7 +233,12 @@ RCPP_MODULE(acmacs)
     //         .field("sera", &MatchData::sera, "vector of indexes of sera of chart2 (or NA) for each serum of chart1")
     //         ;
 
-    function("acmacs.merge", &merge, List::create(_["chart1"], _["chart2"], _["match"] = "a", _["merge"] = "n"));
+    function("acmacs.merge", &merge, List::create(_["chart1"], _["chart2"], _["match"] = "a", _["merge"] = 1));
+    function("acmacs.merge.1", &merge, List::create(_["chart1"], _["chart2"], _["match"] = "a", _["merge"] = 1));
+    function("acmacs.merge.2", &merge, List::create(_["chart1"], _["chart2"], _["match"] = "a", _["merge"] = 2));
+    function("acmacs.merge.3", &merge, List::create(_["chart1"], _["chart2"], _["match"] = "a", _["merge"] = 3));
+    function("acmacs.merge.4", &merge, List::create(_["chart1"], _["chart2"], _["match"] = "a", _["merge"] = 4));
+    function("acmacs.merge.5", &merge, List::create(_["chart1"], _["chart2"], _["match"] = "a", _["merge"] = 5));
     function("acmacs.merge_incremental", &merge_incremental, List::create(_["chart1"], _["chart2"], _["optimizations"] = 100, _["threads"] = 0));
     function("acmacs.merge_frozen", &merge_frozen, List::create(_["chart1"], _["chart2"]));
     function("acmacs.merge_overlay", &merge_overlay, List::create(_["chart1"], _["chart2"]));
