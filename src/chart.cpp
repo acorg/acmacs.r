@@ -139,14 +139,34 @@ void Chart::set_column_basis(size_t serum_no, double column_basis)
 
 // ----------------------------------------------------------------------
 
-Projection Chart::new_projection(std::string minimum_column_basis, size_t number_of_dimensions)
+Projection Chart::new_projection_with_layout_randomization1(std::string minimum_column_basis, size_t number_of_dimensions, std::string randomization_method, double diameter_multiplier)
 {
     auto projection = obj_->projections_modify()->new_from_scratch(acmacs::number_of_dimensions_t{number_of_dimensions}, minimum_column_basis);
-    acmacs::chart::optimization_options options;
-    projection->randomize_layout(acmacs::chart::ProjectionModify::randomizer::plain_from_sample_optimization, options.randomization_diameter_multiplier);
+    projection->randomize_layout(Projection::make_randomizer(randomization_method), diameter_multiplier <= 0.0 ? acmacs::chart::optimization_options{}.randomization_diameter_multiplier: diameter_multiplier);
     return static_cast<std::shared_ptr<acmacs::chart::ProjectionModify>>(projection);
 
-} // Chart::new_projection
+} // Chart::new_projection_with_layout_randomization
+
+Projection Chart::new_projection_with_layout_randomization2(std::string minimum_column_basis, size_t number_of_dimensions, std::string randomization_method)
+{
+    return new_projection_with_layout_randomization1(minimum_column_basis, number_of_dimensions, randomization_method, -1.0);
+}
+
+Projection Chart::new_projection_with_layout_randomization3(std::string minimum_column_basis, size_t number_of_dimensions)
+{
+    return new_projection_with_layout_randomization1(minimum_column_basis, number_of_dimensions, "sample-optimization", -1.0);
+}
+
+// ----------------------------------------------------------------------
+
+Projection Chart::new_projection_with_layout(std::string minimum_column_basis, const Rcpp::NumericMatrix& layout)
+{
+    auto leyt = Projection::layout_convert(layout);
+    auto projection = obj_->projections_modify()->new_from_scratch(leyt.number_of_dimensions(), minimum_column_basis);
+    projection->set_layout(leyt);
+    return static_cast<std::shared_ptr<acmacs::chart::ProjectionModify>>(projection);
+
+} // Chart::new_projection_with_layout
 
 // ----------------------------------------------------------------------
 
@@ -299,19 +319,25 @@ bool Projection::relax_one_iteration(std::string method, bool rough)
 
 // ----------------------------------------------------------------------
 
-void Projection::randomize_layout(std::string randomization_method, double diameter_multiplier)
+acmacs::chart::ProjectionModify::randomizer Projection::make_randomizer(std::string randomization_method)
 {
     using namespace acmacs::chart;
-    ProjectionModify::randomizer rnd{ProjectionModify::randomizer::plain_from_sample_optimization};
     if (randomization_method == "sample-optimization")
-        rnd = ProjectionModify::randomizer::plain_from_sample_optimization;
+        return ProjectionModify::randomizer::plain_from_sample_optimization;
     else if (randomization_method == "table-max-distance")
-        rnd = ProjectionModify::randomizer::plain_with_table_max_distance;
+        return ProjectionModify::randomizer::plain_with_table_max_distance;
     else if (randomization_method == "current-layout-area")
-        rnd = ProjectionModify::randomizer::plain_with_current_layout_area;
+        return ProjectionModify::randomizer::plain_with_current_layout_area;
     else
         throw std::invalid_argument("invalid randomization method, supported: \"sample-optimization\", \"table-max-distance\", \"current-layout-area\"");
-    obj_->randomize_layout(rnd, diameter_multiplier);
+
+} // Projection::make_randomizer
+
+// ----------------------------------------------------------------------
+
+void Projection::randomize_layout(std::string randomization_method, double diameter_multiplier)
+{
+    obj_->randomize_layout(make_randomizer(randomization_method), diameter_multiplier);
     intermediate_layouts_.reset();
 }
 

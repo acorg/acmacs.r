@@ -48,6 +48,22 @@ test_that("cloned number of projections", { expect_equal(chart1$number_of_projec
 test_that("cloned column bases", { expect_equal(chart1$column_bases(), chart3$column_bases()) })
 test_that("cloned number of layers", { expect_equal(chart1$titers$number_of_layers, chart3$titers$number_of_layers) })
 
+# new layout
+chart1 <- new(acmacs.Chart, "2004-3.ace")
+chart1$remove_all_projections()
+test_that("upon removal all projections", { expect_equal(chart1$number_of_projections, 0) })
+chart1$new_projection("none", 2)
+chart1$new_projection("none", 2, "sample-optimization")
+chart1$new_projection("none", 2, "table-max-distance")
+chart1$new_projection("none", 2, "current-layout-area")
+test_that("upon creating randomized projections", { expect_equal(chart1$number_of_projections, 4) })
+chart1$remove_all_projections()
+test_that("upon removal all projections (again)", { expect_equal(chart1$number_of_projections, 0) })
+prj1 <- chart1$new_projection_with_layout("none", matrix(c(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28), nrow=chart1$number_of_antigens + chart1$number_of_sera, byrow=TRUE))
+test_that("stress for new projection with layout", expect_equal(prj1$stress, 18894.68062, tolerance=1e-3))
+prj1$relax()
+test_that("stress after relaxing projection with non-random layout", expect_equal(prj1$stress, 216.4066832, tolerance=1e-3))
+
 # extension fields
 library(jsonlite)
 chart5 <- new(acmacs.Chart, "2004-3.ace")

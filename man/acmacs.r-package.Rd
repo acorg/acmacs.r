@@ -45,7 +45,7 @@
 \seealso{
   \code{\link{acmacs.Chart}}\cr
   \code{\link{acmacs.Relax}}\cr
-  \code{\link{acmacs.Example}}
+  \code{\link{acmacs.Example}}\cr
   \code{\link{acmacs.Chart.from.scratch}}\cr
   \code{\link{acmacs.Chart.from.text.file}}\cr
   \code{\link{acmacs.GridTest}}\cr

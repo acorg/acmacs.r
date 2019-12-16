@@ -102,6 +102,18 @@ chart <- new(acmacs.Chart, raw_data)
   number_of_dimensions)}{creates new projection with random layout,
   optimization is not run, dimension annealing cannot be used.}
 
+  \item{new_projection(minimum_column_basis,\cr
+  number_of_dimensions, randomization_method)}{creates new projection with random layout,
+  optimization is not run, dimension annealing cannot be used.}
+
+  \item{new_projection(minimum_column_basis,\cr
+  number_of_dimensions, randomization_method, randomization_diameter_multiplier)}{creates new projection with random layout,
+  optimization is not run, dimension annealing cannot be used.}
+
+  \item{new_projection_with_layout(minimum_column_basis,\cr
+  layout_matrix)}{creates new projection with the provided layout,
+  optimization is not run, dimension annealing cannot be used.}
+
   \item{new_proj <- clone_projection(projection_no)}{clones the specified
     projection, adds it to the same chart.}
 
@@ -204,7 +216,7 @@ chart <- new(acmacs.Chart, raw_data)
   \code{\link{acmacs.Projection}}\cr
   \code{\link{acmacs.PlotSpec}}\cr
   \code{\link{acmacs.Titers}}\cr
-  \code{\link{acmacs.Example}}
+  \code{\link{acmacs.Example}}\cr
   \code{\link{acmacs.Chart.from.scratch}}\cr
   \code{\link{acmacs.Chart.from.text.file}}\cr
   \code{\link{acmacs.Relax}}\cr

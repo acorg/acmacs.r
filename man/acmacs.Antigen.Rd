@@ -99,7 +99,7 @@ antigen$passage$type()
 }
 \seealso{
   \code{\link{acmacs.Serum}}\cr
-  \code{\link{acmacs.Example}}
+  \code{\link{acmacs.Example}}\cr
   \code{\link{acmacs.Chart.from.scratch}}\cr
   \code{\link{acmacs.Chart.from.text.file}}\cr
   \code{\link{acmacs.Relax}}\cr

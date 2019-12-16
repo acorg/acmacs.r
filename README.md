@@ -7,14 +7,14 @@ lispmds files.
 Supported platforms
 ===================
 
- - macOS 10.14
+ - macOS 10.14.6
 
  - Linux
 
 Dependencies
 =============
 
-Rcpp 1.0.1 or later is required.
+Rcpp 1.0.3 or later is required.
 
 ```R
 install.packages("Rcpp")

@@ -91,7 +91,7 @@ report <- acmacs.merge_report(chart1, chart2)
   \code{\link{acmacs.PlotSpec}}\cr
   \code{\link{acmacs.Titers}}\cr
   \code{\link{acmacs.Relax}}\cr
-  \code{\link{acmacs.Example}}
+  \code{\link{acmacs.Example}}\cr
   \code{\link{acmacs.Chart.from.scratch}}\cr
   \code{\link{acmacs.Chart.from.text.file}}\cr
   \code{\link{acmacs.GridTest}}\cr

@@ -115,7 +115,11 @@ class Chart : public wrapper<acmacs::chart::ChartModify>
       // https://stackoverflow.com/questions/42579207/rcpp-modules-validator-function-for-exposed-constructors-with-same-number-of-pa
     template <typename T> static inline bool validate_constructor(SEXP* args, int nargs) { return nargs == 1 && Rcpp::is<T>(args[0]); }
 
-    Projection new_projection(std::string minimum_column_basis, size_t number_of_dimensions);
+    Projection new_projection_with_layout_randomization1(std::string minimum_column_basis, size_t number_of_dimensions, std::string randomization_method, double diameter_multiplier);
+    Projection new_projection_with_layout_randomization2(std::string minimum_column_basis, size_t number_of_dimensions, std::string randomization_method);
+    Projection new_projection_with_layout_randomization3(std::string minimum_column_basis, size_t number_of_dimensions);
+    Projection new_projection_with_layout(std::string minimum_column_basis, const Rcpp::NumericMatrix& layout);
+
     Projection relax2(std::string minimum_column_basis, size_t number_of_dimensions);
     Projection relax3(std::string minimum_column_basis, size_t number_of_dimensions, bool rough);
     void relax_many(std::string minimum_column_basis, size_t number_of_dimensions, size_t number_of_optimizations, bool rough);
@@ -183,6 +187,7 @@ class Projection : public wrapper<acmacs::chart::ProjectionModify>
 
     static acmacs::Layout layout_convert(const Rcpp::NumericMatrix& source);
     static Rcpp::NumericMatrix layout_convert(std::shared_ptr<acmacs::Layout> layout);
+    static acmacs::chart::ProjectionModify::randomizer make_randomizer(std::string randomization_method);
 
  private:
     std::unique_ptr<acmacs::chart::IntermediateLayouts> intermediate_layouts_;
