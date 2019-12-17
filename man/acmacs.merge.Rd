@@ -16,7 +16,7 @@ report <- acmacs.merge_report(chart1, chart2)
   Merging two tables, if source charts have projections, they are
   ignored.
 
-  \code{table_merge <- acmacs.merge(chart1, chart2, match="auto", merge="none")}
+  \code{table_merge <- acmacs.merge(chart1, chart2, match="auto", merge=1)}
 
   \describe{
     \item{match}{
@@ -38,46 +38,19 @@ report <- acmacs.merge_report(chart1, chart2)
 
     \item{merge}{
       \describe{
-        \item{"n" ("none")}{ignore projections of the source charts.}
-        \item{"i" ("incremental")}{perform incremental merge (see corresponding section below).}
-        \item{"m" ("overlay")}{perform frozen or overlay merge (see corresponding section below).}
+        See
+        \link{https://github.com/acorg/acmacs-chart-2/blob/master/doc/merge-types.org}
+
+        \item{1}{ignore projections of the source charts, resulting chart has no projections.}
+        \item{2}{incremental merge without optimization, call merge$relax_incremental(number_of_optimization, FALSE) afterwards}
+        \item{3}{overlay merge without further optimization.}
+        \item{4}{frozen merge variant with optimization.}
+        \item{5}{another frozen merge variant with optimization.}
       }
     }
   }
 }
-\section{Incremental merge}{
-  The best projection of the first (master) chart is copied to the resulting chart, projections
-      of the second (merged in) char ignored. Positions of points that are in the
-      merged in chart and not in the master chart are randomized and
-      resulting layout relaxed.
 
-  \code{incremental_merge <- acmacs.merge_incremental(chart1, chart2, optimizations=100, threads=0)}
-
-  \describe{
-    \item{optimizations}{Number of times to randomize positions of the
-    points found in the merged in chart and then relax.}
-    \item{threads}{Number of threads to use for optimization. 0 -
-    autodetect, 1 - use just one thread (in case you use other packages
-    linked against OpenMP library that conflict with acmacs), another
-    positive number - use that number of threads.}
-  }
-}
-\section{Frozen merge}{
-  The best projection of the first chart is copied to the resulting chart.
-  The best projection of the second chart is oriented to the best
-    projection of the first chart using procrustes, then points that are
-    found just in the second chart receive coordinates from that
-    reoriented projection. Points that are common for the first and the
-    second chart placed to their middle positions between the first
-    chart layout and reoriented second chart layout.
-
-  \code{frozen_merge <- acmacs.merge_frozen(chart1, chart2)}
-}
-\section{Overlay merge}{
-  Frozen merge followed by relaxation of the resulting projection.
-
-  \code{overlay_merge <- acmacs.merge_overlay(chart1, chart2)}
-}
 \section{Merge report}{
   Long text showing how titers were merged
 
