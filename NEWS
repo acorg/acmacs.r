@@ -1,9 +1,9 @@
 acmacs.r NEWS -- history of user-visible changes.
 
-* Changes in 4.0 (2019-12-17)
+* Changes in 4.0 (2019-12-19)
 ** chart$new_projection_with_layout(minimum_column_basis, matrix(...)), columns of the matrix corresponds to the dimensions of the layout
 ** chart$relax_incremental()
-** chart$merge.1
+** chart$merge.1() .. chart$merge.5(), see https://github.com/acorg/acmacs-chart-2/blob/master/doc/merge-types.org
 
 * Changes in 3.6 (2019-07-10)
 ** bug fix in procrustes for layouts with common disconnected points
