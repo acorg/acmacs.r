@@ -189,7 +189,7 @@ Projection Chart::relax3(std::string minimum_column_basis, size_t number_of_dime
 void Chart::relax_many(std::string minimum_column_basis, size_t number_of_dimensions, size_t number_of_optimizations, bool rough)
 {
     acmacs::chart::optimization_options options(acmacs::chart::optimization_method::alglib_cg_pca, rough ? acmacs::chart::optimization_precision::rough : acmacs::chart::optimization_precision::fine, 2.0);
-    obj_->relax(acmacs::chart::number_of_optimizations_t{number_of_optimizations}, minimum_column_basis, acmacs::number_of_dimensions_t{number_of_dimensions}, acmacs::chart::use_dimension_annealing::yes, options, acmacs::chart::report_stresses::no, acmacs::chart::PointIndexList{});
+    obj_->relax(acmacs::chart::number_of_optimizations_t{number_of_optimizations}, minimum_column_basis, acmacs::number_of_dimensions_t{number_of_dimensions}, acmacs::chart::use_dimension_annealing::yes, options, acmacs::chart::report_stresses::no, acmacs::chart::DisconnectedPoints{});
     obj_->projections_modify()->sort();
 }
 
@@ -355,7 +355,7 @@ Rcpp::NumericMatrix Projection::layout_convert(std::shared_ptr<acmacs::Layout> l
 {
     Rcpp::NumericMatrix result(layout->number_of_points(), *layout->number_of_dimensions());
     for (size_t p_no = 0; p_no < layout->number_of_points(); ++p_no) {
-        const auto coord = layout->get(p_no);
+        const auto coord = layout->at(p_no);
         if (coord.exists()) {
             for (auto dim : acmacs::range(layout->number_of_dimensions()))
                 result(p_no, *dim) = coord[dim];
