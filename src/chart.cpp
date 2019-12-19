@@ -185,6 +185,15 @@ Projection Chart::relax3(std::string minimum_column_basis, size_t number_of_dime
     return projection;
 }
 
+Projection Chart::relax_seed(std::string minimum_column_basis, size_t number_of_dimensions, bool rough, unsigned seed)
+{
+    auto [status, projection] = obj_->relax(minimum_column_basis, acmacs::number_of_dimensions_t{number_of_dimensions}, acmacs::chart::use_dimension_annealing::yes,
+                                            acmacs::chart::optimization_options(acmacs::chart::optimization_method::alglib_cg_pca, rough ? acmacs::chart::optimization_precision::rough : acmacs::chart::optimization_precision::fine, 2.0),
+                                            seed);
+      // obj_->projections_modify()->sort();
+    return projection;
+}
+
 void Chart::relax_many(std::string minimum_column_basis, size_t number_of_dimensions, size_t number_of_optimizations, bool rough)
 {
     acmacs::chart::optimization_options options(acmacs::chart::optimization_method::alglib_cg_pca, rough ? acmacs::chart::optimization_precision::rough : acmacs::chart::optimization_precision::fine, 2.0);

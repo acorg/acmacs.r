@@ -20,6 +20,13 @@ test_relax <- function(filename, num_optimizations, expected_stress) {
     test_that("stress after N optimizations", { expect_true(chart$projections[[2]]$stress < expected_stress) })
 }
 
+test_relax_seed <- function(filename, seed, expected_stress1, expected_stress2) {
+    chart <- new(acmacs.Chart, filename)
+    chart$relax("1280", 2, FALSE, seed)
+    # print(paste("\n\nseed: ", seed, "  stress: ", chart$projections[[2]]$stress))
+    test_that("stress after optimization with randomization seed", { expect_true(chart$projections[[2]]$stress > expected_stress1 && chart$projections[[2]]$stress < expected_stress2) })
+}
+
 test_stress <- function(filename) {
     chart <- new(acmacs.Chart, filename)
     stress <- chart$stress_evaluator(2, "1280")
@@ -32,6 +39,8 @@ test_relax_existing("2004-3.ace")
 test_relax_existing("cdc-h1pdm-2009.acd1.bz2")
 test_relax("2004-3.ace", 20, 72)
 test_relax("cdc-h1pdm-2009.acd1.bz2", 5, 900)
+test_relax_seed("cdc-h1pdm-2009.acd1.bz2", 5, 759.3, 759.4)
+test_relax_seed("cdc-h1pdm-2009.acd1.bz2", 666, 880.1, 880.2)
 
 test_stress("2004-3.ace")
 

@@ -122,6 +122,7 @@ class Chart : public wrapper<acmacs::chart::ChartModify>
 
     Projection relax2(std::string minimum_column_basis, size_t number_of_dimensions);
     Projection relax3(std::string minimum_column_basis, size_t number_of_dimensions, bool rough);
+    Projection relax_seed(std::string minimum_column_basis, size_t number_of_dimensions, bool rough, unsigned seed);
     void relax_many(std::string minimum_column_basis, size_t number_of_dimensions, size_t number_of_optimizations, bool rough);
     void relax_incremetal(size_t number_of_optimizations, bool rough);
     acmacs::chart::Stress stress_evaluator(size_t number_of_dimensions, std::string minimum_column_basis);

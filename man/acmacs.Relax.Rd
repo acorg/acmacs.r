@@ -21,6 +21,10 @@
   \bold{new_projection <- chart$relax("none", 2)}
 
   make new projection in 2d without minimum column basis with random
+  layout and fixed random generator seed, and relax it, use fine optimization\cr
+  \bold{new_projection <- chart$relax("none", 2, FALSE, 1234)}
+
+  make new projection in 2d without minimum column basis with random
   layout and relax it, use rough optimization which is 30\% faster\cr
   \bold{new_projection <- chart$relax("none", 2, TRUE)}
 
