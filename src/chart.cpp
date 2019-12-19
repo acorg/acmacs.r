@@ -1,6 +1,5 @@
 #include <limits>
 
-#include "acmacs-base/enumerate.hh"
 #include "acmacs-base/rjson.hh"
 #include "acmacs-chart-2/randomizer.hh"
 #include "acmacs-chart-2/merge.hh"
@@ -600,18 +599,22 @@ std::string merge_report(Chart chart1, Chart chart2, std::string match_level)
 // ----------------------------------------------------------------------
 
 Rcpp::DataFrame map_resolution_test(Chart chart, const Rcpp::IntegerVector& number_of_dimensions, const Rcpp::NumericVector& proportions_to_dont_care, std::string minimum_column_basis,
-                                    bool column_bases_from_master, bool relax_from_full_table)
+                                    bool column_bases_from_master, bool relax_from_full_table, size_t number_of_optimizations)
 {
     using namespace Rcpp;
 
-    acmacs::chart::map_resolution_test_data::Parameters parameters;
-    parameters.number_of_dimensions.resize(number_of_dimensions.size(), acmacs::number_of_dimensions_t{1});
+    acmacs::chart::map_resolution_test_data::Parameters parameters{
+        std::vector<acmacs::number_of_dimensions_t>(number_of_dimensions.size(), acmacs::number_of_dimensions_t{1}),
+        acmacs::chart::number_of_optimizations_t{number_of_optimizations},
+        25, // size_t number_of_random_replicates_for_each_proportion
+        std::vector<double>(std::begin(proportions_to_dont_care), std::end(proportions_to_dont_care)),
+        acmacs::chart::MinimumColumnBasis{minimum_column_basis},
+        column_bases_from_master ? acmacs::chart::map_resolution_test_data::column_bases_from_master::yes : acmacs::chart::map_resolution_test_data::column_bases_from_master::no,
+        acmacs::chart::optimization_precision::rough,
+        relax_from_full_table ? acmacs::chart::map_resolution_test_data::relax_from_full_table::yes : acmacs::chart::map_resolution_test_data::relax_from_full_table::no
+    };
     std::transform(std::begin(number_of_dimensions), std::end(number_of_dimensions), std::begin(parameters.number_of_dimensions), [](size_t val) { return acmacs::number_of_dimensions_t{val}; });
-    parameters.proportions_to_dont_care.resize(proportions_to_dont_care.size(), 0.1);
-    std::copy(std::begin(proportions_to_dont_care), std::end(proportions_to_dont_care), std::begin(parameters.proportions_to_dont_care));
-    parameters.minimum_column_basis = minimum_column_basis;
-    parameters.column_bases_from_master = column_bases_from_master ? acmacs::chart::map_resolution_test_data::column_bases_from_master::yes : acmacs::chart::map_resolution_test_data::column_bases_from_master::no;
-    parameters.relax_from_full_table = relax_from_full_table ? acmacs::chart::map_resolution_test_data::relax_from_full_table::yes : acmacs::chart::map_resolution_test_data::relax_from_full_table::no;
+    // fmt::print(stderr, "DEBUG: {}\n", parameters);
 
     const auto results = acmacs::chart::map_resolution_test(*chart.obj_, parameters);
     const auto& predictions = results.predictions();

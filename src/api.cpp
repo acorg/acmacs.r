@@ -271,7 +271,7 @@ RCPP_MODULE(acmacs)
             .method("change_number_of_dimensions", &stress_change_number_of_dimensions)
             ;
 
-    function("acmacs.map_resolution_test", &map_resolution_test, List::create(_["chart"], _["number_of_dimensions"] = Rcpp::IntegerVector::create(1, 2, 3, 4, 5), _["proportions_to_dont_care"] = Rcpp::NumericVector::create(0.1, 0.2, 0.3), _["minimum_column_basis"] = "none", _["column_bases_from_master"] = true, _["relax_from_full_table"] = false));
+    function("acmacs.map_resolution_test", &map_resolution_test, List::create(_["chart"], _["number_of_dimensions"] = Rcpp::IntegerVector::create(1, 2, 3, 4, 5), _["proportions_to_dont_care"] = Rcpp::NumericVector::create(0.1, 0.2, 0.3), _["minimum_column_basis"] = "none", _["column_bases_from_master"] = true, _["relax_from_full_table"] = false, _["number_of_optimizations"] = 100));
 }
 
 // ----------------------------------------------------------------------
