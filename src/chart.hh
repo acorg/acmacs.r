@@ -246,7 +246,7 @@ std::string merge_report(Chart chart1, Chart chart2, std::string match_level);
 Rcpp::DataFrame map_resolution_test(Chart chart, const Rcpp::IntegerVector& number_of_dimensions,
                                     const Rcpp::NumericVector& proportions_to_dont_care, std::string minimum_column_basis,
                                     bool column_bases_from_master, bool relax_from_full_table,
-                                    size_t number_of_optimizations);
+                                    size_t number_of_random_replicates_for_each_proportion, size_t number_of_optimizations, std::string save_charts_to);
 
 // ----------------------------------------------------------------------
 

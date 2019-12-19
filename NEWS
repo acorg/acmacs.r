@@ -4,8 +4,9 @@ acmacs.r NEWS -- history of user-visible changes.
 ** chart$new_projection_with_layout(minimum_column_basis, matrix(...)), columns of the matrix corresponds to the dimensions of the layout
 ** chart$relax_incremental()
 ** chart$merge.1() .. chart$merge.5(), see https://github.com/acorg/acmacs-chart-2/blob/master/doc/merge-types.org
-** added ability to pass number of optimization to the map resolution test: acmacs.map_resolution_test(chart=chart1, number_of_dimensions=2:3, proportions_to_dont_care=c(0.1, 0.5), number_of_optimizations=1000)
-
+** map resolution test: specify number of optimization: acmacs.map_resolution_test(chart=chart1, number_of_dimensions=2:3, proportions_to_dont_care=c(0.1, 0.5), number_of_optimizations=1000)
+** map resolution test: specify number of replicates: acmacs.map_resolution_test(chart=chart1, number_of_random_replicates_for_each_proportion=25)
+** map resolution test: specify directory to save intermediate charts: acmacs.map_resolution_test(chart=chart1, save_charts_to="/path/to/directory")
 
 * Changes in 3.6 (2019-07-10)
 ** bug fix in procrustes for layouts with common disconnected points

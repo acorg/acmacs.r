@@ -599,19 +599,21 @@ std::string merge_report(Chart chart1, Chart chart2, std::string match_level)
 // ----------------------------------------------------------------------
 
 Rcpp::DataFrame map_resolution_test(Chart chart, const Rcpp::IntegerVector& number_of_dimensions, const Rcpp::NumericVector& proportions_to_dont_care, std::string minimum_column_basis,
-                                    bool column_bases_from_master, bool relax_from_full_table, size_t number_of_optimizations)
+                                    bool column_bases_from_master, bool relax_from_full_table,
+                                    size_t number_of_random_replicates_for_each_proportion, size_t number_of_optimizations, std::string save_charts_to)
 {
     using namespace Rcpp;
 
     acmacs::chart::map_resolution_test_data::Parameters parameters{
         std::vector<acmacs::number_of_dimensions_t>(number_of_dimensions.size(), acmacs::number_of_dimensions_t{1}),
         acmacs::chart::number_of_optimizations_t{number_of_optimizations},
-        25, // size_t number_of_random_replicates_for_each_proportion
+        number_of_random_replicates_for_each_proportion,
         std::vector<double>(std::begin(proportions_to_dont_care), std::end(proportions_to_dont_care)),
         acmacs::chart::MinimumColumnBasis{minimum_column_basis},
         column_bases_from_master ? acmacs::chart::map_resolution_test_data::column_bases_from_master::yes : acmacs::chart::map_resolution_test_data::column_bases_from_master::no,
         acmacs::chart::optimization_precision::rough,
-        relax_from_full_table ? acmacs::chart::map_resolution_test_data::relax_from_full_table::yes : acmacs::chart::map_resolution_test_data::relax_from_full_table::no
+        relax_from_full_table ? acmacs::chart::map_resolution_test_data::relax_from_full_table::yes : acmacs::chart::map_resolution_test_data::relax_from_full_table::no,
+        save_charts_to
     };
     std::transform(std::begin(number_of_dimensions), std::end(number_of_dimensions), std::begin(parameters.number_of_dimensions), [](size_t val) { return acmacs::number_of_dimensions_t{val}; });
     // fmt::print(stderr, "DEBUG: {}\n", parameters);
