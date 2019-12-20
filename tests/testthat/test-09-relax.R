@@ -22,9 +22,16 @@ test_relax <- function(filename, num_optimizations, expected_stress) {
 
 test_relax_seed <- function(filename, seed, expected_stress1, expected_stress2) {
     chart <- new(acmacs.Chart, filename)
+    chart$remove_all_projections()
     chart$relax("1280", 2, FALSE, seed)
-    # print(paste("\n\nseed: ", seed, "  stress: ", chart$projections[[2]]$stress))
-    test_that("stress after optimization with randomization seed", { expect_true(chart$projections[[2]]$stress > expected_stress1 && chart$projections[[2]]$stress < expected_stress2) })
+    stress <- chart$projections[[1]]$stress
+    # print(paste("\n\nseed: ", seed, "  stress: ", stress))
+    test_that("stress after optimization with randomization seed", { expect_true(stress > expected_stress1 && stress < expected_stress2) })
+    for (i in 0:10) {
+        chart$remove_all_projections()
+        chart$relax("1280", 2, FALSE, seed)
+        test_that("stress after Nth optimization with randomization seed", { expect_equal(stress, chart$projections[[1]]$stress) })
+    }
 }
 
 test_stress <- function(filename) {
