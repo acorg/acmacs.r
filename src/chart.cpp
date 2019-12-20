@@ -566,7 +566,7 @@ Chart merge(Chart chart1, Chart chart2, std::string match_level, size_t projecti
 
 Chart merge_overlay(Chart chart1, Chart chart2)
 {
-    Rprintf("acmacs.merge_incremental deprecated! use acmacs.merge.3\n");
+    Rprintf("acmacs.merge_overlay deprecated! use acmacs.merge.3\n");
     auto result = merge(chart1, chart2, "a", 3);
       // std::cout << "overlay 1 " << result.obj_->projection(0)->stress() << '\n';
     result.obj_->projection_modify(0)->relax(acmacs::chart::optimization_options{});
@@ -578,7 +578,7 @@ Chart merge_overlay(Chart chart1, Chart chart2)
 
 Chart merge_frozen(Chart chart1, Chart chart2)
 {
-    Rprintf("acmacs.merge_incremental deprecated! use acmacs.merge.4\n");
+    Rprintf("acmacs.merge_frozen deprecated! use acmacs.merge.4\n");
     auto result = merge(chart1, chart2, "a", 4);
       // std::cout << "frozen " << result.obj_->projection(0)->stress() << '\n';
     return result;
