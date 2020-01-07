@@ -46,7 +46,7 @@ test_relax_existing("2004-3.ace")
 test_relax_existing("cdc-h1pdm-2009.acd1.bz2")
 test_relax("2004-3.ace", 20, 72)
 test_relax("cdc-h1pdm-2009.acd1.bz2", 5, 900)
-test_relax_seed("cdc-h1pdm-2009.acd1.bz2", 777, 850.0, 860.0)
+test_relax_seed("cdc-h1pdm-2009.acd1.bz2", 778, 868.69, 868.70)
 test_relax_seed("cdc-h1pdm-2009.acd1.bz2", 666, 880.0, 890.0)
 
 test_stress("2004-3.ace")
