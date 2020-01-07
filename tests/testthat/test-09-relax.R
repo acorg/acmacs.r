@@ -25,7 +25,7 @@ test_relax_seed <- function(filename, seed, expected_stress1, expected_stress2) 
     chart$remove_all_projections()
     chart$relax("1280", 2, FALSE, seed)
     stress <- chart$projections[[1]]$stress
-    # print(paste("\n\nseed: ", seed, "  stress: ", stress))
+    cat(paste("\n\nseed: ", seed, "  stress: ", stress, "  expected: ", expected_stress1, expected_stress2), "\n\n", sep="")
     test_that("stress after optimization with randomization seed", { expect_true(stress > expected_stress1 && stress < expected_stress2) })
     for (i in 0:10) {
         chart$remove_all_projections()
@@ -46,7 +46,7 @@ test_relax_existing("2004-3.ace")
 test_relax_existing("cdc-h1pdm-2009.acd1.bz2")
 test_relax("2004-3.ace", 20, 72)
 test_relax("cdc-h1pdm-2009.acd1.bz2", 5, 900)
-test_relax_seed("cdc-h1pdm-2009.acd1.bz2", 5, 759.3, 759.4)
+test_relax_seed("cdc-h1pdm-2009.acd1.bz2", 777, 850.0, 860.0)
 test_relax_seed("cdc-h1pdm-2009.acd1.bz2", 666, 880.0, 890.0)
 
 test_stress("2004-3.ace")
