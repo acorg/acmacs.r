@@ -180,7 +180,7 @@ void PlotSpec::set_style_fill(const Rcpp::IntegerVector& aIndexes, std::string a
 void PlotSpec::set_style_fill_opacity(const Rcpp::IntegerVector& aIndexes, double aOpacity)
 {
     for (auto index : aIndexes)
-        obj_->fill_opacity(index - 1, aOpacity));
+        obj_->fill_opacity(index - 1, aOpacity);
 }
 
 // ----------------------------------------------------------------------
