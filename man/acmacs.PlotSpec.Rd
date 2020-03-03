@@ -33,7 +33,11 @@ ps <- chart$plot_spec
 
   \item{set_fill(point_indexes, fill)}{Change fill color for points.}
 
+  \item{set_fill_opacity(point_indexes, opacity)}{Change fill opacity for points, opacity is in range 0.0 (transparent) to 1.0 (opaque).}
+
   \item{set_outline(point_indexes, outline)}{Change outline color for points.}
+
+  \item{set_outline_opacity(point_indexes, opacity)}{Change outline opacity for points, opacity is in range 0.0 (transparent) to 1.0 (opaque).}
 
   \item{set_outline_width(point_indexes, outline_width)}{Change outline width for points.}
 

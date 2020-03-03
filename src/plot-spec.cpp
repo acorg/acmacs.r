@@ -36,8 +36,8 @@ Rcpp::DataFrame PlotSpec::styles_as_data_frame() const
 
     for (auto [index, entry] : acmacs::enumerate(styles)) {
         shown[index] = entry.shown;
-        fill[index] = String(entry.fill->to_hex_string());
-        outline[index] = entry.outline->to_hex_string();
+        fill[index] = String(entry.fill->to_string());
+        outline[index] = entry.outline->to_string();
         outline_width[index] = entry.outline_width->value();
         size[index] = entry.size->value();
         rotation[index] = entry.rotation->value();
@@ -48,7 +48,7 @@ Rcpp::DataFrame PlotSpec::styles_as_data_frame() const
         label_offset_x[index] = entry.label.offset->x();
         label_offset_y[index] = entry.label.offset->y();
         label_size[index] = entry.label.size->value();
-        label_color[index] = entry.label.color->to_hex_string();
+        label_color[index] = entry.label.color->to_string();
         label_rotation[index] = entry.label.rotation->value();
         label_slant[index] = static_cast<std::string>(*entry.label.style.slant);
         label_weight[index] = static_cast<std::string>(*entry.label.style.weight);
@@ -177,12 +177,24 @@ void PlotSpec::set_style_fill(const Rcpp::IntegerVector& aIndexes, std::string a
         obj_->fill(index - 1, Color(aFill));
 }
 
+void PlotSpec::set_style_fill_opacity(const Rcpp::IntegerVector& aIndexes, double aOpacity)
+{
+    for (auto index : aIndexes)
+        obj_->fill_opacity(index - 1, aOpacity));
+}
+
 // ----------------------------------------------------------------------
 
 void PlotSpec::set_style_outline(const Rcpp::IntegerVector& aIndexes, std::string aOutline)
 {
     for (auto index : aIndexes)
         obj_->outline(index - 1, Color(aOutline));
+}
+
+void PlotSpec::set_style_outline_opacity(const Rcpp::IntegerVector& aIndexes, double aOpacity)
+{
+    for (auto index : aIndexes)
+        obj_->outline_opacity(index - 1, aOpacity);
 }
 
 void PlotSpec::set_style_outline_width(const Rcpp::IntegerVector& aIndexes, double aOutlineWidth)

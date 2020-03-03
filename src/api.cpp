@@ -17,7 +17,9 @@ inline PlotSpec Chart::plot_spec() { return obj_->plot_spec_modify(); }
 inline auto style_shown(acmacs::PointStyle* style) { return *style->shown; }
 inline auto style_size(acmacs::PointStyle* style) { return style->size->value(); }
 inline std::string style_fill(acmacs::PointStyle* style) { return style->fill->to_string(); }
+inline double style_fill_opacity(acmacs::PointStyle* style) { return style->fill->opacity(); }
 inline std::string style_outline(acmacs::PointStyle* style) { return style->outline->to_string(); }
+inline double style_outline_opacity(acmacs::PointStyle* style) { return style->outline->opacity(); }
 inline auto style_outline_width(acmacs::PointStyle* style) { return style->outline_width->value(); }
 inline auto style_rotation(acmacs::PointStyle* style) { return style->rotation->value(); }
 inline auto style_aspect(acmacs::PointStyle* style) { return style->aspect->value(); }
@@ -176,7 +178,9 @@ RCPP_MODULE(acmacs)
             .property("shown", &style_shown, nullptr)
             .property("size", &style_size, nullptr)
             .property("fill", &style_fill, nullptr)
+            .property("fill_opacity", &style_fill_opacity, nullptr)
             .property("outline", &style_outline, nullptr)
+            .property("outline_opacity", &style_outline_opacity, nullptr)
             .property("outline_width", &style_outline_width, nullptr)
             .property("rotation", &style_rotation, nullptr)
             .property("aspect", &style_aspect, nullptr)
@@ -197,7 +201,9 @@ RCPP_MODULE(acmacs)
             .method("set_shown", &PlotSpec::set_style_shown)
             .method("set_size", &PlotSpec::set_style_size)
             .method("set_fill", &PlotSpec::set_style_fill)
+            .method("set_fill_opacity", &PlotSpec::set_style_fill_opacity)
             .method("set_outline", &PlotSpec::set_style_outline)
+            .method("set_outline_opacity", &PlotSpec::set_style_outline_opacity)
             .method("set_outline_width", &PlotSpec::set_style_outline_width)
             .method("set_rotation", &PlotSpec::set_style_rotation)
             .method("set_aspect", &PlotSpec::set_style_aspect)

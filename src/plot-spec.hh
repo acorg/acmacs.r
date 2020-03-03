@@ -24,7 +24,9 @@ class PlotSpec : public wrapper<acmacs::chart::PlotSpecModify>
     void drawing_order_lower_sera(const Rcpp::IntegerVector& aIndexes);
     void set_style_size(const Rcpp::IntegerVector& aIndexes, double aSize);
     void set_style_fill(const Rcpp::IntegerVector& aIndexes, std::string aFill);
+    void set_style_fill_opacity(const Rcpp::IntegerVector& aIndexes, double aOpacity);
     void set_style_outline(const Rcpp::IntegerVector& aIndexes, std::string aOutline);
+    void set_style_outline_opacity(const Rcpp::IntegerVector& aIndexes, double aOpacity);
     void set_style_outline_width(const Rcpp::IntegerVector& aIndexes, double aOutlineWidth);
     void set_style_shown(const Rcpp::IntegerVector& aIndexes, bool shown);
     void set_style_rotation(const Rcpp::IntegerVector& aIndexes, double rotation);
