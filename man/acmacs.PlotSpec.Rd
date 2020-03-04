@@ -81,7 +81,11 @@ ps <- chart$plot_spec
 
   \code{fill} - point fill color (string)
 
+  \code{fill_opacity} - point fill color opacity (number in range 0.0 to 1.0)
+
   \code{outline} - point outline color (string)
+
+  \code{outline_opacity} - point outline color opacity (number in range 0.0 to 1.0)
 
   \code{outline_width} - point outline width (in pixels, if drawn by acmacs engine)
 

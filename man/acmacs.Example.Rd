@@ -254,11 +254,16 @@ chart$plot_spec$set_size(test_indexes, 3)
 # change fill color of test antigens
 chart$plot_spec$set_fill(test_indexes, "pink")
 # change outline color of test antigens
-chart$plot_spec$set_fill(test_indexes, "#C0C0C0")
+chart$plot_spec$set_outline(test_indexes, "#C0C0C0")
+# change opacify of fill color
+chart$plot_spec$set_fill_opacity(test_indexes, 0.5)
+# change opacify of outline color
+chart$plot_spec$set_outline_opacity(test_indexes, 0.5)
 
 # change other point style attributes
 chart$plot_spec$set_shown(point_indexes, FALSE)
 chart$plot_spec$set_outline(point_indexes, "red")
+chart$plot_spec$set_outline_opacity(point_indexes, 0.5)
 chart$plot_spec$set_outline_width(point_indexes, 5)
 chart$plot_spec$set_rotation(point_indexes, 0.3)
 chart$plot_spec$set_aspect(point_indexes, 0.2)

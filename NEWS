@@ -2,6 +2,16 @@ acmacs.r NEWS -- history of user-visible changes.
 
 * Changes in 4.1 (2020-03-02)
 ** Shared lib installation issue under Linux fixed
+** Color name handling improvements. If a color is semi-transparent, its value returned in the css rgba() form
+** Support for setting and getting fill and outline color opacity
+   chart$plot_spec$set_outline(1, "red")
+   chart$plot_spec$styles[[1]]$outline
+     [1] "red"
+   chart$plot_spec$set_outline_opacity(1, 0.1)
+   chart$plot_spec$styles[[1]]$outline_opacity
+     [1] 0.1019608
+   chart$plot_spec$styles[[1]]$outline
+     [1] "rgba(255,0,0,0.102)"
 
 * Changes in 4.0 (2019-12-20)
 ** chart$new_projection_with_layout(minimum_column_basis, matrix(...)), columns of the matrix corresponds to the dimensions of the layout
