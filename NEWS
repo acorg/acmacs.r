@@ -1,6 +1,9 @@
 acmacs.r NEWS -- history of user-visible changes.
 
-* Changes in 4.1 (2020-03-02)
+* Changes in 4.2 (2020-03-05)
+** Minor fix in hope to debug strange behaviour on some machines
+
+* Changes in 4.1 (2020-03-04)
 ** Shared lib installation issue under Linux fixed
 ** Color name handling improvements. If a color is semi-transparent, its value returned in the css rgba() form
 ** Support for setting and getting fill and outline color opacity
