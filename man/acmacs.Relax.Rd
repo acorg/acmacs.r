@@ -17,67 +17,88 @@
 
 
 \section{Making maps via chart object}{
-  make new projection in 2d without minimum column basis with random layout and relax it\cr
-  \bold{new_projection <- chart$relax("none", 2)}
+\preformatted{
+      # make new projection in 2d without minimum column basis with random layout and relax it
+    new_projection <- chart$relax("none", 2)
 
-  make new projection in 2d without minimum column basis with random
-  layout and fixed random generator seed, and relax it, use fine optimization\cr
-  \bold{new_projection <- chart$relax("none", 2, FALSE, 1234)}
+      # make new projection in 2d without minimum column basis with random
+      # layout and fixed random generator seed, and relax it, use fine optimization
+    new_projection <- chart$relax("none", 2, FALSE, 1234)
 
-  make new projection in 2d without minimum column basis with random
-  layout and relax it, use rough optimization which is 30\% faster\cr
-  \bold{new_projection <- chart$relax("none", 2, TRUE)}
+      # make new projection in 2d without minimum column basis with random
+      # layout and relax it, use rough optimization which is 30\% faster
+    new_projection <- chart$relax("none", 2, TRUE)
 
-  make 10 new projections in 2d without minimum column basis with random layout and relax them using fine optimization, relaxation is perfomed in parallel, if multiple CPU cores available\cr
-  \bold{chart$relax_many("none", 2, 10, FALSE)}
+      # make 10 new projections in 2d without minimum column basis with random layout and
+      # relax them using fine optimization, relaxation is perfomed in parallel, if multiple CPU cores available
+    chart$relax_many("none", 2, 10, FALSE)
 }
-
+}
 
 \section{Making maps via projection object}{
-  relax existing projection, e.g. upon moving the first antigen\cr
-  \bold{chart$projection(1)$relax()}
+\preformatted{
+      \emph{# relax existing projection, e.g. upon moving the first antigen}
+    chart$projection(1)$relax()
 
-  create new projection in 2d without minimum column basis with random layout without optimisation (dimension annealing cannot be used)\cr
-  \bold{projection <- chart$new_projection("none", 2)}
+      # create new projection in 2d without minimum column basis with random layout without optimisation (dimension annealing cannot be used)
+    projection <- chart$new_projection("none", 2)
 
-  create new projection in 2d without minimum column basis and with some layout (dimension annealing cannot be used)\cr
-  \bold{projection <- chart$new_projection_with_layout("none", matrix(1:((chart$number_of_antigens + chart$number_of_sera)*2), ncol=2, byrow=TRUE))}
+      # create new projection in 2d without minimum column basis and with some layout (dimension annealing cannot be used)
+    projection <- chart$new_projection_with_layout("none", matrix(1:((chart$number_of_antigens + chart$number_of_sera)*2), ncol=2, byrow=TRUE))
 
-  randomize layout in the projection using "table-max-distance" method\cr
-  \bold{projection$randomize_layout()}
+      # randomize layout in the projection using "table-max-distance" method
+    projection$randomize_layout()
 
-  perform optimization step by step\cr
-  \bold{while(projection$relax_one_iteration()) { print(projection$stress); print(projection$layout); }}
+      # perform optimization step by step
+    while(projection$relax_one_iteration()) { print(projection$stress); print(projection$layout); }
+}
 }
 
-
-\section{Making maps in a custom way}{
-  obtaining stress object from a chart\cr
-  \bold{stress <- chart$stress_evaluator(number_of_dimensions,
-    minimum_column_basis)}
-
-  creating stress object for given distance matrix (regular distances only)\cr
-  \bold{stress <- acmacs.stress_from_distances(matrix(...), number_of_dimensions)}
-
-  calculating stress value for given layout\cr
-  \bold{value <- stress$value(matrix(...))}
-
-  calculating stress contibution for a point, point_no is either
-  antigen_no or (serum_no + number_of_antigens)\cr
-  \bold{value <- stress$contribution(point_no, matrix(...))}
-
-  calculating stress gradient for given layout\cr
-  \bold{gradient_vector <- stress$gradient(matrix(...))}
-}
 
 \section{Relaxing with manually calling dimension annealing}{
 \preformatted{
-chart <- new(acmacs.Chart, filename)
-chart$remove_all_projections()
-projection <- chart$new_projection("none", 5) # initially make 5D projection
-projection$relax()
-projection$dimension_annealing(2)  # convert relaxed projection to 2D
-projection$relax()  # relax in 2D
+    chart <- new(acmacs.Chart, filename)
+    chart$remove_all_projections()
+    projection <- chart$new_projection("none", 5) # initially make 5D projection
+    projection$relax()
+    projection$dimension_annealing(2)  # convert relaxed projection to 2D
+    projection$relax()  # relax in 2D
+}
+}
+
+\section{Relaxing with unmovable points}{
+\preformatted{
+    chart <- new(acmacs.Chart, filename)
+    chart$remove_all_projections()
+    projection <- chart$new_projection("none", 2)
+    projection$set_unmovable(1:10) # first 10 points are unmovable
+    projection$relax()
+
+      # some points can be disconnected, i.e. they do not move and do not contribute to stress
+    projection$set_disconnected(1:10) # first 10 points are disconnected
+
+      # some points can be made unmovable is the last dimension
+      # e.g. fix antigens in 2D and allow sera to be moved in 3D
+    projection$set_unmovable_in_the_last_dimension(1:chart$number_of_antigens)
+}
+}
+
+\section{Making maps in a custom way}{
+\preformatted{
+      # obtaining stress object from a chart
+    stress <- chart$stress_evaluator(number_of_dimensions, minimum_column_basis)
+
+      # creating stress object for given distance matrix (regular distances only)
+    stress <- acmacs.stress_from_distances(matrix(...), number_of_dimensions)
+
+      # calculating stress value for given layout
+    value <- stress$value(matrix(...))
+
+      # calculating stress contibution for a point, point_no is either antigen_no or (serum_no + number_of_antigens)
+    value <- stress$contribution(point_no, matrix(...))
+
+    calculating stress gradient for given layout
+    gradient_vector <- stress$gradient(matrix(...))
 }
 }
 
