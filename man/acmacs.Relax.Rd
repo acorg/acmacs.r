@@ -37,7 +37,7 @@
 
 \section{Making maps via projection object}{
 \preformatted{
-      \emph{# relax existing projection, e.g. upon moving the first antigen}
+      # relax existing projection, e.g. upon moving the first antigen
     chart$projection(1)$relax()
 
       # create new projection in 2d without minimum column basis with random layout without optimisation (dimension annealing cannot be used)
