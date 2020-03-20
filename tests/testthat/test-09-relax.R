@@ -64,6 +64,19 @@ test_relax_with_dimension_annealing <- function(filename, num_dim_1 = 5, num_dim
     # cat("\n\n", sep="")
 }
 
+test_relax_with_unmovable <- function(filename) {
+    unmovable <- 1:10
+    chart <- new(acmacs.Chart, filename)
+    chart$remove_all_projections()
+    projection <- chart$new_projection("1280", 2)
+    initial_layout <- projection$layout
+    projection$set_unmovable(unmovable)
+    projection$relax()
+    test_that("upon relaxing with unmovable 1", { expect_equal(initial_layout[unmovable], projection$layout[unmovable]) })
+    test_that("upon relaxing with unmovable 2", { expect_true(identical(initial_layout[unmovable], projection$layout[unmovable])) })
+    test_that("upon relaxing with unmovable 3", { expect_false(identical(initial_layout, projection$layout)) })
+}
+
 test_relax_existing("2004-3.ace")
 test_relax_existing("cdc-h1pdm-2009.acd1.bz2")
 test_relax("2004-3.ace", 20, 72)
@@ -71,6 +84,7 @@ test_relax("cdc-h1pdm-2009.acd1.bz2", 5, 900)
 test_relax_seed("cdc-h1pdm-2009.acd1.bz2", 778, 868.69, 868.70)
 test_relax_seed("cdc-h1pdm-2009.acd1.bz2", 666, 880.0, 890.0)
 test_relax_with_dimension_annealing("cdc-h1pdm-2009.acd1.bz2")
+test_relax_with_unmovable("2004-3.ace")
 
 test_stress("2004-3.ace")
 
