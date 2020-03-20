@@ -186,6 +186,10 @@ class Projection : public wrapper<acmacs::chart::ProjectionModify>
 
     void dimension_annealing(size_t target_number_of_dimensions);
 
+    void set_disconnected(const Rcpp::IntegerVector& points);
+    void set_unmovable(const Rcpp::IntegerVector& points);
+    void set_unmovable_in_the_last_dimension(const Rcpp::IntegerVector& points);
+
     void reorient(const Projection& master, std::string match, std::string subset);
     void reorient_default(const Projection& master) { reorient(master, "auto", "all"); }
 

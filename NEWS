@@ -11,8 +11,10 @@ projection <- chart$new_projection("none", 5) # initially make 5D projection
 projection$relax()
 projection$dimension_annealing(2)  # convert relaxed projection to 2D
 projection$relax()  # relax in 2D
-** 
-** 
+** set disconnected, unmovable points
+projection$set_disconnected(<vector of point indexes>)
+projection$set_unmovable(<vector of point indexes>)
+projection$set_unmovable_in_the_last_dimension(<vector of point indexes>)
 
 * Changes in 4.2 (2020-03-05)
 ** Minor fix in hope to debug strange behaviour on some machines

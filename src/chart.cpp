@@ -428,6 +428,36 @@ void Projection::reorient(const Projection& master, std::string match, std::stri
 
 // ----------------------------------------------------------------------
 
+void Projection::set_disconnected(const Rcpp::IntegerVector& points)
+{
+    acmacs::chart::DisconnectedPoints to_disconnect(points.size());
+    std::transform(points.begin(), points.end(), to_disconnect.begin(), [](auto index) { return index - 1; });
+    obj_->set_disconnected(to_disconnect);
+
+} // Projection::set_disconnected
+
+// ----------------------------------------------------------------------
+
+void Projection::set_unmovable(const Rcpp::IntegerVector& points)
+{
+    acmacs::chart::UnmovablePoints to_freeze(points.size());
+    std::transform(points.begin(), points.end(), to_freeze.begin(), [](auto index) { return index - 1; });
+    obj_->set_unmovable(to_freeze);
+
+} // Projection::set_unmovable
+
+// ----------------------------------------------------------------------
+
+void Projection::set_unmovable_in_the_last_dimension(const Rcpp::IntegerVector& points)
+{
+    acmacs::chart::UnmovableInTheLastDimensionPoints to_freeze(points.size());
+    std::transform(points.begin(), points.end(), to_freeze.begin(), [](auto index) { return index - 1; });
+    obj_->set_unmovable_in_the_last_dimension(to_freeze);
+
+} // Projection::set_unmovable_in_the_last_dimension
+
+// ----------------------------------------------------------------------
+
 acmacs::chart::Stress stress_from_distances(const Rcpp::NumericMatrix& distances, size_t number_of_dimensions)
 {
     acmacs::chart::Stress stress(acmacs::number_of_dimensions_t{number_of_dimensions}, distances.nrow() + distances.ncol(), acmacs::chart::multiply_antigen_titer_until_column_adjust::yes, acmacs::chart::dodgy_titer_is_regular::no);

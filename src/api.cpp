@@ -173,6 +173,9 @@ RCPP_MODULE(acmacs)
             .method("randomize_layout", &Projection::randomize_layout_default)
             .method("reorient", &Projection::reorient)
             .method("reorient", &Projection::reorient_default)
+            .method("set_disconnected", &Projection::set_disconnected)
+            .method("set_unmovable", &Projection::set_unmovable)
+            .method("set_unmovable_in_the_last_dimension", &Projection::set_unmovable_in_the_last_dimension)
             ;
 
     class_<acmacs::PointStyle>("acmacs.PointStyle")
