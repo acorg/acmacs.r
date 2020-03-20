@@ -1,5 +1,13 @@
 acmacs.r NEWS -- history of user-visible changes.
 
+* Changes in 4.3 (2020-03-20)
+** set step for grid test
+grid_test <- new(acmacs.GridTest, chart, 0.25) - with step 0.25
+grid_test <- new(acmacs.GridTest, chart, 1, 0.25) - for the second best projection with step 0.25
+** 
+** 
+** 
+
 * Changes in 4.2 (2020-03-05)
 ** Minor fix in hope to debug strange behaviour on some machines
 

@@ -5,6 +5,8 @@
 \usage{
 grid_test <- new(acmacs.GridTest, chart)
 grid_test <- new(acmacs.GridTest, chart, 1) - for the second best projection
+grid_test <- new(acmacs.GridTest, chart, 0.25) - with step 0.25
+grid_test <- new(acmacs.GridTest, chart, 1, 0.25) - for the second best projection with step 0.25
 result <- grid_test$test() - multithreaded (omp) version
 result <- grid_test$test_single_thread() - single thread version (if multithreaded one crashes R)
 new_projection <- grid_test$make_new_projection_and_relax()

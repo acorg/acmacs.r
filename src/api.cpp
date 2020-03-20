@@ -261,6 +261,8 @@ RCPP_MODULE(acmacs)
             ;
 
     class_<GridTest>("acmacs.GridTest")
+            .constructor<Chart&, size_t, double>()
+            .constructor<Chart&, double>()
             .constructor<Chart&, size_t>()
             .constructor<Chart&>()
             .method("test", &GridTest::test_parallel)

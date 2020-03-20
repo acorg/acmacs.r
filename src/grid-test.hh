@@ -14,6 +14,7 @@ class GridTest
 {
  public:
     GridTest(Chart& chart, size_t projection_no = 0, double grid_step = 0.1);
+    GridTest(Chart& chart, double grid_step) : GridTest(chart, 0, grid_step) {}
     Rcpp::DataFrame test_parallel();
     Rcpp::DataFrame test_single_thread();
     Rcpp::DataFrame results();
