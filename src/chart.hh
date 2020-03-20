@@ -184,6 +184,8 @@ class Projection : public wrapper<acmacs::chart::ProjectionModify>
     void randomize_layout(std::string randomization_method, double diameter_multiplier);
     void randomize_layout_default() { randomize_layout("table-max-distance", 2.0); }
 
+    void dimension_annealing(size_t target_number_of_dimensions);
+
     void reorient(const Projection& master, std::string match, std::string subset);
     void reorient_default(const Projection& master) { reorient(master, "auto", "all"); }
 

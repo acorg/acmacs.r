@@ -68,8 +68,19 @@
 
   calculating stress gradient for given layout\cr
   \bold{gradient_vector <- stress$gradient(matrix(...))}
-
 }
+
+\section{Relaxing with manually calling dimension annealing}{
+\preformatted{
+chart <- new(acmacs.Chart, filename)
+chart$remove_all_projections()
+projection <- chart$new_projection("none", 5) # initially make 5D projection
+projection$relax()
+projection$dimension_annealing(2)  # convert relaxed projection to 2D
+projection$relax()  # relax in 2D
+}
+}
+
 \keyword{ package }
 \seealso{
   \code{\link{acmacs.r-package}}\cr

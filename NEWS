@@ -4,7 +4,13 @@ acmacs.r NEWS -- history of user-visible changes.
 ** set step for grid test
 grid_test <- new(acmacs.GridTest, chart, 0.25) - with step 0.25
 grid_test <- new(acmacs.GridTest, chart, 1, 0.25) - for the second best projection with step 0.25
-** 
+** dimension annealing
+chart <- new(acmacs.Chart, filename)
+chart$remove_all_projections()
+projection <- chart$new_projection("none", 5) # initially make 5D projection
+projection$relax()
+projection$dimension_annealing(2)  # convert relaxed projection to 2D
+projection$relax()  # relax in 2D
 ** 
 ** 
 

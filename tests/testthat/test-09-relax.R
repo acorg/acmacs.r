@@ -42,12 +42,35 @@ test_stress <- function(filename) {
     test_that("stress gradient for layout", { expect_equal(stress$gradient(layout), numeric(56), tolerance=1e-7) })
 }
 
+test_relax_with_dimension_annealing <- function(filename, num_dim_1 = 5, num_dim_2 = 2) {
+    chart <- new(acmacs.Chart, filename)
+    chart$remove_all_projections()
+    projection <- chart$new_projection("1280", num_dim_1)
+    stresses = c(projection$stress)
+    projection$relax()
+    test_that("test_relax_with_dimension_annealing: starting number of dimensions", { expect_equal(projection$number_of_dimensions, num_dim_1) })
+    stresses = c(stresses, projection$stress)
+    projection$dimension_annealing(num_dim_2)
+    stresses = c(stresses, projection$stress)
+    projection$relax()
+    # cat(paste("\n\nND: ", projection$number_of_dimensions), "\n\n", sep="")
+    # test_that("test_relax_with_dimension_annealing: number of dimensions after dimension annealing", { expect_equal(projection$number_of_dimensions, 2) })
+    stresses = c(stresses, projection$stress)
+
+    # cat("\n\ntest_relax_with_dimension_annealing", sep="")
+    # print(stresses)
+    # # cat("\n", sep="")
+    # # print(projection$layout)
+    # cat("\n\n", sep="")
+}
+
 test_relax_existing("2004-3.ace")
 test_relax_existing("cdc-h1pdm-2009.acd1.bz2")
 test_relax("2004-3.ace", 20, 72)
 test_relax("cdc-h1pdm-2009.acd1.bz2", 5, 900)
 test_relax_seed("cdc-h1pdm-2009.acd1.bz2", 778, 868.69, 868.70)
 test_relax_seed("cdc-h1pdm-2009.acd1.bz2", 666, 880.0, 890.0)
+test_relax_with_dimension_annealing("cdc-h1pdm-2009.acd1.bz2")
 
 test_stress("2004-3.ace")
 

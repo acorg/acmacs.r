@@ -335,6 +335,19 @@ bool Projection::relax_one_iteration(std::string method, bool rough)
 
 // ----------------------------------------------------------------------
 
+void Projection::dimension_annealing(size_t target_number_of_dimensions)
+{
+    auto layout = obj_->layout_modified();
+    if (acmacs::number_of_dimensions_t{target_number_of_dimensions} >= layout->number_of_dimensions() || target_number_of_dimensions == 0)
+        throw std::invalid_argument(fmt::format("invalid target number of dimensions ({}) for dimension annealing, expected 1:{}", target_number_of_dimensions, *layout->number_of_dimensions() - 1));
+    auto stress = acmacs::chart::stress_factory(*obj_, acmacs::chart::multiply_antigen_titer_until_column_adjust::yes);
+    acmacs::chart::dimension_annealing(acmacs::chart::optimization_method::alglib_cg_pca, stress, layout->number_of_dimensions(), acmacs::number_of_dimensions_t{target_number_of_dimensions}, layout->data(), layout->data() + layout->size());
+    layout->change_number_of_dimensions(acmacs::number_of_dimensions_t{target_number_of_dimensions});
+
+} // Projection::dimension_annealing
+
+// ----------------------------------------------------------------------
+
 acmacs::chart::ProjectionModify::randomizer Projection::make_randomizer(std::string randomization_method)
 {
     using namespace acmacs::chart;
