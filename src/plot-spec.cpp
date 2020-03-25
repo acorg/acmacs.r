@@ -36,22 +36,22 @@ Rcpp::DataFrame PlotSpec::styles_as_data_frame() const
 
     for (auto [index, entry] : acmacs::enumerate(styles)) {
         shown[index] = entry.shown;
-        fill[index] = String(entry.fill->to_string());
-        outline[index] = entry.outline->to_string();
+        fill[index] = fmt::format("{}", entry.fill);
+        outline[index] = fmt::format("{}", entry.outline);
         outline_width[index] = entry.outline_width->value();
         size[index] = entry.size->value();
         rotation[index] = entry.rotation->value();
         aspect[index] = entry.aspect->value();
-        shape[index] = static_cast<std::string>(*entry.shape);
+        shape[index] = fmt::format("{}", *entry.shape);
 
         label_shown[index] = entry.label.shown;
         label_offset_x[index] = entry.label.offset->x();
         label_offset_y[index] = entry.label.offset->y();
         label_size[index] = entry.label.size->value();
-        label_color[index] = entry.label.color->to_string();
+        label_color[index] = fmt::format("{}", entry.label.color);
         label_rotation[index] = entry.label.rotation->value();
-        label_slant[index] = static_cast<std::string>(*entry.label.style.slant);
-        label_weight[index] = static_cast<std::string>(*entry.label.style.weight);
+        label_slant[index] = fmt::format("{}", *entry.label.style.slant);
+        label_weight[index] = fmt::format("{}", *entry.label.style.weight);
         label_font_family[index] = *entry.label.style.font_family;
 
         label_text[index] = static_cast<std::string>(*entry.label_text);
@@ -266,13 +266,13 @@ void PlotSpec::set_style_label_rotation(const Rcpp::IntegerVector& aIndexes, dou
 void PlotSpec::set_style_label_slant(const Rcpp::IntegerVector& aIndexes, std::string label_slant)
 {
     for (auto index : aIndexes)
-        obj_->label_slant(index - 1, acmacs::FontSlant(label_slant));
+        obj_->label_slant(index - 1, acmacs::FontSlant{label_slant});
 }
 
 void PlotSpec::set_style_label_weight(const Rcpp::IntegerVector& aIndexes, std::string label_weight)
 {
     for (auto index : aIndexes)
-        obj_->label_weight(index - 1, label_weight);
+        obj_->label_weight(index - 1, acmacs::FontWeight{label_weight});
 }
 
 void PlotSpec::set_style_label_font_family(const Rcpp::IntegerVector& aIndexes, std::string font_family)
