@@ -221,7 +221,7 @@ acmacs::chart::Stress Chart::stress_evaluator(size_t number_of_dimensions, std::
 Rcpp::StringVector Chart::extension_field(std::string field_name) const
 {
     if (const auto& ext = obj_->extension_field(field_name); !ext.is_null())
-        return rjson::to_string(ext);
+        return rjson::format(ext);
     else
         return NA_STRING;
 
