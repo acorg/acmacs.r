@@ -29,7 +29,7 @@ inline std::string style_shape(acmacs::PointStyle* style) { return fmt::format("
 
 static inline void acmacs_init()
 {
-    get_locdb(locdb_suppress_error::yes); // to avoid error message if locdb is requested later and locationdb.json.xz is not available
+    acmacs::locationdb::get(acmacs::locationdb::suppress_error::yes); // to avoid error message if locdb is requested later and locationdb.json.xz is not available
 
     std::cout.rdbuf(Rcpp::Rcout.rdbuf());
     std::cerr.rdbuf(Rcpp::Rcerr.rdbuf());
