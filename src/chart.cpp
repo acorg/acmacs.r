@@ -201,11 +201,11 @@ void Chart::relax_many(std::string minimum_column_basis, size_t number_of_dimens
     obj_->projections_modify()->sort();
 }
 
-void Chart::relax_incremetal(size_t number_of_optimizations, bool rough)
+void Chart::relax_incremental(size_t number_of_optimizations, bool rough)
 {
     acmacs::chart::optimization_options options(acmacs::chart::optimization_method::alglib_cg_pca, rough ? acmacs::chart::optimization_precision::rough : acmacs::chart::optimization_precision::fine, 2.0);
     constexpr const size_t projection_no{0};
-    obj_->relax_incremetal(projection_no, acmacs::chart::number_of_optimizations_t{number_of_optimizations}, options);
+    obj_->relax_incremental(projection_no, acmacs::chart::number_of_optimizations_t{number_of_optimizations}, options);
     obj_->projections_modify()->sort();
 }
 
@@ -631,12 +631,12 @@ Chart merge_frozen(Chart chart1, Chart chart2)
 
 Chart merge_incremental(Chart chart1, Chart chart2, size_t number_of_optimizations, size_t num_threads)
 {
-    Rprintf("acmacs.merge_incremental deprecated! use acmacs.merge.2() followed by merge$relax_incremetal(number_of_optimizations)\n");
+    Rprintf("acmacs.merge_incremental deprecated! use acmacs.merge.2() followed by merge$relax_incremental(number_of_optimizations)\n");
     auto result = merge(chart1, chart2, "a", 2);
     acmacs::chart::optimization_options options(acmacs::chart::optimization_method::alglib_cg_pca, acmacs::chart::optimization_precision::fine, 2.0);
     options.num_threads = num_threads;
     constexpr const size_t projection_no{0};
-    result.obj_->relax_incremetal(projection_no, acmacs::chart::number_of_optimizations_t{number_of_optimizations}, options);
+    result.obj_->relax_incremental(projection_no, acmacs::chart::number_of_optimizations_t{number_of_optimizations}, options);
     return result;
 }
 

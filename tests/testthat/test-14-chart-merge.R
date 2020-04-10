@@ -17,7 +17,7 @@ test_that("merge2 number of sera", { expect_equal(merge2$number_of_sera, merge_t
 test_that("merge2 number of layers", { expect_equal(merge2$titers$number_of_layers, merge_type2$titers$number_of_layers) })
 test_that("merge2 column bases", { expect_equal(merge2$column_bases(), merge_type2$column_bases()) })
 test_that("merge2 stress", { expect_equal(merge2$projections[[1]]$stress, merge_type2$projections[[1]]$stress) })
-merge2$relax_incremetal(100, FALSE)
+merge2$relax_incremental(100, FALSE)
 # print(paste("merge2 stress: ", merge2$projections[[1]]$stress))
 test_that("merge2 stress upon relaxing", { expect_equal(merge2$projections[[1]]$stress, 118.998, tolerance=1e-3) })
 
