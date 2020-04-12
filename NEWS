@@ -1,5 +1,11 @@
 acmacs.r NEWS -- history of user-visible changes.
 
+* Changes in 4.4 (2020-04-12)
+** new chart$relax_incremental interface
+merge2$relax_incremental(1000)
+merge2$relax_incremental(1000, FALSE) - the same as merge2$relax_incremental(1000, "rough")
+merge2$relax_incremental(1000, "rough", "unmovable-primary-points") - freeze primary map points
+
 * Changes in 4.3 (2020-03-20)
 ** set step for grid test
 grid_test <- new(acmacs.GridTest, chart, 0.25) - with step 0.25

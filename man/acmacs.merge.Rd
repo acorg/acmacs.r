@@ -42,7 +42,7 @@ report <- acmacs.merge_report(chart1, chart2)
         \link{https://github.com/acorg/acmacs-chart-2/blob/master/doc/merge-types.org}
 
         \item{1}{ignore projections of the source charts, resulting chart has no projections.}
-        \item{2}{incremental merge without optimization, call merge$relax_incremental(number_of_optimization, FALSE) afterwards}
+        \item{2}{incremental merge without optimization, call merge$relax_incremental(number_of_optimizations) or merge$relax_incremental(number_of_optimizations, "unmovable-primary-points") afterwards}
         \item{3}{overlay merge without further optimization.}
         \item{4}{frozen merge variant with optimization.}
         \item{5}{another frozen merge variant with optimization.}

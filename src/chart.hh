@@ -124,7 +124,14 @@ class Chart : public wrapper<acmacs::chart::ChartModify>
     Projection relax3(std::string minimum_column_basis, size_t number_of_dimensions, bool rough);
     Projection relax_seed(std::string minimum_column_basis, size_t number_of_dimensions, bool rough, unsigned seed);
     void relax_many(std::string minimum_column_basis, size_t number_of_dimensions, size_t number_of_optimizations, bool rough);
-    void relax_incremental(size_t number_of_optimizations, bool rough);
+    void relax_incremental_1(size_t number_of_optimizations, bool rough);
+    void relax_incremental_2(size_t number_of_optimizations, std::string opt1={}, std::string opt2={}, std::string opt3={}, std::string opt4={}, std::string opt5={});
+    void relax_incremental_2_1(size_t number_of_optimizations) { relax_incremental_2(number_of_optimizations); }
+    void relax_incremental_2_2(size_t number_of_optimizations, std::string opt1) { relax_incremental_2(number_of_optimizations, opt1); }
+    void relax_incremental_2_3(size_t number_of_optimizations, std::string opt1, std::string opt2) { relax_incremental_2(number_of_optimizations, opt1, opt2); }
+    void relax_incremental_2_4(size_t number_of_optimizations, std::string opt1, std::string opt2, std::string opt3) { relax_incremental_2(number_of_optimizations, opt1, opt2, opt3); }
+    void relax_incremental_2_5(size_t number_of_optimizations, std::string opt1, std::string opt2, std::string opt3, std::string opt4) { relax_incremental_2(number_of_optimizations, opt1, opt2, opt3, opt4); }
+    void relax_incremental_2_6(size_t number_of_optimizations, std::string opt1, std::string opt2, std::string opt3, std::string opt4, std::string opt5) { relax_incremental_2(number_of_optimizations, opt1, opt2, opt3, opt4, opt5); }
     acmacs::chart::Stress stress_evaluator(size_t number_of_dimensions, std::string minimum_column_basis);
     void sort_projections() { obj_->projections_modify()->sort(); }
     void remove_all_projections() { obj_->projections_modify()->remove_all(); }

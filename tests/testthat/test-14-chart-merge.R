@@ -17,9 +17,14 @@ test_that("merge2 number of sera", { expect_equal(merge2$number_of_sera, merge_t
 test_that("merge2 number of layers", { expect_equal(merge2$titers$number_of_layers, merge_type2$titers$number_of_layers) })
 test_that("merge2 column bases", { expect_equal(merge2$column_bases(), merge_type2$column_bases()) })
 test_that("merge2 stress", { expect_equal(merge2$projections[[1]]$stress, merge_type2$projections[[1]]$stress) })
-merge2$relax_incremental(100, FALSE)
+merge2$relax_incremental(1000)
 # print(paste("merge2 stress: ", merge2$projections[[1]]$stress))
-test_that("merge2 stress upon relaxing", { expect_equal(merge2$projections[[1]]$stress, 118.998, tolerance=1e-3) })
+test_that("merge2 stress upon relaxing", { expect_equal(merge2$projections[[1]]$stress, 118.998, tolerance=1e-3, scale=1) })
+
+merge2frozen <- acmacs.merge.2(chart1, chart2)
+merge2frozen$relax_incremental(1000, "fine", "unmovable-primary-points")
+cat(paste("\n\nmerge2frozen stress: ", merge2frozen$projections[[1]]$stress), "\n\n", sep="")
+test_that("merge2frozen stress upon relaxing", { expect_equal(merge2frozen$projections[[1]]$stress, 794, tolerance=1, scale=1) })
 
 merge3 <- acmacs.merge.3(chart1, chart2)
 merge_type3 <- new(acmacs.Chart, "merge-type3.ace")

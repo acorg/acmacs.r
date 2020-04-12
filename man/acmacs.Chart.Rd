@@ -90,10 +90,21 @@ chart <- new(acmacs.Chart, raw_data)
   available.\cr \bold{rough} is boolean, when TRUE optimization is about
   30\% faster, result is slightly worse, visually no distinguishable.}
 
-  \item{relax_incremental(number_of_optimizations,\cr rough)}{relax
-  multiple times upon calling acmacs.merge.2(). Only points having NaN
-  coordinates (i.e. points found in the second source chart of the
-  merge) randomized.}
+  \item{relax_incremental(number_of_optimizations,\cr option
+  ...)}{relax multiple times upon calling acmacs.merge.2(). Only
+  points having NaN coordinates (i.e. points found in the second
+  source chart of the merge) randomized.\cr
+  Option is a string, up to 5
+  options may be specified, the following options are supported:\cr
+  "rough" - use faster rough optimization\cr
+  "fine" - use fine optimization (default)\cr
+  "optimization-cg" - use cg optimization method (default)\cr
+  "optimization-lbfgs" - use lbfgs optimization method\cr
+  "disconnect-having-too-few-titers" - disconnect antigens/sera that have too few numeric titers (default)\cr
+  "no-disconnect-having-too-few-titers"\cr
+  "no-unmovable-primary-points" - relax all antigens and sera in the merge (default)\cr
+  "unmovable-primary-points" - freeze antigens/sera found in the primary chart\cr
+  }
 
   \item{remove_layers()}{if chart is a merge, titers cannot be
     modified. if you want to change them anyway, you have to remove

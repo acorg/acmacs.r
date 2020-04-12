@@ -61,9 +61,9 @@ chart1$remove_all_projections()
 test_that("upon removal all projections (again)", { expect_equal(chart1$number_of_projections, 0) })
 prj1 <- chart1$new_projection_with_layout("none", matrix(1:((chart1$number_of_antigens + chart1$number_of_sera)*2), ncol=2, byrow=TRUE))
 test_that("number of dimensions for new projection with layout", expect_equal(prj1$number_of_dimensions, 2))
-test_that("stress for new projection with layout", expect_equal(prj1$stress, 205094.9975, tolerance=1e-3))
+test_that("stress for new projection with layout", expect_equal(prj1$stress, 205094.9975, tolerance=1e-3, scale=1))
 prj1$relax()
-test_that("stress after relaxing projection with non-random layout", expect_equal(prj1$stress, 79.7583, tolerance=1e-3))
+test_that("stress after relaxing projection with non-random layout", expect_equal(prj1$stress, 79.7583, tolerance=1e-3, scale=1))
 
 # extension fields
 library(jsonlite)
