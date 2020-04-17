@@ -30,36 +30,29 @@ Package is supposed to be installed from a binary archive for the
 specific platform. Building package from sources is complicated and it
 cannot be done within R.
 
-Package is in an alpha stage, it's worth perhaps installing it into a
-temporary directory, that directory (/tmp/R/library in the example
-below) must exist before you submit install.packages command.
-
-Required R libraries
---------------------
+Installation on macOS 10.14
+---------------------
 
 ```R
 install.packages(c("Rcpp", "devtools", "testthat", "roxygen2"))
+install.packages(Find(function(asset) { grepl("macOS", asset$name, fixed=TRUE) }, devtools:::github_GET("repos/acorg/acmacs.r/releases/latest")$assets)$browser_download_url)
 ```
 
-macOS 10.14
----------------------
 
-Installation size: ~5Mb
-
-Please replace /tmp/R/library with your local directory for packages
-or remove lib="/tmp/R/library" argument.
-
-```R
-install.packages("Rcpp")
-install.packages("https://github.com/acorg/acmacs.r/releases/download/v3.6/acmacs.r_3.6_R_macOS-10.14.tgz", repos=NULL)
-library(acmacs.r)
-```
-
-Linux
+Installation on Linux
 -----
 
 ```R
-install.packages("https://github.com/acorg/acmacs.r/releases/download/v3.6/acmacs.r_3.6_R_x86_64-pc-linux-gnu.tar.gz", repos=NULL)
+install.packages(c("Rcpp", "devtools", "testthat", "roxygen2"))
+install.packages(Find(function(asset) { grepl("linux", asset$name, fixed=TRUE) }, devtools:::github_GET("repos/acorg/acmacs.r/releases/latest")$assets)$browser_download_url)
+
+```
+
+Loading
+---------------------
+
+```R
+library(acmacs.r)
 ```
 
 Usage example

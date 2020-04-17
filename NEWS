@@ -1,5 +1,8 @@
 acmacs.r NEWS -- history of user-visible changes.
 
+* Changes in 4.5 (2020-04-17)
+**
+
 * Changes in 4.4 (2020-04-12)
 ** new chart$relax_incremental interface
 merge$relax_incremental(1000)
