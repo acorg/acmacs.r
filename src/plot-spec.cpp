@@ -35,26 +35,26 @@ Rcpp::DataFrame PlotSpec::styles_as_data_frame() const
     StringVector label_text(styles.size());
 
     for (auto [index, entry] : acmacs::enumerate(styles)) {
-        shown[index] = entry.shown;
-        fill[index] = fmt::format("{}", entry.fill);
-        outline[index] = fmt::format("{}", entry.outline);
-        outline_width[index] = entry.outline_width.value();
-        size[index] = entry.size.value();
-        rotation[index] = entry.rotation.value();
-        aspect[index] = entry.aspect.value();
-        shape[index] = fmt::format("{}", entry.shape);
+        shown[index] = entry.shown();
+        fill[index] = fmt::format("{}", entry.fill());
+        outline[index] = fmt::format("{}", entry.outline());
+        outline_width[index] = entry.outline_width().value();
+        size[index] = entry.size().value();
+        rotation[index] = entry.rotation().value();
+        aspect[index] = entry.aspect().value();
+        shape[index] = fmt::format("{}", entry.shape());
 
-        label_shown[index] = entry.label.shown;
-        label_offset_x[index] = entry.label.offset.x();
-        label_offset_y[index] = entry.label.offset.y();
-        label_size[index] = entry.label.size.value();
-        label_color[index] = fmt::format("{}", entry.label.color);
-        label_rotation[index] = entry.label.rotation.value();
-        label_slant[index] = fmt::format("{}", entry.label.style.slant);
-        label_weight[index] = fmt::format("{}", entry.label.style.weight);
-        label_font_family[index] = entry.label.style.font_family;
+        label_shown[index] = entry.label().shown;
+        label_offset_x[index] = entry.label().offset.x();
+        label_offset_y[index] = entry.label().offset.y();
+        label_size[index] = entry.label().size.value();
+        label_color[index] = fmt::format("{}", entry.label().color);
+        label_rotation[index] = entry.label().rotation.value();
+        label_slant[index] = fmt::format("{}", entry.label().style.slant);
+        label_weight[index] = fmt::format("{}", entry.label().style.weight);
+        label_font_family[index] = entry.label().style.font_family;
 
-        label_text[index] = static_cast<std::string>(entry.label_text);
+        label_text[index] = static_cast<std::string>(entry.label_text());
     }
 
     return DataFrame::create(_["shown"] = shown, _["fill"] = fill, _["outline"] = outline, _["outline_width"] = outline_width, _["size"] = size, _["rotation"] = rotation, _["aspect"] = aspect,
