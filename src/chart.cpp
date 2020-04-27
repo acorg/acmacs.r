@@ -1,6 +1,6 @@
 #include <limits>
 
-#include "acmacs-base/rjson.hh"
+#include "acmacs-base/rjson-v2.hh"
 #include "acmacs-chart-2/randomizer.hh"
 #include "acmacs-chart-2/merge.hh"
 #include "acmacs-chart-2/map-resolution-test.hh"
