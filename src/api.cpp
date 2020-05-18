@@ -18,9 +18,9 @@ inline PlotSpec Chart::plot_spec() { return obj_->plot_spec_modify(); }
 inline auto style_shown(acmacs::PointStyle* style) { return style->shown(); }
 inline auto style_size(acmacs::PointStyle* style) { return style->size().value(); }
 inline std::string style_fill(acmacs::PointStyle* style) { return fmt::format("{}", style->fill()); }
-inline double style_fill_opacity(acmacs::PointStyle* style) { return acmacs::color::opacity(style->fill()); }
+inline double style_fill_opacity(acmacs::PointStyle* style) { return style->fill().opacity(); }
 inline std::string style_outline(acmacs::PointStyle* style) { return fmt::format("{}", style->outline()); }
-inline double style_outline_opacity(acmacs::PointStyle* style) { return acmacs::color::opacity(style->outline()); }
+inline double style_outline_opacity(acmacs::PointStyle* style) { return style->outline().opacity(); }
 inline auto style_outline_width(acmacs::PointStyle* style) { return style->outline_width().value(); }
 inline auto style_rotation(acmacs::PointStyle* style) { return style->rotation().value(); }
 inline auto style_aspect(acmacs::PointStyle* style) { return style->aspect().value(); }
