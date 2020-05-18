@@ -1,3 +1,4 @@
+#include "acmacs-base/debug.hh"
 #include "locationdb/locdb.hh"
 
 #include "chart.hh"
@@ -30,6 +31,9 @@ inline std::string style_shape(acmacs::PointStyle* style) { return fmt::format("
 static inline void acmacs_init()
 {
     acmacs::locationdb::get(acmacs::locationdb::locdb_suppress_error::yes); // to avoid error message if locdb is requested later and locationdb.json.xz is not available
+
+    // disable AD_DEBUG and other messages
+    acmacs::log::detail_debug::enabled = false;
 
     std::cout.rdbuf(Rcpp::Rcout.rdbuf());
     std::cerr.rdbuf(Rcpp::Rcerr.rdbuf());
