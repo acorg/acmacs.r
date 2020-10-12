@@ -80,8 +80,8 @@ chart <- new(acmacs.Chart, raw_data)
   "disconnect-having-too-few-titers" - disconnect antigens/sera that have too few numeric titers (default)\cr
   "no-disconnect-having-too-few-titers"\cr
   "dimension-annealing"\cr
-  "no-dimension-annealing"\cr
-  "none" - no minimum column basis\cr
+  "no-dimension-annealing" (default)\cr
+  "none" - no minimum column basis (default)\cr
   "1280" - minimum column basis 1280}
 
   \item{relax(minimum_column_basis, number_of_dimensions)}{creates new
