@@ -197,7 +197,7 @@ Projection Chart::relax_seed(std::string minimum_column_basis, size_t number_of_
 void Chart::relax_many(std::string minimum_column_basis, size_t number_of_dimensions, size_t number_of_optimizations, bool rough)
 {
     acmacs::chart::optimization_options options(acmacs::chart::optimization_method::alglib_cg_pca, rough ? acmacs::chart::optimization_precision::rough : acmacs::chart::optimization_precision::fine, 2.0);
-    obj_->relax(acmacs::chart::number_of_optimizations_t{number_of_optimizations}, minimum_column_basis, acmacs::number_of_dimensions_t{number_of_dimensions}, acmacs::chart::use_dimension_annealing::yes, options, acmacs::chart::report_stresses::no, acmacs::chart::DisconnectedPoints{});
+    obj_->relax(acmacs::chart::number_of_optimizations_t{number_of_optimizations}, minimum_column_basis, acmacs::number_of_dimensions_t{number_of_dimensions}, acmacs::chart::use_dimension_annealing::no, options, acmacs::chart::DisconnectedPoints{});
     obj_->projections_modify()->sort();
 }
 
@@ -216,7 +216,6 @@ void Chart::relax_incremental_2(size_t number_of_optimizations, std::string opt1
     using namespace std::string_view_literals;
 
     acmacs::chart::optimization_options options;
-    auto disconnect_having_too_few_titers{acmacs::chart::disconnect_having_too_few_titers::yes};
     auto remove_source_projection{acmacs::chart::remove_source_projection::yes};
     auto unmovable_non_nan_points{acmacs::chart::unmovable_non_nan_points::no};
 
@@ -230,9 +229,9 @@ void Chart::relax_incremental_2(size_t number_of_optimizations, std::string opt1
         else if (opt == "optimization-cg"sv) // default
             options.method = acmacs::chart::optimization_method::alglib_cg_pca;
         else if (opt == "disconnect-having-too-few-titers"sv) // default
-            disconnect_having_too_few_titers = acmacs::chart::disconnect_having_too_few_titers::yes;
+            options.disconnect_too_few_numeric_titers = acmacs::chart::disconnect_few_numeric_titers::yes;
         else if (opt == "no-disconnect-having-too-few-titers"sv)
-            disconnect_having_too_few_titers = acmacs::chart::disconnect_having_too_few_titers::no;
+            options.disconnect_too_few_numeric_titers = acmacs::chart::disconnect_few_numeric_titers::no;
         else if (opt == "unmovable-primary-points"sv)
             unmovable_non_nan_points = acmacs::chart::unmovable_non_nan_points::yes;
         else if (opt == "no-unmovable-primary-points"sv) // default
@@ -248,7 +247,7 @@ void Chart::relax_incremental_2(size_t number_of_optimizations, std::string opt1
     parse_opt(opt5);
 
     constexpr const size_t projection_no{0};
-    obj_->relax_incremental(projection_no, acmacs::chart::number_of_optimizations_t{number_of_optimizations}, options, disconnect_having_too_few_titers, remove_source_projection, unmovable_non_nan_points);
+    obj_->relax_incremental(projection_no, acmacs::chart::number_of_optimizations_t{number_of_optimizations}, options, remove_source_projection, unmovable_non_nan_points);
     obj_->projections_modify()->sort();
 
 } // Chart::relax_incremental_2
