@@ -169,9 +169,55 @@ Projection Chart::new_projection_with_layout(std::string minimum_column_basis, c
 
 // ----------------------------------------------------------------------
 
+Projection Chart::relax1(size_t number_of_dimensions, std::string opt1, std::string opt2, std::string opt3, std::string opt4, std::string opt5, std::string opt6, std::string opt7, std::string opt8,
+                         std::string opt9)
+{
+    using namespace std::string_view_literals;
+    acmacs::chart::optimization_options options{acmacs::chart::optimization_method::alglib_cg_pca, acmacs::chart::optimization_precision::fine, 2.0};
+    std::string minimum_column_basis{"none"};
+    acmacs::chart::use_dimension_annealing dimension_annealing{acmacs::chart::use_dimension_annealing::no};
+
+    const auto parse_opt = [&](std::string_view opt) {
+        if (opt == "rough"sv)
+            options.precision = acmacs::chart::optimization_precision::rough;
+        else if (opt == "fine"sv) // default
+            options.precision = acmacs::chart::optimization_precision::fine;
+        else if (opt == "optimization-lbfgs"sv)
+            options.method = acmacs::chart::optimization_method::alglib_lbfgs_pca;
+        else if (opt == "optimization-cg"sv) // default
+            options.method = acmacs::chart::optimization_method::alglib_cg_pca;
+        else if (opt == "disconnect-having-too-few-titers"sv) // default
+            options.disconnect_too_few_numeric_titers = acmacs::chart::disconnect_few_numeric_titers::yes;
+        else if (opt == "no-disconnect-having-too-few-titers"sv)
+            options.disconnect_too_few_numeric_titers = acmacs::chart::disconnect_few_numeric_titers::no;
+        else if (opt == "none"sv || opt == "1280"sv)
+            minimum_column_basis = opt;
+        else if (opt == "dimension-annealing"sv)
+            dimension_annealing = acmacs::chart::use_dimension_annealing::yes;
+        else if (opt == "no-dimension-annealing"sv) // default
+            dimension_annealing = acmacs::chart::use_dimension_annealing::no;
+        else if (!opt.empty())
+            std::cerr << "WARNING: acmacs chart relax: unrecognized argument: \"" << opt << "\" (ignored)\n";
+    };
+
+    parse_opt(opt1);
+    parse_opt(opt2);
+    parse_opt(opt3);
+    parse_opt(opt4);
+    parse_opt(opt5);
+    parse_opt(opt6);
+    parse_opt(opt7);
+    parse_opt(opt8);
+    parse_opt(opt9);
+
+    auto [status, projection] = obj_->relax(minimum_column_basis, acmacs::number_of_dimensions_t{number_of_dimensions}, dimension_annealing, options);
+    // obj_->projections_modify()->sort();
+    return projection;
+}
+
 Projection Chart::relax2(std::string minimum_column_basis, size_t number_of_dimensions)
 {
-    auto [status, projection] = obj_->relax(minimum_column_basis, acmacs::number_of_dimensions_t{number_of_dimensions}, acmacs::chart::use_dimension_annealing::yes,
+    auto [status, projection] = obj_->relax(minimum_column_basis, acmacs::number_of_dimensions_t{number_of_dimensions}, acmacs::chart::use_dimension_annealing::no,
                                             acmacs::chart::optimization_options(acmacs::chart::optimization_method::alglib_cg_pca, acmacs::chart::optimization_precision::fine, 2.0));
       // obj_->projections_modify()->sort();
     return projection;
@@ -179,7 +225,7 @@ Projection Chart::relax2(std::string minimum_column_basis, size_t number_of_dime
 
 Projection Chart::relax3(std::string minimum_column_basis, size_t number_of_dimensions, bool rough)
 {
-    auto [status, projection] = obj_->relax(minimum_column_basis, acmacs::number_of_dimensions_t{number_of_dimensions}, acmacs::chart::use_dimension_annealing::yes,
+    auto [status, projection] = obj_->relax(minimum_column_basis, acmacs::number_of_dimensions_t{number_of_dimensions}, acmacs::chart::use_dimension_annealing::no,
                                             acmacs::chart::optimization_options(acmacs::chart::optimization_method::alglib_cg_pca, rough ? acmacs::chart::optimization_precision::rough : acmacs::chart::optimization_precision::fine, 2.0));
       // obj_->projections_modify()->sort();
     return projection;
@@ -187,7 +233,7 @@ Projection Chart::relax3(std::string minimum_column_basis, size_t number_of_dime
 
 Projection Chart::relax_seed(std::string minimum_column_basis, size_t number_of_dimensions, bool rough, unsigned seed)
 {
-    auto [status, projection] = obj_->relax(minimum_column_basis, acmacs::number_of_dimensions_t{number_of_dimensions}, acmacs::chart::use_dimension_annealing::yes,
+    auto [status, projection] = obj_->relax(minimum_column_basis, acmacs::number_of_dimensions_t{number_of_dimensions}, acmacs::chart::use_dimension_annealing::no,
                                             acmacs::chart::optimization_options(acmacs::chart::optimization_method::alglib_cg_pca, rough ? acmacs::chart::optimization_precision::rough : acmacs::chart::optimization_precision::fine, 2.0),
                                             seed);
       // obj_->projections_modify()->sort();

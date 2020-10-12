@@ -17,6 +17,7 @@ test_relax <- function(filename, num_optimizations, expected_stress) {
     ##     write(paste(p_no, chart$projections[[p_no]]$stress), file="")
     ## }
     # test_that("stress after N optimizations", { expect_equal(chart$projections[[1]]$stress, expected_stress) })
+    cat(paste("\n\nstress after ", num_optimizations, " optimizations: ", chart$projections[[2]]$stress, "  expected: ", expected_stress), "\n\n", sep="")
     test_that("stress after N optimizations", { expect_true(chart$projections[[2]]$stress < expected_stress) })
 }
 
@@ -79,10 +80,10 @@ test_relax_with_unmovable <- function(filename) {
 
 test_relax_existing("2004-3.ace")
 test_relax_existing("cdc-h1pdm-2009.acd1.bz2")
-test_relax("2004-3.ace", 20, 72)
+test_relax("2004-3.ace", 100, 72)
 test_relax("cdc-h1pdm-2009.acd1.bz2", 5, 900)
-test_relax_seed("cdc-h1pdm-2009.acd1.bz2", 778, 868.69, 868.70)
-test_relax_seed("cdc-h1pdm-2009.acd1.bz2", 666, 880.0, 890.0)
+test_relax_seed("cdc-h1pdm-2009.acd1.bz2", 778, 1091.0, 1092.0)
+test_relax_seed("cdc-h1pdm-2009.acd1.bz2", 666, 750.0, 760.0)
 test_relax_with_dimension_annealing("cdc-h1pdm-2009.acd1.bz2")
 test_relax_with_unmovable("2004-3.ace")
 

@@ -120,6 +120,7 @@ class Chart : public wrapper<acmacs::chart::ChartModify>
     Projection new_projection_with_layout_randomization3(std::string minimum_column_basis, size_t number_of_dimensions);
     Projection new_projection_with_layout(std::string minimum_column_basis, const Rcpp::NumericMatrix& layout);
 
+    Projection relax1(size_t number_of_dimensions, std::string opt1={}, std::string opt2={}, std::string opt3={}, std::string opt4={}, std::string opt5={}, std::string opt6={}, std::string opt7={}, std::string opt8={}, std::string opt9={});
     Projection relax2(std::string minimum_column_basis, size_t number_of_dimensions);
     Projection relax3(std::string minimum_column_basis, size_t number_of_dimensions, bool rough);
     Projection relax_seed(std::string minimum_column_basis, size_t number_of_dimensions, bool rough, unsigned seed);

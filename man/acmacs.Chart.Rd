@@ -69,6 +69,21 @@ chart <- new(acmacs.Chart, raw_data)
   \item{save()}{Save (modified) chart into a string in ace format,
   returns that string}
 
+  \item{relax(number_of_dimensions,\cr option ...)}{creates new
+    projection with random layout and optimizes it.\cr
+  \bold{number_of_dimensions} is a number,  e.g. 2 or 3.\cr
+    Option is a string, up to 9 options can be specified, the following options are supported:\cr
+  "rough" - use faster rough optimization\cr
+  "fine" - use fine optimization (default)\cr
+  "optimization-cg" - use cg optimization method (default)\cr
+  "optimization-lbfgs" - use lbfgs optimization method\cr
+  "disconnect-having-too-few-titers" - disconnect antigens/sera that have too few numeric titers (default)\cr
+  "no-disconnect-having-too-few-titers"\cr
+  "dimension-annealing"\cr
+  "no-dimension-annealing"\cr
+  "none" - no minimum column basis\cr
+  "1280" - minimum column basis 1280}
+
   \item{relax(minimum_column_basis, number_of_dimensions)}{creates new
   projection with random layout and optimizes it.\cr \bold{minimum_column_basis}
   is a string, e.g. "none" or "1280".\cr \bold{number_of_dimensions} is a number,

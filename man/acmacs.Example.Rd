@@ -312,10 +312,12 @@ list_of_dense_matrice <- chart$titers$all_layers()
 See \code{\link{acmacs.Relax}} for more details.\cr
 \preformatted{
 # make new projection in 2d without minimum column basis with random layout and relax it
+new_projection <- chart$relax(2)
 new_projection <- chart$relax("none", 2)
 new_projection$stress
 # make new projection in 2d without minimum column basis with random layout and relax it
 # use rough optimization which is 30\% faster
+new_projection <- chart$relax(2, "rough")
 new_projection <- chart$relax("none", 2, TRUE)
 new_projection$stress
 # make new projection in 2d without minimum column basis and with the specified layout

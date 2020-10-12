@@ -55,7 +55,7 @@ test2 <- function() {
 
     for(n in 1:20){
         print(n)
-        try({ chart$relax("none", 2, TRUE) })
+        try({ chart$relax(2, "rough") })
     }
 
     for(n in 1:20){

@@ -1,7 +1,8 @@
 acmacs.r NEWS -- history of user-visible changes.
 
 * Changes in 5.0 (2020-10-12)
-** 
+** Dimension annealing is off by default
+** chart$relax(<number-of-dimeansions>, <option> ...)
 
 * Changes in 4.6 (2020-06-04)
 ** Using R 4.0 on macOS
