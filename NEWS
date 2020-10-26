@@ -1,5 +1,8 @@
 acmacs.r NEWS -- history of user-visible changes.
 
+* Changes in 5.1 (2020-10-27)
+**
+
 * Changes in 5.0 (2020-10-12)
 ** Dimension annealing is off by default
 ** chart$relax(<number-of-dimeansions>, <option> ...)
