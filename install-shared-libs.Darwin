@@ -7,6 +7,7 @@ import sys, os, subprocess, shutil
 def main(target_package_dir, *libraries):
     print(" ".join(sys.argv))
     to_process = set(libraries)
+    rpath_source_dirs = set(os.path.dirname(lib) for lib in libraries if lib)
     target_dir = os.path.join(target_package_dir, "libs")
 
     # binaries
@@ -31,14 +32,24 @@ def main(target_package_dir, *libraries):
                 target_lib = os.path.join(target_dir, os.path.basename(name))
                 if target_lib not in processed and target_lib not in to_process:
                     print("copy", name, target_lib)
+                    if name.startswith("@rpath"):
+                        name = name.replace("@rpath/", "")
+                        for src_dir in rpath_source_dirs:
+                            src_name = os.path.join(src_dir, name)
+                            # print(f">>>> @rpath {src_name}")
+                            if os.path.exists(src_name):
+                                name = src_name
+                                break
+                        # print(f">>>> @rpath {name} lib:{library}")
                     shutil.copy(name, target_lib)
+                    rpath_source_dirs.add(os.path.dirname(name))
                     to_process.add(target_lib)
-    if not libomp:
-        print("WARNING: no libomp found in", libraries, file=sys.stderr)
+    # if not libomp:
+    #     print("WARNING: no libomp found in", libraries, file=sys.stderr)
 
 # ----------------------------------------------------------------------
 
-system_lib_paths = ["/usr/lib/", "/System/", "/Library/", "@rpath/"]
+system_lib_paths = ["/usr/lib/", "/System/", "/Library/"]
 
 def in_system(name):
     for path in system_lib_paths:
