@@ -38,7 +38,7 @@ def main(target_package_dir, *libraries):
 
 # ----------------------------------------------------------------------
 
-system_lib_paths = ["/usr/lib/", "/System/", "/Library/"]
+system_lib_paths = ["/usr/lib/", "/System/", "/Library/", "@rpath/"]
 
 def in_system(name):
     for path in system_lib_paths:
