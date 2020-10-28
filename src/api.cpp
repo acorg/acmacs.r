@@ -1,4 +1,4 @@
-#include "acmacs-base/debug.hh"
+#include "acmacs-base/log.hh"
 #include "locationdb/locdb.hh"
 
 #include "chart.hh"
@@ -32,8 +32,7 @@ static inline void acmacs_init()
 {
     acmacs::locationdb::get(acmacs::locationdb::locdb_suppress_error::yes); // to avoid error message if locdb is requested later and locationdb.json.xz is not available
 
-    // disable AD_DEBUG and other messages
-    acmacs::log::detail_debug::enabled = false;
+    acmacs::log::do_not_print_debug_messages(); // disable AD_DEBUG and other messages
 
     std::cout.rdbuf(Rcpp::Rcout.rdbuf());
     std::cerr.rdbuf(Rcpp::Rcerr.rdbuf());
