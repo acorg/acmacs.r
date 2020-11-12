@@ -1,7 +1,7 @@
 acmacs.r package
 ================
 
-This package provides R 3.6 with ability to read, modify, save the data stored in acmacs and
+This package provides R 4.0 with ability to read, modify, save the data stored in acmacs and
 lispmds files.
 
 Supported platforms
@@ -24,7 +24,7 @@ Installation
 ============
 
 https://cran.r-project.org/web/packages/Rcpp/index.html
-R 3.6 is required, other versions are not supported!
+R 4.0 is required, other versions are not supported!
 
 Package is supposed to be installed from a binary archive for the
 specific platform. Building package from sources is complicated and it
