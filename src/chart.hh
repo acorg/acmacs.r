@@ -108,7 +108,7 @@ class Chart : public wrapper<acmacs::chart::ChartModify>
     void remove_antigens(const Rcpp::NumericVector& aIndexes);
     void remove_sera(const Rcpp::NumericVector& aIndexes);
 
-    void set_name(std::string name) { return obj_->info_modify()->name(name); }
+    void set_name(std::string name) { return obj_->info_modify().name(name); }
     void save(std::string aFilename);
     std::string save_to_string();
 
@@ -134,9 +134,9 @@ class Chart : public wrapper<acmacs::chart::ChartModify>
     void relax_incremental_2_5(size_t number_of_optimizations, std::string opt1, std::string opt2, std::string opt3, std::string opt4) { relax_incremental_2(number_of_optimizations, opt1, opt2, opt3, opt4); }
     void relax_incremental_2_6(size_t number_of_optimizations, std::string opt1, std::string opt2, std::string opt3, std::string opt4, std::string opt5) { relax_incremental_2(number_of_optimizations, opt1, opt2, opt3, opt4, opt5); }
     acmacs::chart::Stress stress_evaluator(size_t number_of_dimensions, std::string minimum_column_basis);
-    void sort_projections() { obj_->projections_modify()->sort(); }
-    void remove_all_projections() { obj_->projections_modify()->remove_all(); }
-    void remove_all_projections_except(size_t projection_no_based_one) { obj_->projections_modify()->remove_all_except(projection_no_based_one - 1); }
+    void sort_projections() { obj_->projections_modify().sort(); }
+    void remove_all_projections() { obj_->projections_modify().remove_all(); }
+    void remove_all_projections_except(size_t projection_no_based_one) { obj_->projections_modify().remove_all_except(projection_no_based_one - 1); }
     void remove_layers() { obj_->remove_layers(); }
     Chart clone() const;
     Projection clone_projection(size_t projection_no_based_one) const;

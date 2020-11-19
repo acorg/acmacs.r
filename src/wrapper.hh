@@ -47,10 +47,10 @@ template <typename T> class wrapper
     template <typename Wrapper, auto (T::*property)()> Rcpp::List getListViaAt()
         {
             auto elements = ((*obj_).*property)();
-            const auto num_elements = elements->size();
+            const auto num_elements = elements.size();
             auto result = Rcpp::List::create();
             for (size_t no = 0; no < num_elements; ++no)
-                result.push_back(Wrapper(elements->at(no)));
+                result.push_back(Wrapper(elements.at(no)));
             return result;
         }
 
@@ -65,11 +65,11 @@ template <typename T> class wrapper
 
       // ----------------------------------------------------------------------
 
-    template <typename Wrapper, typename V> Rcpp::List getList(V elements) const
+    template <typename Wrapper, typename V> Rcpp::List getList(V& elements) const
         {
             auto result = Rcpp::List::create();
-            for (size_t index = 0; index < elements->size(); ++index)
-                result.push_back(Wrapper(elements->ptr_at(index)));
+            for (size_t index = 0; index < elements.size(); ++index)
+                result.push_back(Wrapper(elements.ptr_at(index)));
             return result;
         }
 

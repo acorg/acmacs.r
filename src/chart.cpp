@@ -43,14 +43,14 @@ Chart Chart::clone() const
 
 Projection Chart::projection(size_t projection_no)
 {
-    return obj_->projections_modify()->at(projection_no - 1);
+    return obj_->projections_modify().at(projection_no - 1);
 }
 
 // ----------------------------------------------------------------------
 
 Projection Chart::clone_projection(size_t projection_no) const
 {
-    return static_cast<std::shared_ptr<acmacs::chart::ProjectionModify>>(obj_->projections_modify()->at(projection_no - 1)->clone(*obj_));
+    return static_cast<std::shared_ptr<acmacs::chart::ProjectionModify>>(obj_->projections_modify().at(projection_no - 1)->clone(*obj_));
 
 } // Chart::clone_projection
 
@@ -140,7 +140,7 @@ void Chart::set_column_basis(size_t serum_no, double column_basis)
 
 Projection Chart::new_projection_with_layout_randomization1(std::string minimum_column_basis, size_t number_of_dimensions, std::string randomization_method, double diameter_multiplier)
 {
-    auto projection = obj_->projections_modify()->new_from_scratch(acmacs::number_of_dimensions_t{number_of_dimensions}, minimum_column_basis);
+    auto projection = obj_->projections_modify().new_from_scratch(acmacs::number_of_dimensions_t{number_of_dimensions}, minimum_column_basis);
     projection->randomize_layout(Projection::make_randomizer(randomization_method), diameter_multiplier <= 0.0 ? acmacs::chart::optimization_options{}.randomization_diameter_multiplier: diameter_multiplier);
     return static_cast<std::shared_ptr<acmacs::chart::ProjectionModify>>(projection);
 
@@ -161,7 +161,7 @@ Projection Chart::new_projection_with_layout_randomization3(std::string minimum_
 Projection Chart::new_projection_with_layout(std::string minimum_column_basis, const Rcpp::NumericMatrix& layout)
 {
     auto leyt = Projection::layout_convert(layout);
-    auto projection = obj_->projections_modify()->new_from_scratch(leyt.number_of_dimensions(), minimum_column_basis);
+    auto projection = obj_->projections_modify().new_from_scratch(leyt.number_of_dimensions(), minimum_column_basis);
     projection->set_layout(leyt);
     return static_cast<std::shared_ptr<acmacs::chart::ProjectionModify>>(projection);
 
@@ -211,7 +211,7 @@ Projection Chart::relax1(size_t number_of_dimensions, std::string opt1, std::str
     parse_opt(opt9);
 
     auto [status, projection] = obj_->relax(minimum_column_basis, acmacs::number_of_dimensions_t{number_of_dimensions}, dimension_annealing, options);
-    // obj_->projections_modify()->sort();
+    // obj_->projections_modify().sort();
     return projection;
 }
 
@@ -219,7 +219,7 @@ Projection Chart::relax2(std::string minimum_column_basis, size_t number_of_dime
 {
     auto [status, projection] = obj_->relax(minimum_column_basis, acmacs::number_of_dimensions_t{number_of_dimensions}, acmacs::chart::use_dimension_annealing::no,
                                             acmacs::chart::optimization_options(acmacs::chart::optimization_method::alglib_cg_pca, acmacs::chart::optimization_precision::fine, 2.0));
-      // obj_->projections_modify()->sort();
+      // obj_->projections_modify().sort();
     return projection;
 }
 
@@ -227,7 +227,7 @@ Projection Chart::relax3(std::string minimum_column_basis, size_t number_of_dime
 {
     auto [status, projection] = obj_->relax(minimum_column_basis, acmacs::number_of_dimensions_t{number_of_dimensions}, acmacs::chart::use_dimension_annealing::no,
                                             acmacs::chart::optimization_options(acmacs::chart::optimization_method::alglib_cg_pca, rough ? acmacs::chart::optimization_precision::rough : acmacs::chart::optimization_precision::fine, 2.0));
-      // obj_->projections_modify()->sort();
+      // obj_->projections_modify().sort();
     return projection;
 }
 
@@ -236,7 +236,7 @@ Projection Chart::relax_seed(std::string minimum_column_basis, size_t number_of_
     auto [status, projection] = obj_->relax(minimum_column_basis, acmacs::number_of_dimensions_t{number_of_dimensions}, acmacs::chart::use_dimension_annealing::no,
                                             acmacs::chart::optimization_options(acmacs::chart::optimization_method::alglib_cg_pca, rough ? acmacs::chart::optimization_precision::rough : acmacs::chart::optimization_precision::fine, 2.0),
                                             seed);
-      // obj_->projections_modify()->sort();
+      // obj_->projections_modify().sort();
     return projection;
 }
 
@@ -244,7 +244,7 @@ void Chart::relax_many(std::string minimum_column_basis, size_t number_of_dimens
 {
     acmacs::chart::optimization_options options(acmacs::chart::optimization_method::alglib_cg_pca, rough ? acmacs::chart::optimization_precision::rough : acmacs::chart::optimization_precision::fine, 2.0);
     obj_->relax(acmacs::chart::number_of_optimizations_t{number_of_optimizations}, minimum_column_basis, acmacs::number_of_dimensions_t{number_of_dimensions}, acmacs::chart::use_dimension_annealing::no, options, acmacs::chart::DisconnectedPoints{});
-    obj_->projections_modify()->sort();
+    obj_->projections_modify().sort();
 }
 
 // ----------------------------------------------------------------------
@@ -254,7 +254,7 @@ void Chart::relax_incremental_1(size_t number_of_optimizations, bool rough)
     acmacs::chart::optimization_options options(acmacs::chart::optimization_method::alglib_cg_pca, rough ? acmacs::chart::optimization_precision::rough : acmacs::chart::optimization_precision::fine, 2.0);
     constexpr const size_t projection_no{0};
     obj_->relax_incremental(projection_no, acmacs::chart::number_of_optimizations_t{number_of_optimizations}, options);
-    obj_->projections_modify()->sort();
+    obj_->projections_modify().sort();
 }
 
 void Chart::relax_incremental_2(size_t number_of_optimizations, std::string opt1, std::string opt2, std::string opt3, std::string opt4, std::string opt5)
@@ -294,7 +294,7 @@ void Chart::relax_incremental_2(size_t number_of_optimizations, std::string opt1
 
     constexpr const size_t projection_no{0};
     obj_->relax_incremental(projection_no, acmacs::chart::number_of_optimizations_t{number_of_optimizations}, options, remove_source_projection, unmovable_non_nan_points);
-    obj_->projections_modify()->sort();
+    obj_->projections_modify().sort();
 
 } // Chart::relax_incremental_2
 

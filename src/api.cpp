@@ -12,8 +12,8 @@ inline Rcpp::StringVector passage_as_character(acmacs::virus::Passage* aPassage)
 inline Rcpp::List Chart::get_antigens() const { return getList<Antigen>(obj_->antigens_modify()); }
 inline Rcpp::List Chart::get_sera() const { return getList<Serum>(obj_->sera_modify()); }
 
-inline Titers Chart::titers() { return obj_->titers_modify(); }
-inline PlotSpec Chart::plot_spec() { return obj_->plot_spec_modify(); }
+inline Titers Chart::titers() { return obj_->titers_modify_ptr(); }
+inline PlotSpec Chart::plot_spec() { return obj_->plot_spec_modify_ptr(); }
 
 inline auto style_shown(acmacs::PointStyle* style) { return style->shown(); }
 inline auto style_size(acmacs::PointStyle* style) { return style->size().value(); }
