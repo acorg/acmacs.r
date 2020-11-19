@@ -46,7 +46,7 @@ template <typename T> class wrapper
 
     template <typename Wrapper, auto (T::*property)()> Rcpp::List getListViaAt()
         {
-            auto elements = ((*obj_).*property)();
+            auto& elements = ((*obj_).*property)();
             const auto num_elements = elements.size();
             auto result = Rcpp::List::create();
             for (size_t no = 0; no < num_elements; ++no)

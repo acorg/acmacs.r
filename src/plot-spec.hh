@@ -11,7 +11,7 @@
 class PlotSpec : public wrapper<acmacs::chart::PlotSpecModify>
 {
   public:
-    PlotSpec(acmacs::chart::PlotSpecModifyP plot_spec) : wrapper(plot_spec) {}
+    PlotSpec(std::shared_ptr<acmacs::chart::PlotSpecModify> plot_spec) : wrapper(plot_spec) {}
 
     Rcpp::List styles() const;
     Rcpp::DataFrame styles_as_data_frame() const;
