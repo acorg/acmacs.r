@@ -96,6 +96,15 @@ chart <- new(acmacs.Chart, raw_data)
   boolean, when TRUE optimization is about 30\% faster, result is very
   slightly worse, visually no distinguishable.}
 
+  \item{relax(minimum_column_basis,\cr number_of_dimensions,\cr
+  rough, \cr seed)}{creates new projection with random layout, seed
+  (integer) is used for randomization, and optimizes
+  it.\cr \bold{minimum_column_basis} is a string, e.g. "none" or
+  "1280".\cr \bold{number_of_dimensions} is a number, e.g. 2 or 3.\cr \bold{rough} is
+  boolean, when TRUE optimization is about 30\% faster, result is very
+  slightly worse, visually no distinguishable.\cr \bold{seed} is an
+  integer to seed the randomization.}
+
   \item{relax_many(minimum_column_basis,\cr number_of_dimensions,\cr
   number_of_optimizations,\cr rough)}{creates new projection with random
   layout and optimizes it.\cr \bold{minimum_column_basis} is a string,
