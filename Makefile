@@ -41,9 +41,8 @@ install: build | $(LIB_DIR)
 	R CMD INSTALL --clean --debug -l $(LIB_DIR) $(PKG_FILE)
 
 bin: build | $(LIB_DIR)
-	@echo '***** BIN'
+	@echo '>>>> BIN'
 	env LD_LIBRARY_PATH=$(LD_LIBRARY_PATH) R CMD INSTALL --clean --build --debug --built-timestamp=$(shell date +%Y-%m-%d) --library=$(LIB_DIR) $(PKG_FILE)
-	# --no-clean-on-error
 	if [ -f $(ROOT_DIR)/$(PKG_NAME)_$(PKG_VERSION).tgz ]; then \
 	  mv $(ROOT_DIR)/$(PKG_NAME)_$(PKG_VERSION).tgz $(ROOT_DIR)/$(PKG_NAME)_$(PKG_VERSION)_R_$(PKG_PLATFORM).tgz; \
 	elif [ -f $(PKG_NAME)_$(PKG_VERSION).tgz ]; then \
@@ -54,7 +53,7 @@ bin: build | $(LIB_DIR)
 	fi
 
 build: compile-attributes | $(PKG_DIR)
-	@echo '***** BUILD' $$(pwd)
+	@echo '>>>> BUILD' $$(pwd)
 	D=$$(pwd) && cd $(PKG_DIR) && R CMD build "$$D"
 
 check: build | $(OUT_DIR) $(LIB_DIR)
