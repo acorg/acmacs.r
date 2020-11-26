@@ -12,6 +12,7 @@ LIB_SOURCE = {
     "libacmacschart.so.2": AD_LIB_DIR,
     "libacmacswhoccdata.so.1": AD_LIB_DIR,
     "liblocationdb.so.1": AD_LIB_DIR,
+    "libfmt.so.7": AD_LIB_DIR,
     }
 
 # ----------------------------------------------------------------------
