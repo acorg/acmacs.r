@@ -86,18 +86,18 @@ projection$stress
   multiply inferred diameter for "sample-optimization" and
   "current-layout-area" }
 
-  \item{relax()}{relaxes projection from the current layout}
+  \item{relax(...) \cr relax_one_iteration(...)}{see \code{\link{acmacs.Relax}}}
 
-  \item{relax(method, rough)}{relaxes projection from the current
-  layout\cr\bold{method} is a string: "cg" or "lbfgs"\cr\bold{rough} is boolean}
+  %% \item{relax(method, rough)}{relaxes projection from the current
+  %% layout\cr\bold{method} is a string: "cg" or "lbfgs"\cr\bold{rough} is boolean}
 
-  \item{relax_one_iteration()}{performs one iteration of optimization. returns if further optimization steps available.}
+  %% \item{relax_one_iteration()}{performs one iteration of optimization. returns if further optimization steps available.}
 
-  \item{relax_one_iteration(method, rough)}{performs one iteration of
-  optimization layout, returns if further optimization steps
-  available.\cr\bold{method} is a string: "cg" or
-  "lbfgs"\cr\bold{rough} is boolean\cr method and rough are used in
-  the first call only.}
+  %% \item{relax_one_iteration(method, rough)}{performs one iteration of
+  %% optimization layout, returns if further optimization steps
+  %% available.\cr\bold{method} is a string: "cg" or
+  %% "lbfgs"\cr\bold{rough} is boolean\cr method and rough are used in
+  %% the first call only.}
 
   \item{reorient(master_projection)}{reorients this projection to match
   master_projection (of the same or different chart) orientation.}

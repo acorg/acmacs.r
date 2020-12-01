@@ -2,7 +2,7 @@ Package: acmacs.r
 Type: Package
 Title: Read, modify, write data stored in the acmacs files, make maps
 Version: 5.1
-Date: 2020-10-27
+Date: 2020-12-02
 Encoding: UTF-8
 Author: Eugene Skepner <eu@antigenic-cartography.org>
 Maintainer: Eugene Skepner <eu@antigenic-cartography.org>
