@@ -16,90 +16,159 @@
 
 
 \section{Making maps via chart object}{
-% \preformatted{
-      # make new projection in 2d without minimum column basis with random layout and relax it
-    new_projection <- chart$relax("none", 2)
 
-      # make new projection in 2d without minimum column basis with random
-      # layout and fixed random generator seed, and relax it, use fine optimization
-    new_projection <- chart$relax("none", 2, FALSE, 1234)
+  \subsection{relax(number_of_dimensions, [seed,] option ...)}{
 
-      # make new projection in 2d without minimum column basis with random
-      # layout and relax it, use rough optimization which is 30\% faster
-    new_projection <- chart$relax("none", 2, TRUE)
+    Creates new projection with random layout and optimizes it.
 
-      # make 10 new projections in 2d without minimum column basis with random layout and
-      # relax them using fine optimization, relaxation is perfomed in parallel, if multiple CPU cores available
-    chart$relax_many("none", 2, 10, FALSE)
+    \code{seed} is a number to seed rundom number generator. If not provided,
+    hardware random device is used for seeding.
 
-  \subsection{relax(number_of_dimensions,\cr option ...)}{creates new
-    projection with random layout and optimizes it.\cr
-  \bold{number_of_dimensions} is a number,  e.g. 2 or 3.\cr
-    Option is a string, up to 9 options can be specified, the following options are supported:\cr
-  "rough" - use faster rough optimization\cr
-  "fine" - use fine optimization (default)\cr
-  "optimization-cg" - use cg optimization method (default)\cr
-  "optimization-lbfgs" - use lbfgs optimization method\cr
-  "disconnect-having-too-few-titers" - disconnect antigens/sera that have too few numeric titers (default)\cr
-  "no-disconnect-having-too-few-titers"\cr
-  "dimension-annealing"\cr
-  "no-dimension-annealing" (default)\cr
-  "none" - no minimum column basis (default)\cr
-  "1280" - minimum column basis 1280}
+    \code{option} is a string, up to 9 options can be specified.
 
-  \subsection{relax_many(number_of_dimensions,\cr  number_of_optimizations,\cr
-  option ...)}{creates new projection with random}
+    \tabular{ll}{
+      "fine" \tab use fine optimization (default) \cr
+      "rough" \tab use faster rough optimization \cr
+      "none" \tab no minimum column basis (default) \cr
+      "1280" \tab minimum column basis 1280 \cr
+      "optimization-cg" \tab use cg optimization method (default)\cr
+      "optimization-lbfgs" \tab use lbfgs optimization method\cr
+      "disconnect-having-too-few-titers" \tab disconnect antigens/sera that have too few numeric titers (default)\cr
+      "no-disconnect-having-too-few-titers" \tab \cr
+      "no-dimension-annealing" \tab (default)\cr
+      "dimension-annealing"\cr
+    }
 
-  \subsection{relax_incremental(number_of_optimizations,\cr option
-  ...)}{relax multiple times upon calling acmacs.merge.2(). Only
-  points having NaN coordinates (i.e. points found in the second
-  source chart of the merge) randomized.\cr
-  Option is a string, up to 5
-  options may be specified, the following options are supported:\cr
-  "rough" - use faster rough optimization\cr
-  "fine" - use fine optimization (default)\cr
-  "optimization-cg" - use cg optimization method (default)\cr
-  "optimization-lbfgs" - use lbfgs optimization method\cr
-  "disconnect-having-too-few-titers" - disconnect antigens/sera that have too few numeric titers (default)\cr
-  "no-disconnect-having-too-few-titers"\cr
-  "no-unmovable-primary-points" - relax all antigens and sera in the merge (default)\cr
-  "unmovable-primary-points" - freeze antigens/sera found in the primary chart\cr
+    Example:
+
+    \code{
+      chart$relax(2, "fine", "1280") \cr
+      chart$relax(2, "fine", "1280") \cr
+      chart$relax(2, runif(1, 0, 100000000), "fine", "1280")
+    }
+
   }
 
+  \subsection{relax_many(number_of_dimensions, number_of_optimizations, option ...)}{
+
+    Creates new projection with random layout and optimizes it in
+    multiple threads in parallel.
+
+    Seeding cannot give repeatable results due to asynchronos nature of
+    accessing random number generator by different threads and it is
+    therefore not supported.
+
+    Set of options is the same as for relax() above.
+  }
+
+  \subsection{relax_incremental(number_of_optimizations, option ...)}{
+
+    Relaxes multiple times upon calling acmacs.merge.2(). Only
+    points having \code{NaN} coordinates, i.e. points found in the second
+    source chart of the merge, are randomized.
+
+    \code{option} is a string, up to 5 options can be specified.
+
+    \tabular{ll}{
+      "fine" \tab use fine optimization (default) \cr
+      "rough" \tab use faster rough optimization \cr
+      "optimization-cg" \tab use cg optimization method (default)\cr
+      "optimization-lbfgs" \tab use lbfgs optimization method\cr
+      "disconnect-having-too-few-titers" \tab disconnect antigens/sera that have too few numeric titers (default)\cr
+      "no-disconnect-having-too-few-titers" \tab \cr
+      "no-unmovable-primary-points" \tab relax all antigens and sera in the merge (default) \cr
+      "unmovable-primary-points" \tab freeze antigens/sera found in the primary chart \cr
+    }
+  }
 }
 
 
 \section{Making maps via chart object (legacy interface)}{
 
-  \subsection{relax(minimum_column_basis, number_of_dimensions)}{creates new
-  projection with random layout and optimizes it.\cr \bold{minimum_column_basis}
-  is a string, e.g. "none" or "1280".\cr \bold{number_of_dimensions} is a number,
-  e.g. 2 or 3.}
+  In the legacy interface dimension annealing is always enabled.
 
-  \subsection{relax(minimum_column_basis,\cr number_of_dimensions,\cr
-  rough)}{creates new projection with random layout and optimizes
-  it.\cr \bold{minimum_column_basis} is a string, e.g. "none" or
-  "1280".\cr \bold{number_of_dimensions} is a number, e.g. 2 or 3.\cr \bold{rough} is
-  boolean, when TRUE optimization is about 30\% faster, result is very
-  slightly worse, visually no distinguishable.}
+  \subsection{relax(minimum_column_basis, number_of_dimensions)}{
 
-  \subsection{relax(minimum_column_basis,\cr number_of_dimensions,\cr
-  rough, \cr seed)}{creates new projection with random layout, seed
-  (integer) is used for randomization, and optimizes
-  it.\cr \bold{minimum_column_basis} is a string, e.g. "none" or
-  "1280".\cr \bold{number_of_dimensions} is a number, e.g. 2 or 3.\cr \bold{rough} is
-  boolean, when TRUE optimization is about 30\% faster, result is very
-  slightly worse, visually no distinguishable.\cr \bold{seed} is an
-  integer to seed the randomization.}
+    creates new projection with random layout and optimizes it.
 
-  \subsection{relax_many(minimum_column_basis,\cr number_of_dimensions,\cr
-  number_of_optimizations,\cr rough)}{creates new projection with random
-  layout and optimizes it.\cr \bold{minimum_column_basis} is a string,
-  e.g. "none" or "1280".\cr \bold{number_of_dimensions} is a number,
-  e.g. 2 or 3.\cr \bold{number_of_optimizations} is a number, e.g. 10 or
-  100, optimization is performed in parallel if multiple CPU cores
-  available.\cr \bold{rough} is boolean, when TRUE optimization is about
-  30\% faster, result is slightly worse, visually no distinguishable.}
+    \code{minimum_column_basis} is a string, e.g. "none" or "1280".
+
+    \code{number_of_dimensions} is a number, e.g. 2 or 3.
+
+    Example:
+
+    \code{
+      new_projection <- chart$relax("none", 2) \cr
+      new_projection <- chart$relax("1280", 3)
+    }
+  }
+
+  \subsection{relax(minimum_column_basis, number_of_dimensions, rough)}{
+
+    Creates new projection with random layout and optimizes it.
+
+    \code{minimum_column_basis} is a string, e.g. "none" or
+    "1280".
+
+    \code{number_of_dimensions} is a number, e.g. 2 or 3.
+
+    \code{rough} is boolean, when TRUE optimization is about 30\% faster, result is very
+    slightly worse, visually no distinguishable.
+
+    Example:
+
+    \code{
+      new_projection <- chart$relax("none", 2, TRUE)
+    }
+  }
+
+  \subsection{relax(minimum_column_basis, number_of_dimensions, rough, seed)}{
+
+    Creates new projection with random layout, seed
+    (integer) is used for randomization, and optimizes
+    it.
+
+    \code{minimum_column_basis} is a string, e.g. "none" or
+    "1280".
+
+    \code{number_of_dimensions} is a number, e.g. 2 or 3.
+
+    \code{rough} is boolean, when TRUE optimization is about 30\% faster, result is very
+    slightly worse, visually no distinguishable.
+
+    \code{seed} is an integer to seed the randomization.
+
+    Example:
+
+    \code{
+      new_projection <- chart$relax("none", 2, FALSE, 1234)
+      new_projection <- chart$relax("none", 2, FALSE, runif(1, 0, 100000000))
+    }
+  }
+
+  \subsection{relax_many(minimum_column_basis, number_of_dimensions,
+    number_of_optimizations, rough)}{
+
+    creates new projection with random
+    layout and optimizes it.
+
+    \code{minimum_column_basis} is a string, e.g. "none" or "1280".
+
+    \code{number_of_dimensions} is a number, e.g. 2 or 3.
+
+    \code{number_of_optimizations} is a number, e.g. 10 or 100,
+    optimization is performed in parallel if multiple CPU cores
+    available.
+
+    \code{rough} is boolean, when TRUE optimization is about 30\%
+    faster, result is slightly worse, visually no distinguishable.
+
+    Example:
+
+    \code{
+      chart$relax_many("none", 2, 10, FALSE)
+    }
+  }
 
 }
 
@@ -126,7 +195,7 @@
     # optimization layout, returns if further optimization steps
     # available. Values of method and rough are used in
     # the first call only.
-    projection$relax_one_iteration("cg", FALSE) 
+    projection$relax_one_iteration("cg", FALSE)
 }
 }
 
