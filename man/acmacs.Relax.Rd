@@ -173,30 +173,34 @@
 }
 
 \section{Making maps via projection object}{
-\preformatted{
-      # relax existing projection, e.g. upon moving the first antigen
-    chart$projection(1)$relax()
 
-      # create new projection in 2d without minimum column basis with random layout without optimisation (dimension annealing cannot be used)
-    projection <- chart$new_projection("none", 2)
+  \subsection{chart$projection(1)$relax()}{
+    Relaxes existing projection, e.g. upon moving the first antigen.
+  }
 
-      # create new projection in 2d without minimum column basis and with some layout (dimension annealing cannot be used)
-    projection <- chart$new_projection_with_layout("none", matrix(1:((chart$number_of_antigens + chart$number_of_sera)*2), ncol=2, byrow=TRUE))
+  \subsection{Create new projection, randomize layout and relax in
+    separate steps}{
+    \preformatted{
+      projection <- chart$new_projection("none", 2)
+      projection$randomize_layout()
+      while(projection$relax_one_iteration()) {
+        print(projection$stress);
+        print(projection$layout);
+      }
+    }
+  }
 
-      # randomize layout in the projection using "table-max-distance" method
-    projection$randomize_layout()
+  \subsection{Create new projection with some layout and relax in
+    separate steps}{
+    \preformatted{
+      projection <- chart$new_projection("none", matrix(1:((chart$number_of_antigens + chart$number_of_sera)*2), ncol=2, byrow=TRUE))
+      while(projection$relax_one_iteration()) {
+        print(projection$stress);
+        print(projection$layout);
+      }
+    }
 
-    # perform optimization step by step
-    # relax_one_iteration() - performs one iteration of optimization.
-    # returns if further optimization steps available.
-    while(projection$relax_one_iteration()) { print(projection$stress); print(projection$layout); }
-
-    # relax_one_iteration(method, rough) - performs one iteration of
-    # optimization layout, returns if further optimization steps
-    # available. Values of method and rough are used in
-    # the first call only.
-    projection$relax_one_iteration("cg", FALSE)
-}
+  }
 }
 
 \section{Relaxing with manually calling dimension annealing}{
