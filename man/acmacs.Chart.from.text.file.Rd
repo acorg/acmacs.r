@@ -41,7 +41,7 @@ for (row_no in 2:length(rows)) \{
 # table is small, 100 optimizations take less than a second
 # relaxation is perfomed in parallel, if multiple CPU cores available
 # see \link{acmacs.Relax}
-chart$relax_many("none", 2, 100, FALSE)
+chart$relax_many(2, 100, "none", "fine")
 # report best map info
 cat(chart$info)
 }

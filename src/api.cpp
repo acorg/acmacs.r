@@ -82,10 +82,11 @@ RCPP_MODULE(acmacs)
         .method("new_projection", &Chart::new_projection_with_layout_randomization2)
         .method("new_projection", &Chart::new_projection_with_layout_randomization3)
         .method("new_projection_with_layout", &Chart::new_projection_with_layout)
-        .method("relax", &Chart::relax1)
-        .method("relax", &Chart::relax2)
-        .method("relax", &Chart::relax3)
-        .method("relax", &Chart::relax_seed)
+        .method("relax", &Chart::relax1) // number_of_dimensions, opt, ...
+        .method("relax", &Chart::relax2) // number_of_dimensions, seed, opt, ...
+        .method("relax", &Chart::relax3) // minimum_column_basis, number_of_dimensions use_dimension_annealing::yes
+        .method("relax", &Chart::relax4) // minimum_column_basis, number_of_dimensions, rough use_dimension_annealing::yes
+        .method("relax", &Chart::relax_seed) // minimum_column_basis, number_of_dimensions, rough, seed use_dimension_annealing::yes
         .method("relax_incremental", &Chart::relax_incremental_1)
         .method("relax_incremental", &Chart::relax_incremental_2_1)
         .method("relax_incremental", &Chart::relax_incremental_2_2)

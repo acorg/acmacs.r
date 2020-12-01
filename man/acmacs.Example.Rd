@@ -313,12 +313,12 @@ See \code{\link{acmacs.Relax}} for more details.\cr
 \preformatted{
 # make new projection in 2d without minimum column basis with random layout and relax it
 new_projection <- chart$relax(2)
-new_projection <- chart$relax("none", 2)
+new_projection <- chart$relax(2, "none")
 new_projection$stress
 # make new projection in 2d without minimum column basis with random layout and relax it
 # use rough optimization which is 30\% faster
 new_projection <- chart$relax(2, "rough")
-new_projection <- chart$relax("none", 2, TRUE)
+new_projection <- chart$relax(2, "none", "rough")
 new_projection$stress
 # make new projection in 2d without minimum column basis and with the specified layout
 new_projection <- chart$new_projection_with_layout("none", matrix(c(0.0), ncol=2, nrow=chart$number_of_antigens + chart$number_of_sera, byrow=TRUE))
@@ -327,7 +327,7 @@ new_projection$stress
 chart$sort_projections()
 # make 10 new projections in 2d without minimum column basis with random layout and relax them using fine optimization
 # relaxation is perfomed in parallel, if multiple CPU cores available
-chart$relax_many("none", 2, 10, FALSE)
+chart$relax_many(2, 10, "none")
 # get all stresses
 sapply(chart$projections, function(p) {p$stress})
 # relax existing projection, e.g. upon moving the first antigen

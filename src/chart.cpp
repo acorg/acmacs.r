@@ -169,8 +169,8 @@ Projection Chart::new_projection_with_layout(std::string minimum_column_basis, c
 
 // ----------------------------------------------------------------------
 
-Projection Chart::relax1(size_t number_of_dimensions, std::string opt1, std::string opt2, std::string opt3, std::string opt4, std::string opt5, std::string opt6, std::string opt7, std::string opt8,
-                         std::string opt9)
+inline std::tuple<acmacs::chart::optimization_options, std::string, acmacs::chart::use_dimension_annealing>
+parse_options(std::string opt1, std::string opt2, std::string opt3, std::string opt4, std::string opt5, std::string opt6, std::string opt7, std::string opt8, std::string opt9)
 {
     using namespace std::string_view_literals;
     acmacs::chart::optimization_options options{acmacs::chart::optimization_method::alglib_cg_pca, acmacs::chart::optimization_precision::fine, 2.0};
@@ -210,22 +210,39 @@ Projection Chart::relax1(size_t number_of_dimensions, std::string opt1, std::str
     parse_opt(opt8);
     parse_opt(opt9);
 
+    return {options, minimum_column_basis, dimension_annealing};
+}
+
+Projection Chart::relax1(size_t number_of_dimensions, std::string opt1, std::string opt2, std::string opt3, std::string opt4, std::string opt5, std::string opt6, std::string opt7, std::string opt8,
+                         std::string opt9)
+{
+
+    const auto [options, minimum_column_basis, dimension_annealing] = parse_options(opt1, opt2, opt3, opt4, opt5, opt6, opt7, opt8, opt9);
     auto [status, projection] = obj_->relax(minimum_column_basis, acmacs::number_of_dimensions_t{number_of_dimensions}, dimension_annealing, options);
     // obj_->projections_modify().sort();
     return projection;
 }
 
-Projection Chart::relax2(std::string minimum_column_basis, size_t number_of_dimensions)
+Projection Chart::relax2(size_t number_of_dimensions, unsigned seed, std::string opt1, std::string opt2, std::string opt3, std::string opt4, std::string opt5, std::string opt6, std::string opt7, std::string opt8,
+                         std::string opt9)
 {
-    auto [status, projection] = obj_->relax(minimum_column_basis, acmacs::number_of_dimensions_t{number_of_dimensions}, acmacs::chart::use_dimension_annealing::no,
+    const auto [options, minimum_column_basis, dimension_annealing] = parse_options(opt1, opt2, opt3, opt4, opt5, opt6, opt7, opt8, opt9);
+    auto [status, projection] = obj_->relax(minimum_column_basis, acmacs::number_of_dimensions_t{number_of_dimensions}, dimension_annealing, options, seed);
+    // obj_->projections_modify().sort();
+    return projection;
+}
+
+Projection Chart::relax3(std::string minimum_column_basis, size_t number_of_dimensions)
+{
+    auto [status, projection] = obj_->relax(minimum_column_basis, acmacs::number_of_dimensions_t{number_of_dimensions}, acmacs::chart::use_dimension_annealing::yes,
                                             acmacs::chart::optimization_options(acmacs::chart::optimization_method::alglib_cg_pca, acmacs::chart::optimization_precision::fine, 2.0));
       // obj_->projections_modify().sort();
     return projection;
 }
 
-Projection Chart::relax3(std::string minimum_column_basis, size_t number_of_dimensions, bool rough)
+Projection Chart::relax4(std::string minimum_column_basis, size_t number_of_dimensions, bool rough)
 {
-    auto [status, projection] = obj_->relax(minimum_column_basis, acmacs::number_of_dimensions_t{number_of_dimensions}, acmacs::chart::use_dimension_annealing::no,
+    auto [status, projection] = obj_->relax(minimum_column_basis, acmacs::number_of_dimensions_t{number_of_dimensions}, acmacs::chart::use_dimension_annealing::yes,
                                             acmacs::chart::optimization_options(acmacs::chart::optimization_method::alglib_cg_pca, rough ? acmacs::chart::optimization_precision::rough : acmacs::chart::optimization_precision::fine, 2.0));
       // obj_->projections_modify().sort();
     return projection;
@@ -233,7 +250,7 @@ Projection Chart::relax3(std::string minimum_column_basis, size_t number_of_dime
 
 Projection Chart::relax_seed(std::string minimum_column_basis, size_t number_of_dimensions, bool rough, unsigned seed)
 {
-    auto [status, projection] = obj_->relax(minimum_column_basis, acmacs::number_of_dimensions_t{number_of_dimensions}, acmacs::chart::use_dimension_annealing::no,
+    auto [status, projection] = obj_->relax(minimum_column_basis, acmacs::number_of_dimensions_t{number_of_dimensions}, acmacs::chart::use_dimension_annealing::yes,
                                             acmacs::chart::optimization_options(acmacs::chart::optimization_method::alglib_cg_pca, rough ? acmacs::chart::optimization_precision::rough : acmacs::chart::optimization_precision::fine, 2.0),
                                             seed);
       // obj_->projections_modify().sort();
