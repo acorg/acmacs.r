@@ -77,81 +77,6 @@ RCPP_EXPOSED_CLASS_NODECL(Serum);
 
 // ----------------------------------------------------------------------
 
-class Chart : public wrapper<acmacs::chart::ChartModify>
-{
- public:
-    Chart(std::string aFilename);
-    Chart(Rcpp::RawVector aData);
-    Chart(int number_of_antigens, int number_of_sera);
-    Chart(std::shared_ptr<acmacs::chart::ChartModify> src);
-    std::string name() const { return obj_->info()->name(); }
-    std::string info() const { return obj_->make_info(); }
-    std::string lineage() const { return std::string{*obj_->lineage()}; }
-    size_t number_of_antigens() const { return obj_->number_of_antigens(); }
-    size_t number_of_sera() const { return obj_->number_of_sera(); }
-    size_t number_of_points() const { return obj_->number_of_points(); }
-    size_t number_of_projections() const { return obj_->number_of_projections(); }
-    Rcpp::NumericVector column_bases_2(size_t aProjectionNo, std::string aMinimumColumnBasis) const;
-    Rcpp::NumericVector column_bases_1(size_t aProjectionNo) const { return column_bases_2(aProjectionNo, "none"); }
-    Rcpp::NumericVector column_bases_1s(std::string aMinimumColumnBasis) const { return column_bases_2(1, aMinimumColumnBasis); }
-    Rcpp::NumericVector column_bases_0() const { return column_bases_2(1, "none"); }
-    void set_column_bases(const Rcpp::NumericVector& data);
-    void set_column_basis(size_t serum_no, double column_basis);
-    PlotSpec plot_spec();
-    Titers titers();
-    static Rcpp::StringVector as_character(Chart* aChart) { return {aChart->name()}; }
-
-    Rcpp::List get_antigens() const;
-    Rcpp::List get_sera() const;
-    Antigen insert_antigen(size_t before) { return obj_->insert_antigen(before - 1); }
-    Serum insert_serum(size_t before) { return obj_->insert_serum(before - 1); }
-    void remove_antigens(const Rcpp::NumericVector& aIndexes);
-    void remove_sera(const Rcpp::NumericVector& aIndexes);
-
-    void set_name(std::string name) { return obj_->info_modify().name(name); }
-    void save(std::string aFilename);
-    std::string save_to_string();
-
-      // https://stackoverflow.com/questions/42579207/rcpp-modules-validator-function-for-exposed-constructors-with-same-number-of-pa
-    template <typename T> static inline bool validate_constructor(SEXP* args, int nargs) { return nargs == 1 && Rcpp::is<T>(args[0]); }
-
-    Projection new_projection_with_layout_randomization1(std::string minimum_column_basis, size_t number_of_dimensions, std::string randomization_method, double diameter_multiplier);
-    Projection new_projection_with_layout_randomization2(std::string minimum_column_basis, size_t number_of_dimensions, std::string randomization_method);
-    Projection new_projection_with_layout_randomization3(std::string minimum_column_basis, size_t number_of_dimensions);
-    Projection new_projection_with_layout(std::string minimum_column_basis, const Rcpp::NumericMatrix& layout);
-
-    Projection relax1(size_t number_of_dimensions, std::string opt1={}, std::string opt2={}, std::string opt3={}, std::string opt4={}, std::string opt5={}, std::string opt6={}, std::string opt7={}, std::string opt8={}, std::string opt9={});
-    Projection relax2(size_t number_of_dimensions, unsigned seed, std::string opt1={}, std::string opt2={}, std::string opt3={}, std::string opt4={}, std::string opt5={}, std::string opt6={}, std::string opt7={}, std::string opt8={}, std::string opt9={});
-    Projection relax3(std::string minimum_column_basis, size_t number_of_dimensions);
-    Projection relax4(std::string minimum_column_basis, size_t number_of_dimensions, bool rough);
-    Projection relax_seed(std::string minimum_column_basis, size_t number_of_dimensions, bool rough, unsigned seed);
-    void relax_many(std::string minimum_column_basis, size_t number_of_dimensions, size_t number_of_optimizations, bool rough);
-    void relax_incremental_1(size_t number_of_optimizations, bool rough);
-    void relax_incremental_2(size_t number_of_optimizations, std::string opt1={}, std::string opt2={}, std::string opt3={}, std::string opt4={}, std::string opt5={});
-    void relax_incremental_2_1(size_t number_of_optimizations) { relax_incremental_2(number_of_optimizations); }
-    void relax_incremental_2_2(size_t number_of_optimizations, std::string opt1) { relax_incremental_2(number_of_optimizations, opt1); }
-    void relax_incremental_2_3(size_t number_of_optimizations, std::string opt1, std::string opt2) { relax_incremental_2(number_of_optimizations, opt1, opt2); }
-    void relax_incremental_2_4(size_t number_of_optimizations, std::string opt1, std::string opt2, std::string opt3) { relax_incremental_2(number_of_optimizations, opt1, opt2, opt3); }
-    void relax_incremental_2_5(size_t number_of_optimizations, std::string opt1, std::string opt2, std::string opt3, std::string opt4) { relax_incremental_2(number_of_optimizations, opt1, opt2, opt3, opt4); }
-    void relax_incremental_2_6(size_t number_of_optimizations, std::string opt1, std::string opt2, std::string opt3, std::string opt4, std::string opt5) { relax_incremental_2(number_of_optimizations, opt1, opt2, opt3, opt4, opt5); }
-    acmacs::chart::Stress stress_evaluator(size_t number_of_dimensions, std::string minimum_column_basis);
-    void sort_projections() { obj_->projections_modify().sort(); }
-    void remove_all_projections() { obj_->projections_modify().remove_all(); }
-    void remove_all_projections_except(size_t projection_no_based_one) { obj_->projections_modify().remove_all_except(projection_no_based_one - 1); }
-    void remove_layers() { obj_->remove_layers(); }
-    Chart clone() const;
-    Projection clone_projection(size_t projection_no_based_one) const;
-    Projection projection(size_t projection_no);
-
-    Rcpp::StringVector extension_field(std::string field_name) const;
-    void set_extension_field(std::string field_name, std::string value) const;
-
-}; // class Chart
-
-RCPP_EXPOSED_CLASS_NODECL(Chart);
-
-// ----------------------------------------------------------------------
-
 class Projection : public wrapper<acmacs::chart::ProjectionModify>
 {
  public:
@@ -215,6 +140,90 @@ class Projection : public wrapper<acmacs::chart::ProjectionModify>
 
 }; // class Projection
 RCPP_EXPOSED_CLASS_NODECL(Projection);
+
+// ----------------------------------------------------------------------
+
+class Chart : public wrapper<acmacs::chart::ChartModify>
+{
+ public:
+    Chart(std::string aFilename);
+    Chart(Rcpp::RawVector aData);
+    Chart(int number_of_antigens, int number_of_sera);
+    Chart(std::shared_ptr<acmacs::chart::ChartModify> src);
+    std::string name() const { return obj_->info()->name(); }
+    std::string info() const { return obj_->make_info(); }
+    std::string lineage() const { return std::string{*obj_->lineage()}; }
+    size_t number_of_antigens() const { return obj_->number_of_antigens(); }
+    size_t number_of_sera() const { return obj_->number_of_sera(); }
+    size_t number_of_points() const { return obj_->number_of_points(); }
+    size_t number_of_projections() const { return obj_->number_of_projections(); }
+    Rcpp::NumericVector column_bases_2(size_t aProjectionNo, std::string aMinimumColumnBasis) const;
+    Rcpp::NumericVector column_bases_1(size_t aProjectionNo) const { return column_bases_2(aProjectionNo, "none"); }
+    Rcpp::NumericVector column_bases_1s(std::string aMinimumColumnBasis) const { return column_bases_2(1, aMinimumColumnBasis); }
+    Rcpp::NumericVector column_bases_0() const { return column_bases_2(1, "none"); }
+    void set_column_bases(const Rcpp::NumericVector& data);
+    void set_column_basis(size_t serum_no, double column_basis);
+    PlotSpec plot_spec();
+    Titers titers();
+    static Rcpp::StringVector as_character(Chart* aChart) { return {aChart->name()}; }
+
+    Rcpp::List get_antigens() const;
+    Rcpp::List get_sera() const;
+    Antigen insert_antigen(size_t before) { return obj_->insert_antigen(before - 1); }
+    Serum insert_serum(size_t before) { return obj_->insert_serum(before - 1); }
+    void remove_antigens(const Rcpp::NumericVector& aIndexes);
+    void remove_sera(const Rcpp::NumericVector& aIndexes);
+
+    void set_name(std::string name) { return obj_->info_modify().name(name); }
+    void save(std::string aFilename);
+    std::string save_to_string();
+
+      // https://stackoverflow.com/questions/42579207/rcpp-modules-validator-function-for-exposed-constructors-with-same-number-of-pa
+    template <typename T> static inline bool validate_constructor(SEXP* args, int nargs) { return nargs == 1 && Rcpp::is<T>(args[0]); }
+
+    Projection new_projection_with_layout_randomization1(std::string minimum_column_basis, size_t number_of_dimensions, std::string randomization_method, double diameter_multiplier);
+    Projection new_projection_with_layout_randomization2(std::string minimum_column_basis, size_t number_of_dimensions, std::string randomization_method);
+    Projection new_projection_with_layout_randomization3(std::string minimum_column_basis, size_t number_of_dimensions);
+    Projection new_projection_with_layout(std::string minimum_column_basis, const Rcpp::NumericMatrix& layout);
+
+    Projection relax1(size_t number_of_dimensions, std::string opt1={}, std::string opt2={}, std::string opt3={}, std::string opt4={}, std::string opt5={}, std::string opt6={}, std::string opt7={}, std::string opt8={}, std::string opt9={});
+    Projection relax10(size_t number_of_dimensions) { return relax1(number_of_dimensions); }
+    Projection relax11(size_t number_of_dimensions, std::string opt1) { return relax1(number_of_dimensions, opt1); }
+    Projection relax12(size_t number_of_dimensions, std::string opt1, std::string opt2) { return relax1(number_of_dimensions, opt1, opt2); }
+    Projection relax13(size_t number_of_dimensions, std::string opt1, std::string opt2, std::string opt3) { return relax1(number_of_dimensions, opt1, opt2, opt3); }
+    Projection relax14(size_t number_of_dimensions, std::string opt1, std::string opt2, std::string opt3, std::string opt4) { return relax1(number_of_dimensions, opt1, opt2, opt3, opt4); }
+    Projection relax15(size_t number_of_dimensions, std::string opt1, std::string opt2, std::string opt3, std::string opt4, std::string opt5) { return relax1(number_of_dimensions, opt1, opt2, opt3, opt4, opt5); }
+    Projection relax16(size_t number_of_dimensions, std::string opt1, std::string opt2, std::string opt3, std::string opt4, std::string opt5, std::string opt6) { return relax1(number_of_dimensions, opt1, opt2, opt3, opt4, opt5, opt6); }
+    Projection relax17(size_t number_of_dimensions, std::string opt1, std::string opt2, std::string opt3, std::string opt4, std::string opt5, std::string opt6, std::string opt7) { return relax1(number_of_dimensions, opt1, opt2, opt3, opt4, opt5, opt6, opt7); }
+    Projection relax18(size_t number_of_dimensions, std::string opt1, std::string opt2, std::string opt3, std::string opt4, std::string opt5, std::string opt6, std::string opt7, std::string opt8) { return relax1(number_of_dimensions, opt1, opt2, opt3, opt4, opt5, opt6, opt7, opt8); }
+    Projection relax2(size_t number_of_dimensions, unsigned seed, std::string opt1={}, std::string opt2={}, std::string opt3={}, std::string opt4={}, std::string opt5={}, std::string opt6={}, std::string opt7={}, std::string opt8={}, std::string opt9={});
+    Projection relax3(const std::string& minimum_column_basis, size_t number_of_dimensions) { return relax4(minimum_column_basis, number_of_dimensions, false); }
+    Projection relax4(const std::string& minimum_column_basis, size_t number_of_dimensions, bool rough);
+    Projection relax_seed(const std::string& minimum_column_basis, size_t number_of_dimensions, bool rough, unsigned seed);
+    void relax_many(const std::string& minimum_column_basis, size_t number_of_dimensions, size_t number_of_optimizations, bool rough);
+    void relax_incremental_1(size_t number_of_optimizations, bool rough);
+    void relax_incremental_2(size_t number_of_optimizations, std::string opt1={}, std::string opt2={}, std::string opt3={}, std::string opt4={}, std::string opt5={});
+    void relax_incremental_2_1(size_t number_of_optimizations) { relax_incremental_2(number_of_optimizations); }
+    void relax_incremental_2_2(size_t number_of_optimizations, std::string opt1) { relax_incremental_2(number_of_optimizations, opt1); }
+    void relax_incremental_2_3(size_t number_of_optimizations, std::string opt1, std::string opt2) { relax_incremental_2(number_of_optimizations, opt1, opt2); }
+    void relax_incremental_2_4(size_t number_of_optimizations, std::string opt1, std::string opt2, std::string opt3) { relax_incremental_2(number_of_optimizations, opt1, opt2, opt3); }
+    void relax_incremental_2_5(size_t number_of_optimizations, std::string opt1, std::string opt2, std::string opt3, std::string opt4) { relax_incremental_2(number_of_optimizations, opt1, opt2, opt3, opt4); }
+    void relax_incremental_2_6(size_t number_of_optimizations, std::string opt1, std::string opt2, std::string opt3, std::string opt4, std::string opt5) { relax_incremental_2(number_of_optimizations, opt1, opt2, opt3, opt4, opt5); }
+    acmacs::chart::Stress stress_evaluator(size_t number_of_dimensions, std::string minimum_column_basis);
+    void sort_projections() { obj_->projections_modify().sort(); }
+    void remove_all_projections() { obj_->projections_modify().remove_all(); }
+    void remove_all_projections_except(size_t projection_no_based_one) { obj_->projections_modify().remove_all_except(projection_no_based_one - 1); }
+    void remove_layers() { obj_->remove_layers(); }
+    Chart clone() const;
+    Projection clone_projection(size_t projection_no_based_one) const;
+    Projection projection(size_t projection_no);
+
+    Rcpp::StringVector extension_field(std::string field_name) const;
+    void set_extension_field(std::string field_name, std::string value) const;
+
+}; // class Chart
+
+RCPP_EXPOSED_CLASS_NODECL(Chart);
 
 // ----------------------------------------------------------------------
 

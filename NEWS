@@ -1,7 +1,8 @@
 acmacs.r NEWS -- history of user-visible changes.
 
-* Changes in 5.1 (2020-10-27)
-**
+* Changes in 5.1 (2020-12-02)
+** Old variants of chart$relax calls use dimension annealing
+** New variants of chart$relax calls (with options) have dimension annealing turned off by default
 
 * Changes in 5.0 (2020-10-12)
 ** Dimension annealing is off by default
