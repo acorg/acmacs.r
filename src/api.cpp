@@ -52,16 +52,16 @@ template <size_t N> inline bool first_arg_is_int(SEXP* args, int nargs)
     return res;
 }
 
-inline bool first_two_args_are_int(SEXP* args, int nargs)
+template <size_t N> inline bool first_two_args_are_int(SEXP* args, int nargs)
 {
     // Rcpp::Rcerr << "\n\n>>>> first_two_args_are_int ? " << nargs << std::endl << std::endl;
-    return nargs >= 2 && int_or_real(args[0]) && LENGTH(args[0]) == 1 && int_or_real(args[1]) && LENGTH(args[1]) == 1;
+    return nargs == N && int_or_real(args[0]) && LENGTH(args[0]) == 1 && int_or_real(args[1]) && LENGTH(args[1]) == 1;
 }
 
-inline bool first_arg_is_string(SEXP* args, int nargs)
+template <size_t N> inline bool first_arg_is_string(SEXP* args, int nargs)
 {
     // Rcpp::Rcerr << "\n\n>>>> first_arg_is_string nargs:" << nargs << " [TYPEOF(args[0])]:" << TYPEOF(args[0]) << "==" << STRSXP << " LENGTH(args[0]):" << LENGTH(args[0]) << std::endl << std::endl;
-    return nargs >= 1 && TYPEOF(args[0]) == STRSXP && LENGTH(args[0]) == 1;
+    return nargs == N && TYPEOF(args[0]) == STRSXP && LENGTH(args[0]) == 1;
 }
 
 // ----------------------------------------------------------------------
@@ -118,10 +118,10 @@ RCPP_MODULE(acmacs)
         .method("relax", &Chart::relax16, nullptr, first_arg_is_int<7>) // number_of_dimensions, opt, ...
         .method("relax", &Chart::relax17, nullptr, first_arg_is_int<8>) // number_of_dimensions, opt, ...
         .method("relax", &Chart::relax18, nullptr, first_arg_is_int<9>) // number_of_dimensions, opt, ...
-        .method("relax", &Chart::relax2,  nullptr, first_two_args_are_int) // number_of_dimensions, seed, opt, ...
-        .method("relax", &Chart::relax3,  nullptr, first_arg_is_string) // minimum_column_basis, number_of_dimensions use_dimension_annealing::yes
-        .method("relax", &Chart::relax4,  nullptr, first_arg_is_string) // minimum_column_basis, number_of_dimensions, rough use_dimension_annealing::yes
-        .method("relax", &Chart::relax_seed,  nullptr, first_arg_is_string) // minimum_column_basis, number_of_dimensions, rough, seed use_dimension_annealing::yes
+        .method("relax", &Chart::relax2,  nullptr, first_two_args_are_int<11>) // number_of_dimensions, seed, opt, ...
+        .method("relax", &Chart::relax3,  nullptr, first_arg_is_string<2>) // minimum_column_basis, number_of_dimensions use_dimension_annealing::yes
+        .method("relax", &Chart::relax4,  nullptr, first_arg_is_string<3>) // minimum_column_basis, number_of_dimensions, rough use_dimension_annealing::yes
+        .method("relax", &Chart::relax_seed,  nullptr, first_arg_is_string<4>) // minimum_column_basis, number_of_dimensions, rough, seed use_dimension_annealing::yes
         .method("relax_incremental", &Chart::relax_incremental_1)
         .method("relax_incremental", &Chart::relax_incremental_2_1)
         .method("relax_incremental", &Chart::relax_incremental_2_2)

@@ -17,21 +17,20 @@ test_relax <- function(filename, num_optimizations, expected_stress) {
     ##     write(paste(p_no, chart$projections[[p_no]]$stress), file="")
     ## }
     # test_that("stress after N optimizations", { expect_equal(chart$projections[[1]]$stress, expected_stress) })
-    cat(paste("\n\nstress after ", num_optimizations, " optimizations: ", chart$projections[[2]]$stress, "  expected: ", expected_stress), "\n\n", sep="")
-    test_that("stress after N optimizations", { expect_true(chart$projections[[2]]$stress < expected_stress) })
+    test_that(paste("stress after ", num_optimizations, " parallel optimizations: ", chart$projections[[2]]$stress, "  expected: ", expected_stress, sep=""), { expect_true(chart$projections[[2]]$stress < expected_stress) })
 }
 
 test_relax_seed <- function(filename, seed, expected_stress1, expected_stress2) {
     chart <- new(acmacs.Chart, filename)
     chart$remove_all_projections()
     chart$relax("1280", 2, FALSE, seed)
+    # chart$relax(2, "1280", "dimension-annealing")
+    # chart$relax(2, seed, "1280", "dimension-annealing")
     stress <- chart$projections[[1]]$stress
-    cat(paste("\n\nseed: ", seed, "  stress: ", stress, "  expected: ", expected_stress1, expected_stress2), "\n\n", sep="")
-    test_that("stress after optimization with randomization seed", { expect_true(stress > expected_stress1 && stress < expected_stress2) })
-    for (i in 0:10) {
-        chart$remove_all_projections()
+    test_that(paste("[", filename, "] stress after optimization with randomization seed (", seed, "): ", stress, "  expected between ", expected_stress1, " and ", expected_stress2, sep=""), { expect_true(stress > expected_stress1 && stress < expected_stress2) })
+    for (i in 1:10) {
         chart$relax("1280", 2, FALSE, seed)
-        test_that("stress after Nth optimization with randomization seed", { expect_equal(stress, chart$projections[[1]]$stress) })
+        test_that(paste("[", filename, "] stress after ", i, " optimization with randomization seed: ", stress, " expected: ", chart$projections[[1]]$stress, sep=""), { expect_equal(stress, chart$projections[[1]]$stress) })
     }
 }
 
@@ -83,7 +82,7 @@ test_relax_existing("cdc-h1pdm-2009.acd1.bz2")
 test_relax("2004-3.ace", 100, 72)
 test_relax("cdc-h1pdm-2009.acd1.bz2", 5, 900)
 test_relax_seed("cdc-h1pdm-2009.acd1.bz2", 778, 868.0, 869.0)
-test_relax_seed("cdc-h1pdm-2009.acd1.bz2", 666, 880.0, 881.0)
+test_relax_seed("cdc-h1pdm-2009.acd1.bz2", 666, 880.0, 885.0)
 test_relax_with_dimension_annealing("cdc-h1pdm-2009.acd1.bz2")
 test_relax_with_unmovable("2004-3.ace")
 
