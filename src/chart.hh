@@ -40,8 +40,8 @@ class Antigen : public wrapper<acmacs::chart::AntigenModify>
     void set_reference(bool reference) { obj_->reference(reference); }
     Rcpp::StringVector get_lab_ids() const { return getStringVector(obj_->lab_ids()); }
     Rcpp::StringVector get_annotations() const { return getStringVector(obj_->annotations()); }
-    void add_annotation(std::string annotation) { obj_->add_annotation(annotation); }
-    void remove_annotation(std::string annotation) { obj_->remove_annotation(annotation); }
+    void add_annotation(const std::string& annotation) { obj_->add_annotation(annotation); }
+    void remove_annotation(const std::string& annotation) { obj_->remove_annotation(annotation); }
 
     static inline Rcpp::StringVector as_character(Antigen* aAntigen) { return {aAntigen->obj_->full_name()}; }
 };
@@ -68,8 +68,8 @@ class Serum : public wrapper<acmacs::chart::SerumModify>
     std::string get_serum_species() const { return *obj_->serum_species(); }
     void set_serum_species(std::string serum_species) { obj_->serum_species(acmacs::chart::SerumSpecies{serum_species}); }
     Rcpp::StringVector get_annotations() const { return getStringVector(obj_->annotations()); }
-    void add_annotation(std::string annotation) { obj_->add_annotation(annotation); }
-    void remove_annotation(std::string annotation) { obj_->remove_annotation(annotation); }
+    void add_annotation(const std::string& annotation) { obj_->add_annotation(annotation); }
+    void remove_annotation(const std::string& annotation) { obj_->remove_annotation(annotation); }
 
     static inline Rcpp::StringVector as_character(Serum* aSerum) { return {aSerum->obj_->full_name()}; }
 };
@@ -111,11 +111,11 @@ class Projection : public wrapper<acmacs::chart::ProjectionModify>
 
     std::string minimum_column_basis() const { return obj_->minimum_column_basis(); }
 
-    void relax(std::string method, bool rough);
+    void relax(const std::string& method, bool rough);
     void relax_default() { relax("cg", false); }
-    bool relax_one_iteration(std::string method, bool rough); // returns if optimization can be performed further
+    bool relax_one_iteration(const std::string& method, bool rough); // returns if optimization can be performed further
     bool relax_one_iteration_default() { return relax_one_iteration("cg", false); }
-    void randomize_layout(std::string randomization_method, double diameter_multiplier);
+    void randomize_layout(const std::string& randomization_method, double diameter_multiplier);
     void randomize_layout_default() { randomize_layout("table-max-distance", 2.0); }
 
     void dimension_annealing(size_t target_number_of_dimensions);
@@ -124,19 +124,19 @@ class Projection : public wrapper<acmacs::chart::ProjectionModify>
     void set_unmovable(const Rcpp::IntegerVector& points);
     void set_unmovable_in_the_last_dimension(const Rcpp::IntegerVector& points);
 
-    void reorient(const Projection& master, std::string match, std::string subset);
+    void reorient(const Projection& master, const std::string& match, const std::string& subset);
     void reorient_default(const Projection& master) { reorient(master, "auto", "all"); }
 
     static acmacs::Layout layout_convert(const Rcpp::NumericMatrix& source);
     static Rcpp::NumericMatrix layout_convert(std::shared_ptr<acmacs::Layout> layout);
-    static acmacs::chart::ProjectionModify::randomizer make_randomizer(std::string randomization_method);
+    static acmacs::chart::ProjectionModify::randomizer make_randomizer(const std::string& randomization_method);
 
  private:
     std::unique_ptr<acmacs::chart::IntermediateLayouts> intermediate_layouts_;
     size_t next_layout_;
 
     acmacs::Transformation transformation_convert(const Rcpp::NumericMatrix& source) const;
-    acmacs::chart::optimization_method optimization_method(std::string method) const;
+    acmacs::chart::optimization_method optimization_method(const std::string& method) const;
 
 }; // class Projection
 RCPP_EXPOSED_CLASS_NODECL(Projection);
@@ -146,7 +146,7 @@ RCPP_EXPOSED_CLASS_NODECL(Projection);
 class Chart : public wrapper<acmacs::chart::ChartModify>
 {
  public:
-    Chart(std::string aFilename);
+    Chart(const std::string& aFilename);
     Chart(Rcpp::RawVector aData);
     Chart(int number_of_antigens, int number_of_sera);
     Chart(std::shared_ptr<acmacs::chart::ChartModify> src);
@@ -157,9 +157,9 @@ class Chart : public wrapper<acmacs::chart::ChartModify>
     size_t number_of_sera() const { return obj_->number_of_sera(); }
     size_t number_of_points() const { return obj_->number_of_points(); }
     size_t number_of_projections() const { return obj_->number_of_projections(); }
-    Rcpp::NumericVector column_bases_2(size_t aProjectionNo, std::string aMinimumColumnBasis) const;
+    Rcpp::NumericVector column_bases_2(size_t aProjectionNo, const std::string& aMinimumColumnBasis) const;
     Rcpp::NumericVector column_bases_1(size_t aProjectionNo) const { return column_bases_2(aProjectionNo, "none"); }
-    Rcpp::NumericVector column_bases_1s(std::string aMinimumColumnBasis) const { return column_bases_2(1, aMinimumColumnBasis); }
+    Rcpp::NumericVector column_bases_1s(const std::string& aMinimumColumnBasis) const { return column_bases_2(1, aMinimumColumnBasis); }
     Rcpp::NumericVector column_bases_0() const { return column_bases_2(1, "none"); }
     void set_column_bases(const Rcpp::NumericVector& data);
     void set_column_basis(size_t serum_no, double column_basis);
@@ -175,41 +175,52 @@ class Chart : public wrapper<acmacs::chart::ChartModify>
     void remove_sera(const Rcpp::NumericVector& aIndexes);
 
     void set_name(std::string name) { return obj_->info_modify().name(name); }
-    void save(std::string aFilename);
+    void save(const std::string& aFilename);
     std::string save_to_string();
 
       // https://stackoverflow.com/questions/42579207/rcpp-modules-validator-function-for-exposed-constructors-with-same-number-of-pa
     template <typename T> static inline bool validate_constructor(SEXP* args, int nargs) { return nargs == 1 && Rcpp::is<T>(args[0]); }
 
-    Projection new_projection_with_layout_randomization1(std::string minimum_column_basis, size_t number_of_dimensions, std::string randomization_method, double diameter_multiplier);
-    Projection new_projection_with_layout_randomization2(std::string minimum_column_basis, size_t number_of_dimensions, std::string randomization_method);
-    Projection new_projection_with_layout_randomization3(std::string minimum_column_basis, size_t number_of_dimensions);
-    Projection new_projection_with_layout(std::string minimum_column_basis, const Rcpp::NumericMatrix& layout);
+    Projection new_projection_with_layout_randomization1(const std::string& minimum_column_basis, size_t number_of_dimensions, const std::string& randomization_method, double diameter_multiplier);
+    Projection new_projection_with_layout_randomization2(const std::string& minimum_column_basis, size_t number_of_dimensions, const std::string& randomization_method);
+    Projection new_projection_with_layout_randomization3(const std::string& minimum_column_basis, size_t number_of_dimensions);
+    Projection new_projection_with_layout(const std::string& minimum_column_basis, const Rcpp::NumericMatrix& layout);
 
-    Projection relax1(size_t number_of_dimensions, std::string opt1={}, std::string opt2={}, std::string opt3={}, std::string opt4={}, std::string opt5={}, std::string opt6={}, std::string opt7={}, std::string opt8={}, std::string opt9={});
+    Projection relax1(size_t number_of_dimensions, const std::string& opt1={}, const std::string& opt2={}, const std::string& opt3={}, const std::string& opt4={}, const std::string& opt5={}, const std::string& opt6={}, const std::string& opt7={}, const std::string& opt8={}, const std::string& opt9={});
     Projection relax10(size_t number_of_dimensions) { return relax1(number_of_dimensions); }
-    Projection relax11(size_t number_of_dimensions, std::string opt1) { return relax1(number_of_dimensions, opt1); }
-    Projection relax12(size_t number_of_dimensions, std::string opt1, std::string opt2) { return relax1(number_of_dimensions, opt1, opt2); }
-    Projection relax13(size_t number_of_dimensions, std::string opt1, std::string opt2, std::string opt3) { return relax1(number_of_dimensions, opt1, opt2, opt3); }
-    Projection relax14(size_t number_of_dimensions, std::string opt1, std::string opt2, std::string opt3, std::string opt4) { return relax1(number_of_dimensions, opt1, opt2, opt3, opt4); }
-    Projection relax15(size_t number_of_dimensions, std::string opt1, std::string opt2, std::string opt3, std::string opt4, std::string opt5) { return relax1(number_of_dimensions, opt1, opt2, opt3, opt4, opt5); }
-    Projection relax16(size_t number_of_dimensions, std::string opt1, std::string opt2, std::string opt3, std::string opt4, std::string opt5, std::string opt6) { return relax1(number_of_dimensions, opt1, opt2, opt3, opt4, opt5, opt6); }
-    Projection relax17(size_t number_of_dimensions, std::string opt1, std::string opt2, std::string opt3, std::string opt4, std::string opt5, std::string opt6, std::string opt7) { return relax1(number_of_dimensions, opt1, opt2, opt3, opt4, opt5, opt6, opt7); }
-    Projection relax18(size_t number_of_dimensions, std::string opt1, std::string opt2, std::string opt3, std::string opt4, std::string opt5, std::string opt6, std::string opt7, std::string opt8) { return relax1(number_of_dimensions, opt1, opt2, opt3, opt4, opt5, opt6, opt7, opt8); }
-    Projection relax2(size_t number_of_dimensions, unsigned seed, std::string opt1={}, std::string opt2={}, std::string opt3={}, std::string opt4={}, std::string opt5={}, std::string opt6={}, std::string opt7={}, std::string opt8={}, std::string opt9={});
+    Projection relax11(size_t number_of_dimensions, const std::string& opt1) { return relax1(number_of_dimensions, opt1); }
+    Projection relax12(size_t number_of_dimensions, const std::string& opt1, const std::string& opt2) { return relax1(number_of_dimensions, opt1, opt2); }
+    Projection relax13(size_t number_of_dimensions, const std::string& opt1, const std::string& opt2, const std::string& opt3) { return relax1(number_of_dimensions, opt1, opt2, opt3); }
+    Projection relax14(size_t number_of_dimensions, const std::string& opt1, const std::string& opt2, const std::string& opt3, const std::string& opt4) { return relax1(number_of_dimensions, opt1, opt2, opt3, opt4); }
+    Projection relax15(size_t number_of_dimensions, const std::string& opt1, const std::string& opt2, const std::string& opt3, const std::string& opt4, const std::string& opt5) { return relax1(number_of_dimensions, opt1, opt2, opt3, opt4, opt5); }
+    Projection relax16(size_t number_of_dimensions, const std::string& opt1, const std::string& opt2, const std::string& opt3, const std::string& opt4, const std::string& opt5, const std::string& opt6) { return relax1(number_of_dimensions, opt1, opt2, opt3, opt4, opt5, opt6); }
+    Projection relax17(size_t number_of_dimensions, const std::string& opt1, const std::string& opt2, const std::string& opt3, const std::string& opt4, const std::string& opt5, const std::string& opt6, const std::string& opt7) { return relax1(number_of_dimensions, opt1, opt2, opt3, opt4, opt5, opt6, opt7); }
+    Projection relax18(size_t number_of_dimensions, const std::string& opt1, const std::string& opt2, const std::string& opt3, const std::string& opt4, const std::string& opt5, const std::string& opt6, const std::string& opt7, const std::string& opt8) { return relax1(number_of_dimensions, opt1, opt2, opt3, opt4, opt5, opt6, opt7, opt8); }
+
+    Projection relax2(size_t number_of_dimensions, unsigned seed, const std::string& opt1={}, const std::string& opt2={}, const std::string& opt3={}, const std::string& opt4={}, const std::string& opt5={}, const std::string& opt6={}, const std::string& opt7={}, const std::string& opt8={}, const std::string& opt9={});
+    Projection relax20(size_t number_of_dimensions, unsigned seed) { return relax2(number_of_dimensions, seed); }
+    Projection relax21(size_t number_of_dimensions, unsigned seed, const std::string& opt1) { return relax2(number_of_dimensions, seed, opt1); }
+    Projection relax22(size_t number_of_dimensions, unsigned seed, const std::string& opt1, const std::string& opt2) { return relax2(number_of_dimensions, seed, opt1, opt2); }
+    Projection relax23(size_t number_of_dimensions, unsigned seed, const std::string& opt1, const std::string& opt2, const std::string& opt3) { return relax2(number_of_dimensions, seed, opt1, opt2, opt3); }
+    Projection relax24(size_t number_of_dimensions, unsigned seed, const std::string& opt1, const std::string& opt2, const std::string& opt3, const std::string& opt4) { return relax2(number_of_dimensions, seed, opt1, opt2, opt3, opt4); }
+    Projection relax25(size_t number_of_dimensions, unsigned seed, const std::string& opt1, const std::string& opt2, const std::string& opt3, const std::string& opt4, const std::string& opt5) { return relax2(number_of_dimensions, seed, opt1, opt2, opt3, opt4, opt5); }
+    Projection relax26(size_t number_of_dimensions, unsigned seed, const std::string& opt1, const std::string& opt2, const std::string& opt3, const std::string& opt4, const std::string& opt5, const std::string& opt6) { return relax2(number_of_dimensions, seed, opt1, opt2, opt3, opt4, opt5, opt6); }
+    Projection relax27(size_t number_of_dimensions, unsigned seed, const std::string& opt1, const std::string& opt2, const std::string& opt3, const std::string& opt4, const std::string& opt5, const std::string& opt6, const std::string& opt7) { return relax2(number_of_dimensions, seed, opt1, opt2, opt3, opt4, opt5, opt6, opt7); }
+    Projection relax28(size_t number_of_dimensions, unsigned seed, const std::string& opt1, const std::string& opt2, const std::string& opt3, const std::string& opt4, const std::string& opt5, const std::string& opt6, const std::string& opt7, const std::string& opt8) { return relax2(number_of_dimensions, seed, opt1, opt2, opt3, opt4, opt5, opt6, opt7, opt8); }
+
     Projection relax3(const std::string& minimum_column_basis, size_t number_of_dimensions) { return relax4(minimum_column_basis, number_of_dimensions, false); }
     Projection relax4(const std::string& minimum_column_basis, size_t number_of_dimensions, bool rough);
     Projection relax_seed(const std::string& minimum_column_basis, size_t number_of_dimensions, bool rough, unsigned seed);
     void relax_many(const std::string& minimum_column_basis, size_t number_of_dimensions, size_t number_of_optimizations, bool rough);
     void relax_incremental_1(size_t number_of_optimizations, bool rough);
-    void relax_incremental_2(size_t number_of_optimizations, std::string opt1={}, std::string opt2={}, std::string opt3={}, std::string opt4={}, std::string opt5={});
+    void relax_incremental_2(size_t number_of_optimizations, const std::string& opt1={}, const std::string& opt2={}, const std::string& opt3={}, const std::string& opt4={}, const std::string& opt5={});
     void relax_incremental_2_1(size_t number_of_optimizations) { relax_incremental_2(number_of_optimizations); }
-    void relax_incremental_2_2(size_t number_of_optimizations, std::string opt1) { relax_incremental_2(number_of_optimizations, opt1); }
-    void relax_incremental_2_3(size_t number_of_optimizations, std::string opt1, std::string opt2) { relax_incremental_2(number_of_optimizations, opt1, opt2); }
-    void relax_incremental_2_4(size_t number_of_optimizations, std::string opt1, std::string opt2, std::string opt3) { relax_incremental_2(number_of_optimizations, opt1, opt2, opt3); }
-    void relax_incremental_2_5(size_t number_of_optimizations, std::string opt1, std::string opt2, std::string opt3, std::string opt4) { relax_incremental_2(number_of_optimizations, opt1, opt2, opt3, opt4); }
-    void relax_incremental_2_6(size_t number_of_optimizations, std::string opt1, std::string opt2, std::string opt3, std::string opt4, std::string opt5) { relax_incremental_2(number_of_optimizations, opt1, opt2, opt3, opt4, opt5); }
-    acmacs::chart::Stress stress_evaluator(size_t number_of_dimensions, std::string minimum_column_basis);
+    void relax_incremental_2_2(size_t number_of_optimizations, const std::string& opt1) { relax_incremental_2(number_of_optimizations, opt1); }
+    void relax_incremental_2_3(size_t number_of_optimizations, const std::string& opt1, const std::string& opt2) { relax_incremental_2(number_of_optimizations, opt1, opt2); }
+    void relax_incremental_2_4(size_t number_of_optimizations, const std::string& opt1, const std::string& opt2, const std::string& opt3) { relax_incremental_2(number_of_optimizations, opt1, opt2, opt3); }
+    void relax_incremental_2_5(size_t number_of_optimizations, const std::string& opt1, const std::string& opt2, const std::string& opt3, const std::string& opt4) { relax_incremental_2(number_of_optimizations, opt1, opt2, opt3, opt4); }
+    void relax_incremental_2_6(size_t number_of_optimizations, const std::string& opt1, const std::string& opt2, const std::string& opt3, const std::string& opt4, const std::string& opt5) { relax_incremental_2(number_of_optimizations, opt1, opt2, opt3, opt4, opt5); }
+    acmacs::chart::Stress stress_evaluator(size_t number_of_dimensions, const std::string& minimum_column_basis);
     void sort_projections() { obj_->projections_modify().sort(); }
     void remove_all_projections() { obj_->projections_modify().remove_all(); }
     void remove_all_projections_except(size_t projection_no_based_one) { obj_->projections_modify().remove_all_except(projection_no_based_one - 1); }
@@ -218,8 +229,8 @@ class Chart : public wrapper<acmacs::chart::ChartModify>
     Projection clone_projection(size_t projection_no_based_one) const;
     Projection projection(size_t projection_no);
 
-    Rcpp::StringVector extension_field(std::string field_name) const;
-    void set_extension_field(std::string field_name, std::string value) const;
+    Rcpp::StringVector extension_field(const std::string& field_name) const;
+    void set_extension_field(const std::string& field_name, const std::string& value) const;
 
 }; // class Chart
 
@@ -236,7 +247,7 @@ inline void stress_change_number_of_dimensions(acmacs::chart::Stress* stress, si
 
 // ----------------------------------------------------------------------
 
-acmacs::chart::CommonAntigensSera::match_level_t convert_match_level(std::string source);
+acmacs::chart::CommonAntigensSera::match_level_t convert_match_level(const std::string& source);
 
 // class MatchData
 // {
@@ -247,7 +258,7 @@ acmacs::chart::CommonAntigensSera::match_level_t convert_match_level(std::string
 // };
 // RCPP_EXPOSED_CLASS_NODECL(MatchData);
 
-Rcpp::List match_antigens_sera(Chart chart1, Chart chart2, std::string match);
+Rcpp::List match_antigens_sera(Chart chart1, Chart chart2, const std::string& match);
 
 class ProcrustesData : public wrapper<acmacs::chart::ProcrustesData>
 {
@@ -260,18 +271,18 @@ class ProcrustesData : public wrapper<acmacs::chart::ProcrustesData>
 };
 RCPP_EXPOSED_CLASS_NODECL(ProcrustesData);
 
-ProcrustesData procrustes(Projection primary, Projection secondary, bool scaling, std::string match, std::string subset);
+ProcrustesData procrustes(Projection primary, Projection secondary, bool scaling, const std::string& match, const std::string& subset);
 
-Chart merge(Chart chart1, Chart chart2, std::string match_level, size_t projection_merge);
+Chart merge(Chart chart1, Chart chart2, const std::string& match_level, size_t projection_merge);
 Chart merge_incremental(Chart chart1, Chart chart2, size_t number_of_optimizations, size_t num_threads = 0);
 Chart merge_overlay(Chart chart1, Chart chart2);
 Chart merge_frozen(Chart chart1, Chart chart2);
-std::string merge_report(Chart chart1, Chart chart2, std::string match_level);
+std::string merge_report(Chart chart1, Chart chart2, const std::string& match_level);
 
 Rcpp::DataFrame map_resolution_test(Chart chart, const Rcpp::IntegerVector& number_of_dimensions,
-                                    const Rcpp::NumericVector& proportions_to_dont_care, std::string minimum_column_basis,
+                                    const Rcpp::NumericVector& proportions_to_dont_care, const std::string& minimum_column_basis,
                                     bool column_bases_from_master, bool relax_from_full_table,
-                                    size_t number_of_random_replicates_for_each_proportion, size_t number_of_optimizations, std::string save_charts_to);
+                                    size_t number_of_random_replicates_for_each_proportion, size_t number_of_optimizations, const std::string& save_charts_to);
 
 // ----------------------------------------------------------------------
 

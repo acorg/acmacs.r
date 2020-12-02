@@ -15,7 +15,7 @@ Chart::Chart(std::shared_ptr<acmacs::chart::ChartModify> src)
 {
 }
 
-Chart::Chart(std::string aFilename)
+Chart::Chart(const std::string& aFilename)
     : wrapper(std::make_shared<acmacs::chart::ChartModify>(acmacs::chart::import_from_file(aFilename, acmacs::chart::Verify::None, report_time::no)))
 {
 }
@@ -72,7 +72,7 @@ void Chart::remove_sera(const Rcpp::NumericVector& aIndexes)
 
 // ----------------------------------------------------------------------
 
-void Chart::save(std::string aFilename)
+void Chart::save(const std::string& aFilename)
 {
     acmacs::chart::export_factory(*obj_, aFilename, "acmacs.r", report_time::no);
 }
@@ -87,7 +87,7 @@ std::string Chart::save_to_string()
 
 // ----------------------------------------------------------------------
 
-Rcpp::NumericVector Chart::column_bases_2(size_t aProjectionNo, std::string aMinimumColumnBasis) const
+Rcpp::NumericVector Chart::column_bases_2(size_t aProjectionNo, const std::string& aMinimumColumnBasis) const
 {
     auto projections = obj_->projections();
     if (aProjectionNo < 1 || (projections && !projections->empty() && aProjectionNo > projections->size()))
@@ -138,7 +138,7 @@ void Chart::set_column_basis(size_t serum_no, double column_basis)
 
 // ----------------------------------------------------------------------
 
-Projection Chart::new_projection_with_layout_randomization1(std::string minimum_column_basis, size_t number_of_dimensions, std::string randomization_method, double diameter_multiplier)
+Projection Chart::new_projection_with_layout_randomization1(const std::string& minimum_column_basis, size_t number_of_dimensions, const std::string& randomization_method, double diameter_multiplier)
 {
     auto projection = obj_->projections_modify().new_from_scratch(acmacs::number_of_dimensions_t{number_of_dimensions}, minimum_column_basis);
     projection->randomize_layout(Projection::make_randomizer(randomization_method), diameter_multiplier <= 0.0 ? acmacs::chart::optimization_options{}.randomization_diameter_multiplier: diameter_multiplier);
@@ -146,19 +146,19 @@ Projection Chart::new_projection_with_layout_randomization1(std::string minimum_
 
 } // Chart::new_projection_with_layout_randomization
 
-Projection Chart::new_projection_with_layout_randomization2(std::string minimum_column_basis, size_t number_of_dimensions, std::string randomization_method)
+Projection Chart::new_projection_with_layout_randomization2(const std::string& minimum_column_basis, size_t number_of_dimensions, const std::string& randomization_method)
 {
     return new_projection_with_layout_randomization1(minimum_column_basis, number_of_dimensions, randomization_method, -1.0);
 }
 
-Projection Chart::new_projection_with_layout_randomization3(std::string minimum_column_basis, size_t number_of_dimensions)
+Projection Chart::new_projection_with_layout_randomization3(const std::string& minimum_column_basis, size_t number_of_dimensions)
 {
     return new_projection_with_layout_randomization1(minimum_column_basis, number_of_dimensions, "sample-optimization", -1.0);
 }
 
 // ----------------------------------------------------------------------
 
-Projection Chart::new_projection_with_layout(std::string minimum_column_basis, const Rcpp::NumericMatrix& layout)
+Projection Chart::new_projection_with_layout(const std::string& minimum_column_basis, const Rcpp::NumericMatrix& layout)
 {
     auto leyt = Projection::layout_convert(layout);
     auto projection = obj_->projections_modify().new_from_scratch(leyt.number_of_dimensions(), minimum_column_basis);
@@ -170,7 +170,7 @@ Projection Chart::new_projection_with_layout(std::string minimum_column_basis, c
 // ----------------------------------------------------------------------
 
 inline std::tuple<acmacs::chart::optimization_options, std::string, acmacs::chart::use_dimension_annealing>
-parse_options(std::string opt1, std::string opt2, std::string opt3, std::string opt4, std::string opt5, std::string opt6, std::string opt7, std::string opt8, std::string opt9)
+parse_options(const std::string& opt1, const std::string& opt2, const std::string& opt3, const std::string& opt4, const std::string& opt5, const std::string& opt6, const std::string& opt7, const std::string& opt8, const std::string& opt9)
 {
     using namespace std::string_view_literals;
     acmacs::chart::optimization_options options{acmacs::chart::optimization_method::alglib_cg_pca, acmacs::chart::optimization_precision::fine, 2.0};
@@ -213,8 +213,8 @@ parse_options(std::string opt1, std::string opt2, std::string opt3, std::string 
     return {options, minimum_column_basis, dimension_annealing};
 }
 
-Projection Chart::relax1(size_t number_of_dimensions, std::string opt1, std::string opt2, std::string opt3, std::string opt4, std::string opt5, std::string opt6, std::string opt7, std::string opt8,
-                         std::string opt9)
+Projection Chart::relax1(size_t number_of_dimensions, const std::string& opt1, const std::string& opt2, const std::string& opt3, const std::string& opt4, const std::string& opt5, const std::string& opt6, const std::string& opt7, const std::string& opt8,
+                         const std::string& opt9)
 {
 
     const auto [options, minimum_column_basis, dimension_annealing] = parse_options(opt1, opt2, opt3, opt4, opt5, opt6, opt7, opt8, opt9);
@@ -223,22 +223,14 @@ Projection Chart::relax1(size_t number_of_dimensions, std::string opt1, std::str
     return projection;
 }
 
-Projection Chart::relax2(size_t number_of_dimensions, unsigned seed, std::string opt1, std::string opt2, std::string opt3, std::string opt4, std::string opt5, std::string opt6, std::string opt7, std::string opt8,
-                         std::string opt9)
+Projection Chart::relax2(size_t number_of_dimensions, unsigned seed, const std::string& opt1, const std::string& opt2, const std::string& opt3, const std::string& opt4, const std::string& opt5, const std::string& opt6, const std::string& opt7, const std::string& opt8,
+                         const std::string& opt9)
 {
     const auto [options, minimum_column_basis, dimension_annealing] = parse_options(opt1, opt2, opt3, opt4, opt5, opt6, opt7, opt8, opt9);
     auto [status, projection] = obj_->relax(minimum_column_basis, acmacs::number_of_dimensions_t{number_of_dimensions}, dimension_annealing, options, seed);
     // obj_->projections_modify().sort();
     return projection;
 }
-
-// Projection Chart::relax3(std::string minimum_column_basis, size_t number_of_dimensions)
-// {
-//     auto [status, projection] = obj_->relax(minimum_column_basis, acmacs::number_of_dimensions_t{number_of_dimensions}, acmacs::chart::use_dimension_annealing::yes,
-//                                             acmacs::chart::optimization_options(acmacs::chart::optimization_method::alglib_cg_pca, acmacs::chart::optimization_precision::fine, 2.0));
-//       // obj_->projections_modify().sort();
-//     return projection;
-// }
 
 Projection Chart::relax4(const std::string& minimum_column_basis, size_t number_of_dimensions, bool rough)
 {
@@ -274,7 +266,7 @@ void Chart::relax_incremental_1(size_t number_of_optimizations, bool rough)
     obj_->projections_modify().sort();
 }
 
-void Chart::relax_incremental_2(size_t number_of_optimizations, std::string opt1, std::string opt2, std::string opt3, std::string opt4, std::string opt5)
+void Chart::relax_incremental_2(size_t number_of_optimizations, const std::string& opt1, const std::string& opt2, const std::string& opt3, const std::string& opt4, const std::string& opt5)
 {
     using namespace std::string_view_literals;
 
@@ -317,14 +309,14 @@ void Chart::relax_incremental_2(size_t number_of_optimizations, std::string opt1
 
 // ----------------------------------------------------------------------
 
-acmacs::chart::Stress Chart::stress_evaluator(size_t number_of_dimensions, std::string minimum_column_basis)
+acmacs::chart::Stress Chart::stress_evaluator(size_t number_of_dimensions, const std::string& minimum_column_basis)
 {
     return acmacs::chart::stress_factory(*obj_, acmacs::number_of_dimensions_t{number_of_dimensions}, minimum_column_basis, acmacs::chart::multiply_antigen_titer_until_column_adjust::yes, acmacs::chart::dodgy_titer_is_regular::no);
 }
 
 // ----------------------------------------------------------------------
 
-Rcpp::StringVector Chart::extension_field(std::string field_name) const
+Rcpp::StringVector Chart::extension_field(const std::string& field_name) const
 {
     if (const auto& ext = obj_->extension_field(field_name); !ext.is_null())
         return rjson::format(ext);
@@ -335,7 +327,7 @@ Rcpp::StringVector Chart::extension_field(std::string field_name) const
 
 // ----------------------------------------------------------------------
 
-void Chart::set_extension_field(std::string field_name, std::string value) const
+void Chart::set_extension_field(const std::string& field_name, const std::string& value) const
 {
     obj_->extension_field_modify(field_name, rjson::parse_string(value));
 
@@ -404,7 +396,7 @@ void Projection::move_point(size_t aPointNo, const Rcpp::NumericVector& aCoordin
 
 // ----------------------------------------------------------------------
 
-acmacs::chart::optimization_method Projection::optimization_method(std::string method) const
+acmacs::chart::optimization_method Projection::optimization_method(const std::string& method) const
 {
     if (method == "lbfgs")
         return acmacs::chart::optimization_method::alglib_lbfgs_pca;
@@ -416,7 +408,7 @@ acmacs::chart::optimization_method Projection::optimization_method(std::string m
 
 // ----------------------------------------------------------------------
 
-void Projection::relax(std::string method, bool rough)
+void Projection::relax(const std::string& method, bool rough)
 {
     obj_->relax(acmacs::chart::optimization_options(optimization_method(method), rough ? acmacs::chart::optimization_precision::rough : acmacs::chart::optimization_precision::fine));
     intermediate_layouts_.reset();
@@ -424,7 +416,7 @@ void Projection::relax(std::string method, bool rough)
 
 // ----------------------------------------------------------------------
 
-bool Projection::relax_one_iteration(std::string method, bool rough)
+bool Projection::relax_one_iteration(const std::string& method, bool rough)
 {
     if (!intermediate_layouts_) {
         intermediate_layouts_.reset(new acmacs::chart::IntermediateLayouts{});
@@ -454,7 +446,7 @@ void Projection::dimension_annealing(size_t target_number_of_dimensions)
 
 // ----------------------------------------------------------------------
 
-acmacs::chart::ProjectionModify::randomizer Projection::make_randomizer(std::string randomization_method)
+acmacs::chart::ProjectionModify::randomizer Projection::make_randomizer(const std::string& randomization_method)
 {
     using namespace acmacs::chart;
     if (randomization_method == "sample-optimization")
@@ -470,7 +462,7 @@ acmacs::chart::ProjectionModify::randomizer Projection::make_randomizer(std::str
 
 // ----------------------------------------------------------------------
 
-void Projection::randomize_layout(std::string randomization_method, double diameter_multiplier)
+void Projection::randomize_layout(const std::string& randomization_method, double diameter_multiplier)
 {
     obj_->randomize_layout(make_randomizer(randomization_method), diameter_multiplier);
     intermediate_layouts_.reset();
@@ -524,7 +516,7 @@ acmacs::Transformation Projection::transformation_convert(const Rcpp::NumericMat
 
 // ----------------------------------------------------------------------
 
-void Projection::reorient(const Projection& master, std::string match, std::string subset)
+void Projection::reorient(const Projection& master, const std::string& match, const std::string& subset)
 {
     const auto procrustes_data = procrustes(master, *this, false, match, subset);
     const auto& transformation_raw = procrustes_data.transformation_raw();
@@ -618,7 +610,7 @@ Rcpp::NumericMatrix ProcrustesData::transformation() const
 
 // ----------------------------------------------------------------------
 
-acmacs::chart::CommonAntigensSera::match_level_t convert_match_level(std::string source)
+acmacs::chart::CommonAntigensSera::match_level_t convert_match_level(const std::string& source)
 {
     auto match_level{acmacs::chart::CommonAntigensSera::match_level_t::automatic};
     if (!source.empty()) {
@@ -637,7 +629,7 @@ acmacs::chart::CommonAntigensSera::match_level_t convert_match_level(std::string
 
 // ----------------------------------------------------------------------
 
-Rcpp::List match_antigens_sera(Chart chart1, Chart chart2, std::string match)
+Rcpp::List match_antigens_sera(Chart chart1, Chart chart2, const std::string& match)
 {
     using namespace Rcpp;
     // MatchData result(chart1.obj_->number_of_antigens(), chart1.obj_->number_of_sera());
@@ -654,7 +646,7 @@ Rcpp::List match_antigens_sera(Chart chart1, Chart chart2, std::string match)
 
 // ----------------------------------------------------------------------
 
-ProcrustesData procrustes(Projection primary, Projection secondary, bool scaling, std::string match, std::string subset)
+ProcrustesData procrustes(Projection primary, Projection secondary, bool scaling, const std::string& match, const std::string& subset)
 {
     acmacs::chart::CommonAntigensSera common(primary.obj_->chart(), secondary.obj_->chart(), convert_match_level(match));
     if (subset == "antigens")
@@ -676,9 +668,9 @@ Rcpp::NumericMatrix ProcrustesData::apply(const Rcpp::NumericMatrix& source_layo
 
 // ----------------------------------------------------------------------
 
-static acmacs::chart::MergeSettings merge_settinsg(std::string match_level, size_t projection_merge);
+static acmacs::chart::MergeSettings merge_settinsg(const std::string& match_level, size_t projection_merge);
 
-acmacs::chart::MergeSettings merge_settinsg(std::string match_level, size_t projection_merge)
+acmacs::chart::MergeSettings merge_settinsg(const std::string& match_level, size_t projection_merge)
 {
     acmacs::chart::MergeSettings settings(convert_match_level(match_level));
     switch (projection_merge) {
@@ -705,7 +697,7 @@ acmacs::chart::MergeSettings merge_settinsg(std::string match_level, size_t proj
 
 // ----------------------------------------------------------------------
 
-Chart merge(Chart chart1, Chart chart2, std::string match_level, size_t projection_merge)
+Chart merge(Chart chart1, Chart chart2, const std::string& match_level, size_t projection_merge)
 {
     auto [result, diagnostics] = acmacs::chart::merge(*chart1.obj_, *chart2.obj_, merge_settinsg(match_level, projection_merge));
     return result;
@@ -748,7 +740,7 @@ Chart merge_incremental(Chart chart1, Chart chart2, size_t number_of_optimizatio
 
 // ----------------------------------------------------------------------
 
-std::string merge_report(Chart chart1, Chart chart2, std::string match_level)
+std::string merge_report(Chart chart1, Chart chart2, const std::string& match_level)
 {
     auto [result, diagnostics] = acmacs::chart::merge(*chart1.obj_, *chart2.obj_, merge_settinsg(match_level, 1));
     return diagnostics.titer_merge_report(*result);
@@ -756,9 +748,9 @@ std::string merge_report(Chart chart1, Chart chart2, std::string match_level)
 
 // ----------------------------------------------------------------------
 
-Rcpp::DataFrame map_resolution_test(Chart chart, const Rcpp::IntegerVector& number_of_dimensions, const Rcpp::NumericVector& proportions_to_dont_care, std::string minimum_column_basis,
+Rcpp::DataFrame map_resolution_test(Chart chart, const Rcpp::IntegerVector& number_of_dimensions, const Rcpp::NumericVector& proportions_to_dont_care, const std::string& minimum_column_basis,
                                     bool column_bases_from_master, bool relax_from_full_table,
-                                    size_t number_of_random_replicates_for_each_proportion, size_t number_of_optimizations, std::string save_charts_to)
+                                    size_t number_of_random_replicates_for_each_proportion, size_t number_of_optimizations, const std::string& save_charts_to)
 {
     using namespace Rcpp;
 
