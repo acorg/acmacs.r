@@ -23,8 +23,8 @@ test_that("merge2 stress upon relaxing", { expect_equal(merge2$projections[[1]]$
 
 merge2frozen <- acmacs.merge.2(chart1, chart2)
 merge2frozen$relax_incremental(1000, "fine", "unmovable-primary-points")
-cat(paste("\n\nmerge2frozen stress: ", merge2frozen$projections[[1]]$stress), "\n\n", sep="")
-test_that("merge2frozen stress upon relaxing", { expect_equal(merge2frozen$projections[[1]]$stress, 794, tolerance=1, scale=1) })
+expected_merge2frozen_stress = 794;
+test_that(paste("merge2frozen stress upon relaxing: ", merge2frozen$projections[[1]]$stress, "  expected: ", expected_merge2frozen_stress, sep=""), { expect_equal(merge2frozen$projections[[1]]$stress, expected_merge2frozen_stress, tolerance=1, scale=1) })
 
 merge3 <- acmacs.merge.3(chart1, chart2)
 merge_type3 <- new(acmacs.Chart, "merge-type3.ace")

@@ -40,6 +40,6 @@ test_chart_with_step <- function(filename, step, expected_rows, verbose=FALSE) {
 
 test_chart("2004-3.ace", 0)
 test_chart_with_step("2004-3.ace", 2.25, 0)
-test_chart("cdc-h1pdm-2009.acd1.bz2", 3, verbose=TRUE)
-test_chart_with_step("cdc-h1pdm-2009.acd1.bz2", 2.0, 1, verbose=TRUE)
+test_chart("cdc-h1pdm-2009.acd1.bz2", 3, verbose=FALSE)
+test_chart_with_step("cdc-h1pdm-2009.acd1.bz2", 2.0, 1, verbose=FALSE)
 test_chart("cdc-h1pdm-20090612.ace", 1)
