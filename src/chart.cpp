@@ -202,7 +202,7 @@ parse_options(const std::string& opt1, const std::string& opt2, const std::strin
          else if (opt == "no-unmovable-primary-points"sv) // default
              unmovable_non_nan_points = acmacs::chart::unmovable_non_nan_points::no;
         else if (!opt.empty())
-            Rcpp::cerr << "WARNING: acmacs chart relax: unrecognized argument: \"" << opt << "\" (ignored)\n";
+            Rcpp::Rcerr << "WARNING: acmacs chart relax: unrecognized argument: \"" << opt << "\" (ignored)\n";
     };
 
     parse_opt(opt1);
@@ -607,7 +607,7 @@ acmacs::chart::CommonAntigensSera::match_level_t convert_match_level(const std::
           case 'i': match_level = acmacs::chart::CommonAntigensSera::match_level_t::ignored; break;
           case 'a': match_level = acmacs::chart::CommonAntigensSera::match_level_t::automatic; break;
           default:
-              std::cerr << "Unrecognized match argument, automatic assumed" << '\n';
+              Rcpp::Rcerr << "Unrecognized match argument, automatic assumed" << '\n';
               break;
         }
     }
