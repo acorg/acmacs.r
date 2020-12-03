@@ -211,7 +211,20 @@ class Chart : public wrapper<acmacs::chart::ChartModify>
     Projection relax3(const std::string& minimum_column_basis, size_t number_of_dimensions) { return relax4(minimum_column_basis, number_of_dimensions, false); }
     Projection relax4(const std::string& minimum_column_basis, size_t number_of_dimensions, bool rough);
     Projection relax_seed(const std::string& minimum_column_basis, size_t number_of_dimensions, bool rough, unsigned seed);
-    void relax_many(const std::string& minimum_column_basis, size_t number_of_dimensions, size_t number_of_optimizations, bool rough);
+
+    void relax_many1(size_t number_of_dimensions, size_t number_of_optimizations, const std::string& opt1={}, const std::string& opt2={}, const std::string& opt3={}, const std::string& opt4={}, const std::string& opt5={}, const std::string& opt6={}, const std::string& opt7={}, const std::string& opt8={}, const std::string& opt9={});
+    void relax_many10(size_t number_of_dimensions, size_t number_of_optimizations) { return relax_many1(number_of_dimensions, number_of_optimizations); }
+    void relax_many11(size_t number_of_dimensions, size_t number_of_optimizations, const std::string& opt1) { return relax_many1(number_of_dimensions, number_of_optimizations, opt1); }
+    void relax_many12(size_t number_of_dimensions, size_t number_of_optimizations, const std::string& opt1, const std::string& opt2) { return relax_many1(number_of_dimensions, number_of_optimizations, opt1, opt2); }
+    void relax_many13(size_t number_of_dimensions, size_t number_of_optimizations, const std::string& opt1, const std::string& opt2, const std::string& opt3) { return relax_many1(number_of_dimensions, number_of_optimizations, opt1, opt2, opt3); }
+    void relax_many14(size_t number_of_dimensions, size_t number_of_optimizations, const std::string& opt1, const std::string& opt2, const std::string& opt3, const std::string& opt4) { return relax_many1(number_of_dimensions, number_of_optimizations, opt1, opt2, opt3, opt4); }
+    void relax_many15(size_t number_of_dimensions, size_t number_of_optimizations, const std::string& opt1, const std::string& opt2, const std::string& opt3, const std::string& opt4, const std::string& opt5) { return relax_many1(number_of_dimensions, number_of_optimizations, opt1, opt2, opt3, opt4, opt5); }
+    void relax_many16(size_t number_of_dimensions, size_t number_of_optimizations, const std::string& opt1, const std::string& opt2, const std::string& opt3, const std::string& opt4, const std::string& opt5, const std::string& opt6) { return relax_many1(number_of_dimensions, number_of_optimizations, opt1, opt2, opt3, opt4, opt5, opt6); }
+    void relax_many17(size_t number_of_dimensions, size_t number_of_optimizations, const std::string& opt1, const std::string& opt2, const std::string& opt3, const std::string& opt4, const std::string& opt5, const std::string& opt6, const std::string& opt7) { return relax_many1(number_of_dimensions, number_of_optimizations, opt1, opt2, opt3, opt4, opt5, opt6, opt7); }
+    void relax_many18(size_t number_of_dimensions, size_t number_of_optimizations, const std::string& opt1, const std::string& opt2, const std::string& opt3, const std::string& opt4, const std::string& opt5, const std::string& opt6, const std::string& opt7, const std::string& opt8) { return relax_many1(number_of_dimensions, number_of_optimizations, opt1, opt2, opt3, opt4, opt5, opt6, opt7, opt8); }
+
+    void relax_many2(const std::string& minimum_column_basis, size_t number_of_dimensions, size_t number_of_optimizations, bool rough);
+
     void relax_incremental_1(size_t number_of_optimizations, bool rough);
     void relax_incremental_2(size_t number_of_optimizations, const std::string& opt1={}, const std::string& opt2={}, const std::string& opt3={}, const std::string& opt4={}, const std::string& opt5={});
     void relax_incremental_2_1(size_t number_of_optimizations) { relax_incremental_2(number_of_optimizations); }

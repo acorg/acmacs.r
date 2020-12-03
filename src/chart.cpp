@@ -169,13 +169,14 @@ Projection Chart::new_projection_with_layout(const std::string& minimum_column_b
 
 // ----------------------------------------------------------------------
 
-inline std::tuple<acmacs::chart::optimization_options, std::string, acmacs::chart::use_dimension_annealing>
+inline std::tuple<acmacs::chart::optimization_options, std::string, acmacs::chart::use_dimension_annealing, acmacs::chart::unmovable_non_nan_points>
 parse_options(const std::string& opt1, const std::string& opt2, const std::string& opt3, const std::string& opt4, const std::string& opt5, const std::string& opt6, const std::string& opt7, const std::string& opt8, const std::string& opt9)
 {
     using namespace std::string_view_literals;
     acmacs::chart::optimization_options options{acmacs::chart::optimization_method::alglib_cg_pca, acmacs::chart::optimization_precision::fine, 2.0};
     std::string minimum_column_basis{"none"};
-    acmacs::chart::use_dimension_annealing dimension_annealing{acmacs::chart::use_dimension_annealing::no};
+    auto dimension_annealing{acmacs::chart::use_dimension_annealing::no};
+    auto unmovable_non_nan_points{acmacs::chart::unmovable_non_nan_points::no};
 
     const auto parse_opt = [&](std::string_view opt) {
         if (opt == "rough"sv)
@@ -196,6 +197,10 @@ parse_options(const std::string& opt1, const std::string& opt2, const std::strin
             dimension_annealing = acmacs::chart::use_dimension_annealing::yes;
         else if (opt == "no-dimension-annealing"sv) // default
             dimension_annealing = acmacs::chart::use_dimension_annealing::no;
+         else if (opt == "unmovable-primary-points"sv)
+             unmovable_non_nan_points = acmacs::chart::unmovable_non_nan_points::yes;
+         else if (opt == "no-unmovable-primary-points"sv) // default
+             unmovable_non_nan_points = acmacs::chart::unmovable_non_nan_points::no;
         else if (!opt.empty())
             std::cerr << "WARNING: acmacs chart relax: unrecognized argument: \"" << opt << "\" (ignored)\n";
     };
@@ -210,14 +215,14 @@ parse_options(const std::string& opt1, const std::string& opt2, const std::strin
     parse_opt(opt8);
     parse_opt(opt9);
 
-    return {options, minimum_column_basis, dimension_annealing};
+    return {options, minimum_column_basis, dimension_annealing, unmovable_non_nan_points};
 }
 
 Projection Chart::relax1(size_t number_of_dimensions, const std::string& opt1, const std::string& opt2, const std::string& opt3, const std::string& opt4, const std::string& opt5, const std::string& opt6, const std::string& opt7, const std::string& opt8,
                          const std::string& opt9)
 {
 
-    const auto [options, minimum_column_basis, dimension_annealing] = parse_options(opt1, opt2, opt3, opt4, opt5, opt6, opt7, opt8, opt9);
+    const auto [options, minimum_column_basis, dimension_annealing, unmovable_non_nan_points] = parse_options(opt1, opt2, opt3, opt4, opt5, opt6, opt7, opt8, opt9);
     auto [status, projection] = obj_->relax(minimum_column_basis, acmacs::number_of_dimensions_t{number_of_dimensions}, dimension_annealing, options);
     // obj_->projections_modify().sort();
     return projection;
@@ -226,7 +231,7 @@ Projection Chart::relax1(size_t number_of_dimensions, const std::string& opt1, c
 Projection Chart::relax2(size_t number_of_dimensions, unsigned seed, const std::string& opt1, const std::string& opt2, const std::string& opt3, const std::string& opt4, const std::string& opt5, const std::string& opt6, const std::string& opt7, const std::string& opt8,
                          const std::string& opt9)
 {
-    const auto [options, minimum_column_basis, dimension_annealing] = parse_options(opt1, opt2, opt3, opt4, opt5, opt6, opt7, opt8, opt9);
+    const auto [options, minimum_column_basis, dimension_annealing, unmovable_non_nan_points] = parse_options(opt1, opt2, opt3, opt4, opt5, opt6, opt7, opt8, opt9);
     auto [status, projection] = obj_->relax(minimum_column_basis, acmacs::number_of_dimensions_t{number_of_dimensions}, dimension_annealing, options, seed);
     // obj_->projections_modify().sort();
     return projection;
@@ -249,10 +254,20 @@ Projection Chart::relax_seed(const std::string& minimum_column_basis, size_t num
     return projection;
 }
 
-void Chart::relax_many(const std::string& minimum_column_basis, size_t number_of_dimensions, size_t number_of_optimizations, bool rough)
+void Chart::relax_many1(size_t number_of_dimensions, size_t number_of_optimizations, const std::string& opt1, const std::string& opt2, const std::string& opt3, const std::string& opt4, const std::string& opt5, const std::string& opt6, const std::string& opt7, const std::string& opt8, const std::string& opt9)
 {
-    acmacs::chart::optimization_options options(acmacs::chart::optimization_method::alglib_cg_pca, rough ? acmacs::chart::optimization_precision::rough : acmacs::chart::optimization_precision::fine, 2.0);
-    obj_->relax(acmacs::chart::number_of_optimizations_t{number_of_optimizations}, minimum_column_basis, acmacs::number_of_dimensions_t{number_of_dimensions}, acmacs::chart::use_dimension_annealing::yes, options, acmacs::chart::DisconnectedPoints{});
+    const auto [options, minimum_column_basis, dimension_annealing, unmovable_non_nan_points] = parse_options(opt1, opt2, opt3, opt4, opt5, opt6, opt7, opt8, opt9);
+    obj_->relax(acmacs::chart::number_of_optimizations_t{number_of_optimizations}, minimum_column_basis, acmacs::number_of_dimensions_t{number_of_dimensions},
+                dimension_annealing, options, acmacs::chart::DisconnectedPoints{});
+    obj_->projections_modify().sort();
+}
+
+void Chart::relax_many2(const std::string& minimum_column_basis, size_t number_of_dimensions, size_t number_of_optimizations, bool rough)
+{
+    acmacs::chart::optimization_options options(acmacs::chart::optimization_method::alglib_cg_pca, rough ? acmacs::chart::optimization_precision::rough : acmacs::chart::optimization_precision::fine,
+                                                2.0);
+    obj_->relax(acmacs::chart::number_of_optimizations_t{number_of_optimizations}, minimum_column_basis, acmacs::number_of_dimensions_t{number_of_dimensions},
+                acmacs::chart::use_dimension_annealing::yes, options, acmacs::chart::DisconnectedPoints{});
     obj_->projections_modify().sort();
 }
 
@@ -270,36 +285,8 @@ void Chart::relax_incremental_2(size_t number_of_optimizations, const std::strin
 {
     using namespace std::string_view_literals;
 
-    acmacs::chart::optimization_options options;
+    const auto [options, minimum_column_basis, dimension_annealing, unmovable_non_nan_points] = parse_options(opt1, opt2, opt3, opt4, opt5, {}, {}, {}, {});
     auto remove_source_projection{acmacs::chart::remove_source_projection::yes};
-    auto unmovable_non_nan_points{acmacs::chart::unmovable_non_nan_points::no};
-
-    const auto parse_opt = [&](std::string_view opt) {
-        if (opt == "rough"sv)
-            options.precision = acmacs::chart::optimization_precision::rough;
-        else if (opt == "fine"sv) // default
-            options.precision = acmacs::chart::optimization_precision::fine;
-        else if (opt == "optimization-lbfgs"sv)
-            options.method = acmacs::chart::optimization_method::alglib_lbfgs_pca;
-        else if (opt == "optimization-cg"sv) // default
-            options.method = acmacs::chart::optimization_method::alglib_cg_pca;
-        else if (opt == "disconnect-having-too-few-titers"sv) // default
-            options.disconnect_too_few_numeric_titers = acmacs::chart::disconnect_few_numeric_titers::yes;
-        else if (opt == "no-disconnect-having-too-few-titers"sv)
-            options.disconnect_too_few_numeric_titers = acmacs::chart::disconnect_few_numeric_titers::no;
-        else if (opt == "unmovable-primary-points"sv)
-            unmovable_non_nan_points = acmacs::chart::unmovable_non_nan_points::yes;
-        else if (opt == "no-unmovable-primary-points"sv) // default
-            unmovable_non_nan_points = acmacs::chart::unmovable_non_nan_points::no;
-        else if (!opt.empty())
-            std::cerr << "WARNING: acmacs chart relax_incremental: unrecognized argument: \"" << opt << "\" (ignored)\n";
-    };
-
-    parse_opt(opt1);
-    parse_opt(opt2);
-    parse_opt(opt3);
-    parse_opt(opt4);
-    parse_opt(opt5);
 
     constexpr const size_t projection_no{0};
     obj_->relax_incremental(projection_no, acmacs::chart::number_of_optimizations_t{number_of_optimizations}, options, remove_source_projection, unmovable_non_nan_points);
