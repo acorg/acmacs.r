@@ -202,7 +202,7 @@ parse_options(const std::string& opt1, const std::string& opt2, const std::strin
          else if (opt == "no-unmovable-primary-points"sv) // default
              unmovable_non_nan_points = acmacs::chart::unmovable_non_nan_points::no;
         else if (!opt.empty())
-            std::cerr << "WARNING: acmacs chart relax: unrecognized argument: \"" << opt << "\" (ignored)\n";
+            Rcpp::cerr << "WARNING: acmacs chart relax: unrecognized argument: \"" << opt << "\" (ignored)\n";
     };
 
     parse_opt(opt1);

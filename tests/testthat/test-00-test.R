@@ -87,7 +87,8 @@ test2 <- function() {
 test1 <- function() {
     chart <- read_from_file("/r/a.tab")
     print_table(chart, "/r/a.tab")
-    chart$relax_many("none", 2, 100, TRUE)
+    # chart$relax_many("none", 2, 100, TRUE)
+    chart$relax_many(2, 100, "rough")
     print(chart$info)
 
     sTiters <- c("<10", "20", "40", "80", "160", "320", "640", "1280", "2560", ">2560");

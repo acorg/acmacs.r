@@ -9,10 +9,10 @@ test_relax_existing <- function(filename) {
     test_that("stress after relax", { expect_equal(stress1, stress2) })
 }
 
-test_relax <- function(filename, num_optimizations, expected_stress) {
+test_relax_many <- function(filename, num_optimizations, expected_stress, dimension_annealing="no-dimension-annealing") {
     chart <- new(acmacs.Chart, filename)
-    # cat("\ninitial projections:", chart$number_of_projections, "best:", chart$projections[[1]]$stress, "\n")
-    chart$relax_many("1280", 2, num_optimizations, FALSE)
+    # chart$relax_many("1280", 2, num_optimizations, FALSE)
+    chart$relax_many(2, num_optimizations, "1280", dimension_annealing)
     ## for (p_no in 1:chart$number_of_projections) {
     ##     write(paste(p_no, chart$projections[[p_no]]$stress), file="")
     ## }
@@ -85,8 +85,12 @@ test_relax_with_unmovable <- function(filename) {
 
 test_relax_existing("2004-3.ace")
 test_relax_existing("cdc-h1pdm-2009.acd1.bz2")
-test_relax("2004-3.ace", 100, 72)
-test_relax("cdc-h1pdm-2009.acd1.bz2", 5, 900)
+test_relax_many("2004-3.ace", 100, 72)
+test_relax_many("2004-3.ace", 10, 72)
+test_relax_many("2004-3.ace", 2, 72, "dimension-annealing")
+test_relax_many("2004-3.ace", 2, 76.15)
+test_relax_many("cdc-h1pdm-2009.acd1.bz2", 5, 900, "dimension-annealing")
+test_relax_many("cdc-h1pdm-2009.acd1.bz2", 5, 900)
 test_relax_seed("cdc-h1pdm-2009.acd1.bz2", 778, TRUE,  TRUE, 868.0, 869.0)
 test_relax_seed("cdc-h1pdm-2009.acd1.bz2", 778, FALSE, TRUE, 868.0, 869.0)
 test_relax_seed("cdc-h1pdm-2009.acd1.bz2", 778, FALSE, FALSE, 1091.0, 1092.0)

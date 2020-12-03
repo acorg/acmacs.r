@@ -26,6 +26,7 @@ for (row_no in 2:length(rows)) {
    }
 }
 
-chart$relax_many("none", 2, 100, FALSE)
+chart$relax_many(2, 100)
 
-test_that("best stress", { expect_equal(chart$projections[[1]]$stress, 25.148231, tolerance=1e-6) })
+expected_stress = 25.148231;
+test_that(paste("relax_many best stress: ", chart$projections[[1]]$stress, "  expected: ", expected_stress, sep=""), { expect_equal(chart$projections[[1]]$stress, expected_stress, tolerance=1e-6) })
