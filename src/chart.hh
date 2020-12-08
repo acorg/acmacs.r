@@ -151,7 +151,7 @@ class Chart : public wrapper<acmacs::chart::ChartModify>
     Chart(int number_of_antigens, int number_of_sera);
     Chart(std::shared_ptr<acmacs::chart::ChartModify> src);
     std::string name() const { return obj_->info()->name(); }
-    std::string info() const { return obj_->make_info(); }
+    std::string info() const { return obj_->make_info(0, 0); }
     std::string lineage() const { return std::string{*obj_->lineage()}; }
     size_t number_of_antigens() const { return obj_->number_of_antigens(); }
     size_t number_of_sera() const { return obj_->number_of_sera(); }
