@@ -1,7 +1,7 @@
 context("Test chart$antigens")
 
 test_chart <- function(filename, expected_num_antigens, test_passages) {
-    ad_antigen_list <- trimws(system(paste("chart-names -f '{ag_sr} {no0} {name_full_passage} [{date}] {lab_ids} {ref}'", filename, " | grep '^AG'"), intern=TRUE))
+    ad_antigen_list <- trimws(system(paste("chart-names -f '{ag_sr} {no0:{num_digits}d} {name_full_passage} [{date}] {lab_ids} {ref}'", filename, " | grep '^AG'"), intern=TRUE))
                                         #write(antigen_list, stderr())
 
     chart <- new(acmacs.Chart, filename)
