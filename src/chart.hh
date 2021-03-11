@@ -26,7 +26,7 @@ class Antigen : public wrapper<acmacs::chart::AntigenModify>
     Antigen(acmacs::chart::AntigenModifyP antigen) : wrapper(antigen) {}
     std::string get_name() { return *obj_->name(); }
     void set_name(std::string name) { obj_->name(name); }
-    std::string get_full_name() const { return obj_->format("{name_full}"); }
+    std::string get_full_name() const { return obj_->name_full(); }
     std::string get_abbreviated_name() const { return obj_->format("{name_abbreviated}"); }
     std::string get_date() const { return *obj_->date(); }
     void set_date(std::string date) { obj_->date(date); }
@@ -43,7 +43,7 @@ class Antigen : public wrapper<acmacs::chart::AntigenModify>
     void add_annotation(const std::string& annotation) { obj_->add_annotation(annotation); }
     void remove_annotation(const std::string& annotation) { obj_->remove_annotation(annotation); }
 
-    static inline Rcpp::StringVector as_character(Antigen* aAntigen) { return {aAntigen->obj_->format("{name_full}")}; }
+    static inline Rcpp::StringVector as_character(Antigen* aAntigen) { return {aAntigen->obj_->name_full()}; }
 };
 RCPP_EXPOSED_CLASS_NODECL(Antigen);
 
@@ -55,7 +55,7 @@ class Serum : public wrapper<acmacs::chart::SerumModify>
     Serum(acmacs::chart::SerumModifyP serum) : wrapper(serum) {}
     std::string get_name() { return *obj_->name(); }
     void set_name(std::string name) { obj_->name(name); }
-    std::string get_full_name() const { return obj_->format("{name_full}"); }
+    std::string get_full_name() const { return obj_->name_full(); }
     std::string get_abbreviated_name() const { return obj_->format("{name_abbreviated}"); }
     std::string get_lineage() const { return obj_->lineage().to_string(); }
     void set_lineage(std::string lineage) { obj_->lineage(lineage); }
@@ -71,7 +71,7 @@ class Serum : public wrapper<acmacs::chart::SerumModify>
     void add_annotation(const std::string& annotation) { obj_->add_annotation(annotation); }
     void remove_annotation(const std::string& annotation) { obj_->remove_annotation(annotation); }
 
-    static inline Rcpp::StringVector as_character(Serum* aSerum) { return {aSerum->obj_->format("{name_full}")}; }
+    static inline Rcpp::StringVector as_character(Serum* aSerum) { return {aSerum->obj_->name_full()}; }
 };
 RCPP_EXPOSED_CLASS_NODECL(Serum);
 
@@ -82,7 +82,7 @@ class Projection : public wrapper<acmacs::chart::ProjectionModify>
  public:
     Projection(const Projection& src) : wrapper(src) {}
     Projection(acmacs::chart::ProjectionModifyP projection) : wrapper(projection) {}
-      // static Rcpp::StringVector as_character(Projection* aProjection) { return {aProjection->obj_->format("{name_full}")}; }
+      // static Rcpp::StringVector as_character(Projection* aProjection) { return {aProjection->obj_->name_full()}; }
 
     std::string make_info() const { return obj_->make_info(); }
     std::string comment() const { return obj_->comment(); }

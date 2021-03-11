@@ -11,3 +11,4 @@ License: GPL (>= 2)
 Imports: methods, Rcpp (>= 1.0.1)
 LinkingTo: Rcpp
 Suggests: testthat
+SystemRequirements: GNU make

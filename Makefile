@@ -37,6 +37,7 @@ endif
 
 all: bin
 
+NO_CLEAN_TARGET=1
 include $(ACMACSD_ROOT)/share/Makefile.config
 
 install: build | $(LIB_DIR)
@@ -44,7 +45,7 @@ install: build | $(LIB_DIR)
 
 bin: build | $(LIB_DIR)
 	@echo '>>>> BIN'
-	env LD_LIBRARY_PATH=$(LD_LIBRARY_PATH) ACMACSD_SOURCES_ROOT=$(AD_SOURCES_ROOT) R CMD INSTALL --clean --build --debug --built-timestamp=$(shell date +%Y-%m-%d) --library=$(LIB_DIR) $(PKG_FILE)
+	env LD_LIBRARY_PATH=$(LD_LIBRARY_PATH) ACMACSD_SOURCES_ROOT=$(AD_SOURCES_ROOT) MAKE=$(MAKE) R CMD INSTALL --clean --build --debug --built-timestamp=$(shell date +%Y-%m-%d) --library=$(LIB_DIR) $(PKG_FILE)
 	if [ -f $(ROOT_DIR)/$(PKG_NAME)_$(PKG_VERSION).tgz ]; then \
 	  mv $(ROOT_DIR)/$(PKG_NAME)_$(PKG_VERSION).tgz $(ROOT_DIR)/$(PKG_NAME)_$(PKG_VERSION)_R_$(PKG_PLATFORM).tgz; \
 	elif [ -f $(PKG_NAME)_$(PKG_VERSION).tgz ]; then \
@@ -56,10 +57,10 @@ bin: build | $(LIB_DIR)
 
 build: compile-attributes | $(PKG_DIR)
 	@echo '>>>> BUILD' $$(pwd)
-	D=$$(pwd) && cd $(PKG_DIR) && env ACMACSD_SOURCES_ROOT=$(AD_SOURCES_ROOT) R CMD build "$$D"
+	D=$$(pwd) && cd $(PKG_DIR) && env ACMACSD_SOURCES_ROOT=$(AD_SOURCES_ROOT) MAKE=$(MAKE) R CMD build "$$D"
 
 check: build | $(OUT_DIR) $(LIB_DIR)
-	env ACMACSD_SOURCES_ROOT=$(AD_SOURCES_ROOT) R CMD check -o $(OUT_DIR) -l $(LIB_DIR) --no-examples --no-manual $(PKG_FILE)
+	env ACMACSD_SOURCES_ROOT=$(AD_SOURCES_ROOT) MAKE=$(MAKE) R CMD check -o $(OUT_DIR) -l $(LIB_DIR) --no-examples --no-manual $(PKG_FILE)
 
 compile-attributes:
 	Rscript -e "library(Rcpp); compileAttributes(verbose=TRUE);"
