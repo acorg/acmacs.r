@@ -1,6 +1,8 @@
 # -*- Makefile -*-
 # ----------------------------------------------------------------------
 
+$(warning WARNING: Discontinued on 2021-05-20, Racmacs does not use acmacs.r anymore)
+
 # for Linux and set -o pipefail
 SHELL = /bin/bash
 
